@@ -1,0 +1,6 @@
+CFLAGS = /nologo /W3 /Zi
+
+all: day12a.exe day12b.exe
+clean: ; !del day12a.exe day12b.exe *.obj *.pdb *.ilk
+
+.PHONY: all clean
