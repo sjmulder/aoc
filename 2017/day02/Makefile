@@ -1,6 +1,6 @@
 CFLAGS += -Weverything -ansi
 
-all: day2a day2b
-clean: ; rm -f day2a day2b
+all: day02a day02b
+clean: ; rm -f day02a day02b
 
 .PHONY: all clean
