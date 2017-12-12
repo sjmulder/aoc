@@ -1,2 +1,5 @@
+*.obj
+*.pdb
+*.ilk
 */*/day*
 !*/*/day*.c
