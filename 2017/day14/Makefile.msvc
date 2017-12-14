@@ -1,0 +1,11 @@
+CFLAGS  = /nologo /W3 /Zi
+
+all: day14a.exe #day14b.exe
+
+clean:
+	!del day14a.exe day14b.exe *.obj *.pdb *.ilk
+
+day14a.exe: day14a.c khash.c khash.h
+	$(CC) $(CFLAGS) $(LDFLAGS) day14a.c khash.c $(LDLIBS)
+
+.PHONY: all clean
