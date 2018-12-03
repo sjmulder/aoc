@@ -8,7 +8,7 @@ static void pcommon(char *, char *);
 int
 main()
 {
-	char lines[256][32];
+	char lines[100000][32];
 	size_t n = 0;
 	size_t i, j;
 
