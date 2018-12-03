@@ -5,7 +5,7 @@ all: day02a day02b
 clean:
 	rm -f day02a day02b
 
-check: day02a
+check: day02a day02b
 	test 12 = `./day02a <sample-a`
 	test fgij = `./day02b <sample-b`
 
