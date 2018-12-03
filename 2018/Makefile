@@ -1,4 +1,4 @@
-DAYS = day01 day02
+DAYS = day01 day02 day03
 
 all:
 	within $(DAYS) - $(MAKE)
