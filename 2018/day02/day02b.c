@@ -39,7 +39,7 @@ sndiff(char *s1, char *s2)
 {
 	int ndiff = 0;
 
-	while (*s1 && *s2)
+	while (*s1 && *s2 && ndiff < 2)
 		if (*(s1++) != *(s2++))
 			ndiff++;
 	

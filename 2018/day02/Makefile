@@ -1,3 +1,4 @@
+CFLAGS += -O2
 CFLAGS += -Wall -Wextra
 
 all: day02a day02b
