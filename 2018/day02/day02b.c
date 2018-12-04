@@ -4,33 +4,32 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <err.h>
 
 #define NJOBS 4
-#define MAXLINES 100000
+#define DATASZ (4 * 1024 * 1024)
 #define NOSOLVE 2
 
+#define LINE(i) (data + (i)*(linelen+1))
+
 static int work(int);
-static int sndiff(char *, char *);
+static int ndiff(char *, char *);
 static void pcommon(char *, char *);
 
-static char lines[MAXLINES][32];
-static size_t n;
+static char *data;
+static size_t linelen;
+static size_t nlines;
 
 int
 main()
 {
+	size_t nread;
 	int job;
 	int status;
 
-	while (n < sizeof(lines) / sizeof(*lines)) {
-		if (fgets(lines[n], sizeof(*lines), stdin))
-			n++;
-		else if (ferror(stdin))
-			err(1, "<stdin>");
-		else
-			break;
-	}
+	data = malloc(DATASZ);
+	nread = fread(data, 1, DATASZ, stdin);
+	linelen = strchr(data, '\n') - data;
+	nlines = nread / linelen;
 
 	for (job = 0; job < NJOBS; job++)
 		if (fork() == 0)
@@ -48,35 +47,38 @@ main()
 static int
 work(int job)
 {
-	size_t i, j;
+	size_t a, b;
 
-	for (i = job; i < n; i += NJOBS)
-		for (j = i+1; j < n; j++)
-			if (sndiff(lines[i], lines[j]) == 1) {
-				pcommon(lines[i], lines[j]);
+	for (a = job; a < nlines; a += NJOBS)
+		for (b = a+1; b < nlines; b++)
+			if (ndiff(LINE(a), LINE(b)) == 1) {
+				pcommon(LINE(a), LINE(b));
 				return 0;
 			}
 
 	return NOSOLVE;
 }
 
-/* number of different characters, exits after 2 */
+/* number of different characters in a line, exits after 2 */
 static int
-sndiff(char *s1, char *s2)
+ndiff(char *s1, char *s2)
 {
+	size_t i;
 	int ndiff = 0;
 
-	while (*s1 && *s2 && ndiff < 2)
-		if (*(s1++) != *(s2++))
+	for (i = 0; i < linelen && ndiff < 2; i++)
+		if (s1[i] != s2[i])
 			ndiff++;
-	
 	return ndiff;
 }
 
 static void
 pcommon(char *s1, char *s2)
 {
-	while (*s1 && *s2)
-		if (*(s1++) == *(s2++))
-			putchar(s1[-1]);
+	size_t i;
+
+	for (i = 0; i < linelen; i++)
+		if (s1[i] == s2[i])
+			putchar(s1[i]);
+	putchar('\n');
 }
