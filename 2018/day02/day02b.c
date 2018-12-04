@@ -1,21 +1,32 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include <err.h>
 
-#define NJOBS 4
 #define DATASZ (4 * 1024 * 1024)
-#define NOSOLVE 2
+#define MAPW 128
 
-#define LINE(i) (data + (i)*(linelen+1))
+#define LINE(i) (&data[(i)*(linelen+1)])
 
-static int work(int);
+/*
+ * Task: find two lines that differ only by a single character; print the
+ * matching characters.
+ *
+ * O(n) approach: add the lines to a hashmap twice, once keyed by the first
+ * half of the line, once by the second. Since only one character may differ a
+ * collision MUST occur on one of the halves. Then do a full compare only on
+ * the collisions.
+ *
+ * Approached based on:
+ * https://github.com/macdja38/advent-of-code-2018/blob/master/days/2-1/
+ */
+
+static uint16_t hash4(char *);
 static int ndiff(char *, char *);
 static void pcommon(char *, char *);
 
-static char *data;
+static char data[DATASZ];
+static char *map[1<<16][MAPW];
 static size_t linelen;
 static size_t nlines;
 
@@ -23,40 +34,46 @@ int
 main()
 {
 	size_t nread;
-	int job;
-	int status;
+	size_t i, j, k;
+	uint16_t hashes[2];
+	char *line, *ent;
 
-	data = malloc(DATASZ);
-	nread = fread(data, 1, DATASZ, stdin);
-	linelen = strchr(data, '\n') - data;
+	if ((nread = fread(data, 1, DATASZ, stdin)) == DATASZ)
+		errx(1, "data overflow");
+	if ((linelen = strchr(data, '\n') - data) < 8)
+		errx(1, "lines too short");
 	nlines = nread / linelen;
 
-	for (job = 0; job < NJOBS; job++)
-		if (fork() == 0)
-			return work(job);
+	for (i = 0; i < nlines; i++) {
+		line = LINE(i);
+		hashes[0] = hash4(line);
+		hashes[1] = hash4(line + linelen/2);
 
-	while (wait(&status) != -1)
-		if (status == 0) /* solved! */
-			return 0;
+		for (j = 0; j < 2; j++) {
+			for (k = 0; k < MAPW; k++) {
+				ent = map[hashes[j]][k];
+				if (!ent) {
+					map[hashes[j]][k] = line;
+					break;
+				} else if (ndiff(line, ent) == 1) {
+					pcommon(line, ent);
+					return 0;
+				}
+			}
+			if (k == MAPW)
+				errx(1, "map overflow");
+		}
+	}
 
 	puts("no solution");
-	return NOSOLVE;
+	return 1;
 }
 
-/* returns 0 on success, NOSOLVE on error */
-static int
-work(int job)
+/* hash based on first 4 characters */
+static uint16_t
+hash4(char *s)
 {
-	size_t a, b;
-
-	for (a = job; a < nlines; a += NJOBS)
-		for (b = a+1; b < nlines; b++)
-			if (ndiff(LINE(a), LINE(b)) == 1) {
-				pcommon(LINE(a), LINE(b));
-				return 0;
-			}
-
-	return NOSOLVE;
+	return (s[0] << 12) ^ (s[1] << 8) ^ (s[2] << 4) ^ s[3];
 }
 
 /* number of different characters in a line, exits after 2 */
