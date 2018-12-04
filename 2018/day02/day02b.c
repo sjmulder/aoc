@@ -17,7 +17,7 @@
  * collision MUST occur on one of the halves. Then do a full compare only on
  * the collisions.
  *
- * Approached based on:
+ * Approach based on:
  * https://github.com/macdja38/advent-of-code-2018/blob/master/days/2-1/
  */
 
