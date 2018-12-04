@@ -1,16 +1,27 @@
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <err.h>
 
+#define NJOBS 4
+#define MAXLINES 100000
+#define NOSOLVE 2
+
+static int work(int);
 static int sndiff(char *, char *);
 static void pcommon(char *, char *);
+
+static char lines[MAXLINES][32];
+static size_t n;
 
 int
 main()
 {
-	char lines[100000][32];
-	size_t n = 0;
-	size_t i, j;
+	int job;
+	int status;
 
 	while (n < sizeof(lines) / sizeof(*lines)) {
 		if (fgets(lines[n], sizeof(*lines), stdin))
@@ -21,17 +32,32 @@ main()
 			break;
 	}
 
-	for (i = 0; i < n; i++) {
-		for (j = i+1; j < n; j++) {
+	for (job = 0; job < NJOBS; job++)
+		if (fork() == 0)
+			return work(job);
+
+	while (wait(&status) != -1)
+		if (status == 0) /* solved! */
+			return 0;
+
+	puts("no solution");
+	return NOSOLVE;
+}
+
+/* returns 0 on success, NOSOLVE on error */
+static int
+work(int job)
+{
+	size_t i, j;
+
+	for (i = job; i < n; i += NJOBS)
+		for (j = i+1; j < n; j++)
 			if (sndiff(lines[i], lines[j]) == 1) {
 				pcommon(lines[i], lines[j]);
 				return 0;
 			}
-		}
-	}
 
-	puts("no solution");
-	return 0;
+	return NOSOLVE;
 }
 
 static int
