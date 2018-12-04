@@ -60,6 +60,7 @@ work(int job)
 	return NOSOLVE;
 }
 
+/* number of different characters, exits after 2 */
 static int
 sndiff(char *s1, char *s2)
 {
@@ -69,7 +70,7 @@ sndiff(char *s1, char *s2)
 		if (*(s1++) != *(s2++))
 			ndiff++;
 	
-	return ndiff + strlen(s1) + strlen(s2);
+	return ndiff;
 }
 
 static void
