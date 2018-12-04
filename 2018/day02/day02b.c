@@ -21,12 +21,12 @@
  * https://github.com/macdja38/advent-of-code-2018/blob/master/days/2-1/
  */
 
-static uint16_t hash4(char *);
+static unsigned shash(char *, size_t);
 static int ndiff(char *, char *);
 static void pcommon(char *, char *);
 
 static char data[DATASZ];
-static char *map[1<<16][MAPW];
+static char *map[1<<20][MAPW];
 static size_t linelen;
 static size_t nlines;
 
@@ -35,19 +35,18 @@ main()
 {
 	size_t nread;
 	size_t i, j, k;
-	uint16_t hashes[2];
+	unsigned hashes[2];
 	char *line, *ent;
 
 	if ((nread = fread(data, 1, DATASZ, stdin)) == DATASZ)
 		errx(1, "data overflow");
-	if ((linelen = strchr(data, '\n') - data) < 8)
-		errx(1, "lines too short");
+	linelen = strchr(data, '\n') - data;
 	nlines = nread / linelen;
 
 	for (i = 0; i < nlines; i++) {
 		line = LINE(i);
-		hashes[0] = hash4(line);
-		hashes[1] = hash4(line + linelen/2);
+		hashes[0] = shash(line, linelen/2) & 0xFFFFF;
+		hashes[1] = shash(line + linelen/2, linelen/2) & 0xFFFFF;
 
 		for (j = 0; j < 2; j++) {
 			for (k = 0; k < MAPW; k++) {
@@ -69,11 +68,14 @@ main()
 	return 1;
 }
 
-/* hash based on first 4 characters */
-static uint16_t
-hash4(char *s)
+static unsigned
+shash(char *s, size_t n)
 {
-	return (s[0] << 12) ^ (s[1] << 8) ^ (s[2] << 4) ^ s[3];
+	unsigned hash = 0;
+
+	while (n)
+		hash = (hash << 4) ^ s[--n];
+	return hash;
 }
 
 /* number of different characters in a line, exits after 2 */
