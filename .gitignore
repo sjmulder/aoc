@@ -5,3 +5,5 @@
 *.ilk
 */*/day*
 !*/*/day*.c
+solve1
+solve2
