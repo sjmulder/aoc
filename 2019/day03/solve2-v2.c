@@ -17,7 +17,7 @@ struct point {
 	int x, y;
 };
 
-struct line paths[2][64*1024];
+struct line paths[2][3*1024*1024];
 
 static size_t read_path(struct line *, size_t);
 static int intersects(struct line, struct line, struct point *);
