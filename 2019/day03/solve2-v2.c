@@ -8,8 +8,8 @@
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
 struct line {
-	int x1, x2, xmin, xmax;
-	int y1, y2, ymin, ymax;
+	int x1, y1;
+	int x2, y2;
 	int len;
 };
 
@@ -117,10 +117,6 @@ read_path(struct line *lines, size_t num)
 
 		lines[i].x2 = x;
 		lines[i].y2 = y;
-		lines[i].xmin = MIN(lines[i].x1, lines[i].x2);
-		lines[i].xmax = MAX(lines[i].x1, lines[i].x2);
-		lines[i].ymin = MIN(lines[i].y1, lines[i].y2);
-		lines[i].ymax = MAX(lines[i].y1, lines[i].y2);
 
 		i++;
 
@@ -136,16 +132,16 @@ static int
 intersects(struct line a, struct line b, struct point *ptp)
 {
 	if (a.y1 == a.y2 && b.x1 == b.x2 &&
-	    b.x1 >= a.xmin && b.x1 <= a.xmax &&
-	    a.y1 >= b.ymin && a.y1 <= b.ymax) {
+	    b.x1 >= MIN(a.x1, a.x2) && b.x1 <= MAX(a.x1, a.x2) &&
+	    a.y1 >= MIN(b.y1, b.y2) && a.y1 <= MAX(b.y1, b.y2)) {
 		ptp->x = b.x1;
 		ptp->y = a.y1;
 		return 1;
 	}
 
 	if (a.x1 == a.x2 && b.y1 == b.y2 &&
-	    a.x1 >= b.xmin && a.x1 <= b.xmax &&
-	    b.y1 >= a.ymin && b.y1 <= a.ymax) {
+	    a.x1 >= MIN(b.x1, b.x2) && a.x1 <= MAX(b.x1, b.x2) &&
+	    b.y1 >= MIN(a.y1, a.y2) && b.y1 <= MAX(a.y1, a.y2)) {
 		ptp->x = a.x1;
 		ptp->y = b.y1;
 		return 1;
