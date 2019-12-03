@@ -4,8 +4,10 @@
 #include <err.h>
 
 /*
- * Attempt at using a steps bitmap. Bitmap too large (segfault on this Pi),
- * even when cheating and using the exact dimensions. Shame.
+ * Attempt at using a steps bitmap. Even when cheating and using the exact
+ * grid dimensions of the solution the bitmap is large enough to segfault
+ * my Pi. On my PC it works but is slower than the real thing and segfaults
+ * when using a grid large enough for input.big.
  */
 
 #define XMIN (-6364)
