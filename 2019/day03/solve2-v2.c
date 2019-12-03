@@ -34,6 +34,26 @@ main()
 	num_a = read_path(paths[0], LEN(paths[0]));
 	num_b = read_path(paths[1], LEN(paths[1]));
 
+#if 0
+	/* output the occupied extent of the grid */
+
+	int xmin = 0, xmax = 0, ymin = 0, ymax = 0;
+	for (a = 0; a < num_a; a++) {
+		xmin = MIN(xmin, MIN(paths[0][a].x1, paths[0][a].x2));
+		xmax = MAX(xmax, MAX(paths[0][a].x1, paths[0][a].x2));
+		ymin = MIN(ymin, MIN(paths[0][a].y1, paths[0][a].y2));
+		ymax = MAX(ymax, MAX(paths[0][a].y1, paths[0][a].y2));
+	}
+	for (b = 0; b < num_b; b++) {
+		xmin = MIN(xmin, MIN(paths[1][b].x1, paths[1][b].x2));
+		xmax = MAX(xmax, MAX(paths[1][b].x1, paths[1][b].x2));
+		ymin = MIN(ymin, MIN(paths[1][b].y1, paths[1][b].y2));
+		ymax = MAX(ymax, MAX(paths[1][b].y1, paths[1][b].y2));
+	}
+	fprintf(stderr, "xmin=%d xmax=%d ymin=%d ymax=%d\n", xmin, xmax,
+	    ymin, ymax);
+#endif
+
 	steps_a = 0;
 	for (a = 0; a < num_a; a++) {
 		steps_b = 0;
