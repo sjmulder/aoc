@@ -16,7 +16,7 @@ struct point {
 	int x, y;
 };
 
-struct line paths[2][1024];
+struct line paths[2][64*1024];
 
 static size_t read_path(struct line *, size_t);
 static int intersects(struct line, struct line, struct point *);
@@ -30,8 +30,8 @@ main()
 	int steps, best_steps = INT_MAX;
 	struct point pt;
 
-	a_len = read_path(paths[0], 1024);
-	b_len = read_path(paths[1], 1024);
+	a_len = read_path(paths[0], LEN(paths[0]));
+	b_len = read_path(paths[1], LEN(paths[0]));
 
 	for (i = 1; i < (int)a_len; i++)
 	for (j = 1; j < (int)b_len; j++) {
