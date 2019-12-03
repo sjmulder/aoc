@@ -38,11 +38,9 @@ main()
 	x = -XMIN;
 	y = -YMIN;
 
-	fprintf(stderr, "first path\n");
 	while (1) {
 		if (scanf("%c%d", &dir, &length) != 2)
 			errx(1, "failed to scan");
-		fprintf(stderr, " %c%d\n", dir, length);
 
 		x2 = x; y2 = y;
 		dx = 0; dy = 0;
@@ -62,7 +60,6 @@ main()
 				errx(1, "steps overflow");
 
 			x += dx; y += dy; steps++;
-			fprintf(stderr, "  %d,%d %d\n", x, y, steps);
 
 			if (path_idx) {
 				if (steps > candidate)
@@ -84,7 +81,6 @@ main()
 		case '\n':
 			if (++path_idx > 1)
 				goto skip_rest;
-			fprintf(stderr, "second path\n");
 			steps = 0;
 			x = -XMIN;
 			y = -YMIN;
