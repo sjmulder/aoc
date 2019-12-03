@@ -57,7 +57,7 @@ main()
 	steps_a = 0;
 	for (a = 0; a < num_a; a++) {
 		steps_b = 0;
-		for (b = 1; b < num_b; b++) {
+		for (b = 0; b < num_b; b++) {
 			if (a && b &&
 			    intersects(paths[0][a], paths[1][b], &pt)) {
 				steps = steps_a + steps_b +
@@ -144,7 +144,7 @@ intersects(struct line a, struct line b, struct point *ptp)
 	}
 
 	if (a.x1 == a.x2 && b.y1 == b.y2 &&
-	    a.x1 >= b.xmin && a.x1 <= a.xmax &&
+	    a.x1 >= b.xmin && a.x1 <= b.xmax &&
 	    b.y1 >= a.ymin && b.y1 <= a.ymax) {
 		ptp->x = a.x1;
 		ptp->y = b.y1;
