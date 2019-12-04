@@ -81,7 +81,7 @@ main()
 	}
 
 	if (best_steps == INT_MAX) {
-		fprintf(stderr, " intersect\n");
+		fprintf(stderr, "no solution\n");
 		return 1;
 	}
 
