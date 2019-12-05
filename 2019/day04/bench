@@ -1,0 +1,5 @@
+#!/bin/mksh
+for solver in solve2-plog solve2-p solve2-opt solve2; do
+  echo "=> $solver"
+  time ./with-input.xxbig ./$solver
+done
