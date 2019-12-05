@@ -16,6 +16,13 @@ typedef struct icvm {
 	FILE *prompt;
 } Icvm;
 
+typedef struct icarg {
+	int *p;
+	int mode;
+#define IC_INDIRECT 0
+#define IC_IMMEDIATE 1
+} Icarg;
+
 typedef struct icop {
 	int op;
 #define IC_ADD 1
@@ -27,7 +34,7 @@ typedef struct icop {
 #define IC_LT  7
 #define IC_EQ  8
 #define IC_HLT 99
-	int *args[3];
+	Icarg args[3];
 	int nin, nout;
 	int nargs;
 } Icop;
@@ -126,7 +133,7 @@ ic_load(Icvm *vm, FILE *f)
 static void
 ic_decode(Icvm *vm, int pos, Icop *op)
 {
-	int i, divisor, mode;
+	int i, divisor;
 
 	if (pos < 0 || pos >= (int)LEN(vm->mem))
 		errx(1, "pos %d: out of bounds", pos);
@@ -153,20 +160,20 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 
 	divisor = 100;
 	for (i = 0; i < op->nargs; i++) {
-		mode = vm->mem[pos] / divisor % 10;
-		switch (mode) {
-		case 0: /* position */
-			op->args[i] = &vm->mem[vm->mem[pos+i+1]];
+		op->args[i].mode = vm->mem[pos] / divisor % 10;
+		switch (op->args[i].mode) {
+		case IC_INDIRECT:
+			op->args[i].p = &vm->mem[vm->mem[pos+i+1]];
 			break;
-		case 1: /* immediate */
-			op->args[i] = &vm->mem[pos+i+1];
+		case IC_IMMEDIATE:
+			op->args[i].p = &vm->mem[pos+i+1];
 			break;
 		default:
 			errx(1, "pos %d: invalid mode %d for arg %d",
-			    pos, mode, i);
+			    pos, op->args[i].mode, i);
 		}
-		if (op->args[i] < vm->mem ||
-		    op->args[i] >= vm->mem + LEN(vm->mem))
+		if (op->args[i].p < vm->mem ||
+		    op->args[i].p >= vm->mem + LEN(vm->mem))
 			errx(1, "pos: %d: arg %d out of bound", pos, i);
 		divisor *= 10;
 	}
@@ -180,10 +187,10 @@ ic_exec(Icvm *vm, Icop *op)
 {
 	switch (op->op) {
 	case IC_ADD:
-		*op->args[2] = *op->args[0] + *op->args[1];
+		*op->args[2].p = *op->args[0].p + *op->args[1].p;
 		break;
 	case IC_MUL:
-		*op->args[2] = *op->args[0] * *op->args[1];
+		*op->args[2].p = *op->args[0].p * *op->args[1].p;
 		break;
 	case IC_IN:
 		if (vm->prompt) {
@@ -192,27 +199,27 @@ ic_exec(Icvm *vm, Icop *op)
 		}
 		if (!vm->input)
 			errx(1, "IN: no input stream");
-		if (fscanf(vm->input, " %d", op->args[0]) != 1)
+		if (fscanf(vm->input, " %d", op->args[0].p) != 1)
 			errx(1, "IN: expected input");
 		break;
 	case IC_OUT:
 		if (!vm->output)
 			errx(1, "OUT: no output stream");
-		fprintf(vm->output, "%d\n", *op->args[0]);
+		fprintf(vm->output, "%d\n", *op->args[0].p);
 		break;
 	case IC_JT:
-		if (*op->args[0])
-			vm->ic = *op->args[1];
+		if (*op->args[0].p)
+			vm->ic = *op->args[1].p;
 		break;
 	case IC_JF:
-		if (!*op->args[0])
-			vm->ic = *op->args[1];
+		if (!*op->args[0].p)
+			vm->ic = *op->args[1].p;
 		break;
 	case IC_LT:
-		*op->args[2] = *op->args[0] < *op->args[1];
+		*op->args[2].p = *op->args[0].p < *op->args[1].p;
 		break;
 	case IC_EQ:
-		*op->args[2] = *op->args[0] == *op->args[1];
+		*op->args[2].p = *op->args[0].p == *op->args[1].p;
 		break;
 	case IC_HLT:
 		vm->flags |= IC_HALTED;
@@ -227,7 +234,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 {
 	int i;
 
-	fprintf(f, " %3d: ", vm->ic);
+	fprintf(f, " %3d: %05d ", vm->ic, vm->mem[vm->ic]);
 
 	switch (op->op) {
 	case IC_ADD: fputs("add ", f); break;
@@ -243,24 +250,31 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 		errx(1, "unknown op: %d", op->op);
 	}
 	
-	if (op->nargs > 0)
-		fprintf(f, "[%3d]", (int)(op->args[0] - vm->mem));
+	if (op->nargs == 0)
+		fprintf(f, "       ");
+	else if (op->args[0].mode == IC_IMMEDIATE)
+		fprintf(f, "%7d", *op->args[0].p);
 	else
-		fprintf(f, "     ");
+		fprintf(f, "  [%3d]", (int)(op->args[0].p - vm->mem));
 
-	for (i = 1; i < op->nargs; i++)
-		fprintf(f, ", [%3d]", (int)(op->args[i] - vm->mem));
+	for (i = 1; i < op->nargs; i++) {
+		if (op->args[i].mode == IC_IMMEDIATE)
+			fprintf(f, ",%7d", *op->args[i].p);
+		else
+			fprintf(f, ",  [%3d]",
+			    (int)(op->args[i].p - vm->mem));
+	}
 	for (i = op->nargs; i < 3; i++)
-		fprintf(f, "       ");
+		fprintf(f, "        ");
 
 	if (op->nargs > 0)
-		fprintf(f, " ; ");
+		fprintf(f, " ;");
 	if (op->nin > 0)
-		fprintf(f, "%7d", *op->args[0]);
+		fprintf(f, " %7d", *op->args[0].p);
 	for (i = 1; i < op->nin; i++)
-		fprintf(f, ",%7d", *op->args[i]);
+		fprintf(f, ",%7d", *op->args[i].p);
 	for (i = op->nin; i < 2; i++)
-		fprintf(f, "       ");
+		fprintf(f, "        ");
 
 	if (!op->nout)
 		fputc('\n', f);
@@ -272,7 +286,7 @@ ic_log_post(Icvm *vm, Icop *op, FILE *f)
 	(void)vm;
 
 	if (op->nout)
-		fprintf(f, " -> %7d\n", *op->args[op->nin]);
+		fprintf(f, " -> %7d\n", *op->args[op->nin].p);
 }
 
 static void
