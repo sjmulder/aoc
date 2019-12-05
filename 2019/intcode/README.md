@@ -1,7 +1,7 @@
-intcode
-=======
+interp
+======
 
-**intcode** [**-v**] *code* [*input*]
+**interp** [**-v**] *code* [*input*]
 
 AoC intcode interpreter. **-v** causes instructions, inputs and outputs
 to be printed. *code* and *input* must be files or `-` for standard
@@ -10,7 +10,7 @@ input. Standard input is also used if *input* is omitted.
 Example
 -------
 
-    $ echo 5 | ./intcode -v input.day05
+    $ echo 5 | ./int-erp -v input.day05
        0: 00003 in    [225]                 ;                 ->       5
        2: 00001 add   [225],  [  6],  [  6] ;       5,   1100 ->    1105
        6: 01105 jt        1,    238         ;       1,    238

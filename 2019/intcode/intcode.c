@@ -1,102 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include <err.h>
+#include "intcode.h"
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
-typedef struct icvm {
-	int mem[4096];
-	int ic;
-	int flags;
-#define IC_HALTED 0x1
-	FILE *input;
-	FILE *output;
-	FILE *prompt;
-} Icvm;
-
-typedef struct icarg {
-	int *p;
-	int mode;
-#define IC_INDIRECT 0
-#define IC_IMMEDIATE 1
-} Icarg;
-
-typedef struct icop {
-	int op;
-#define IC_ADD 1
-#define IC_MUL 2
-#define IC_IN  3
-#define IC_OUT 4
-#define IC_JT  5
-#define IC_JF  6
-#define IC_LT  7
-#define IC_EQ  8
-#define IC_HLT 99
-	Icarg args[3];
-	int nin, nout;
-	int nargs;
-} Icop;
-
-static void ic_step(Icvm *vm, FILE *log);
-
-static void ic_load(Icvm *vm, FILE *f);
-static void ic_decode(Icvm *vm, int pos, Icop *op);
-static void ic_exec(Icvm *vm, Icop *op);
-static void ic_log_pre(Icvm *vm, Icop *op, FILE *f);
-static void ic_log_post(Icvm *vm, Icop *op, FILE *f);
-
-static void usage(void);
-
-int
-main(int argc, char **argv)
-{
-	static Icvm vm;
-	int c;
-	int verbose = 0;
-	FILE *f;
-
-	while ((c = getopt(argc, argv, "v")) != -1) {
-		switch (c) {
-		case 'v':
-			verbose = 1;
-			break;
-		default:
-			usage();
-		}
-	}
-
-	argc -= optind;
-	argv += optind;
-
-	if (argc < 1 || argc > 2)
-		usage();
-
-	if (strcmp(argv[0], "-") == 0)
-		ic_load(&vm, stdin);
-	else {
-		if (!(f = fopen(argv[0], "r")))
-			err(1, "%s", argv[0]);
-		ic_load(&vm, f);
-	}
-
-	if (argc < 2 || strcmp(argv[1], "-") == 0) {
-		vm.input = stdin;
-		if (isatty(0))
-			vm.prompt = stdout;
-	} else if (!(vm.input = fopen(argv[1], "r")))
-		err(1, "%s", argv[1]);
-
-	vm.output = stdout;
-
-	while (!(vm.flags & IC_HALTED))
-		ic_step(&vm, verbose ? stderr : NULL);
-
-	return 0;
-}
-
-static void
+void
 ic_step(Icvm *vm, FILE *log)
 {
 	Icop op;
@@ -120,7 +28,7 @@ ic_step(Icvm *vm, FILE *log)
 		vm->ic += 1 + op.nargs;
 }
 
-static void
+void
 ic_load(Icvm *vm, FILE *f)
 {
 	int i = 0;
@@ -130,7 +38,7 @@ ic_load(Icvm *vm, FILE *f)
 			errx(1, "program too large");
 }
 
-static void
+void
 ic_decode(Icvm *vm, int pos, Icop *op)
 {
 	int i, divisor;
@@ -182,7 +90,7 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 		errx(1, "pos %d: too many mode digits", pos);
 }
 
-static void
+void
 ic_exec(Icvm *vm, Icop *op)
 {
 	switch (op->op) {
@@ -229,7 +137,7 @@ ic_exec(Icvm *vm, Icop *op)
 	}
 }
 
-static void
+void
 ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 {
 	int i;
@@ -280,18 +188,11 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 		fputc('\n', f);
 }
 
-static void
+void
 ic_log_post(Icvm *vm, Icop *op, FILE *f)
 {
 	(void)vm;
 
 	if (op->nout)
 		fprintf(f, " -> %7d\n", *op->args[op->nin].p);
-}
-
-static void
-usage(void)
-{
-	fprintf(stderr, "usage: intcode [-v] PROGRAM [INPUT]\n");
-	exit(1);
 }
