@@ -31,22 +31,30 @@ main()
 	size_t i, nyou, nsan;
 	int ndeps = 0;
 
+	fprintf(stderr, " reading input");
 	while (read_ln(&pname, &name) == 1) {
+		if (!(norbs & 0x3FF)) /* every 1024 */
+			fputc('.', stderr);
 		orb = get_orb(name);
 		orb->par = get_orb(pname);
 	}
+	fputc('\n', stderr);
 
 	/*
 	 * Calculate the number of direct and indirect orbits by
 	 * iterating over al orbits, then coutning the number of steps
 	 * to the root.
 	 */
+	fprintf(stderr, " calculating deps");
 	for (i = 0; i < norbs; i++) {
+		if (!(i & 0x3FF)) /* every 1024 */
+			fputc('.', stderr);
 		for (orb = &orbs[i]; orb->par; orb = orb->par)
 			ndeps++;
 		if (strcmp(orb->name, "COM"))
 			errx(1, "invalid root: %s", orb->name);
 	}
+	fputc('\n', stderr);
 
 	/*
 	 * Calculate the number of steps between YOU and SAN(ta). We
@@ -58,6 +66,7 @@ main()
 	 *   SAN->c->d->e-> f->g->COM
 	 *                 ^ cut here
 	 */
+	fprintf(stderr, " calculating path length\n");
 	nyou = get_pars(get_orb("YOU"), youpars, LEN(youpars));
 	nsan = get_pars(get_orb("SAN"), sanpars, LEN(sanpars));
 	while (nyou && nsan && youpars[nyou-1] == sanpars[nsan-1]) {
