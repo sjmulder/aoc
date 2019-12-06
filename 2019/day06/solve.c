@@ -8,7 +8,7 @@ typedef struct orb Orb;
 
 struct orb {
 	char name[4];
-	Orb *par;
+	Orb *par;	/* parent, that is, the orbitee */
 };
 
 static int read_ln(char **, char **);
@@ -34,6 +34,11 @@ main()
 		orb->par = get_orb(pname);
 	}
 
+	/*
+	 * Calculate the number of direct and indirect orbits by
+	 * iterating over al orbits, then coutning the number of steps
+	 * to the root.
+	 */
 	for (i = 0; i < norbs; i++) {
 		for (orb = &orbs[i]; orb->par; orb = orb->par)
 			ndeps++;
@@ -41,6 +46,16 @@ main()
 			errx(1, "invalid root: %s", orb->name);
 	}
 
+	/*
+	 * Calculate the number of steps between YOU and SAN(ta). We
+	 * know both eventually have COM as the final ancestor. The
+	 * shortest path between them is found when we remove the
+	 * shared ancestors:
+	 *
+	 *      YOU->a->b-> f->g->COM
+	 *   SAN->c->d->e-> f->g->COM
+	 *                 ^ cut here
+	 */
 	nyou = get_pars(get_orb("YOU"), youpars, LEN(youpars));
 	nsan = get_pars(get_orb("SAN"), sanpars, LEN(sanpars));
 	while (nyou && nsan && youpars[nyou-1] == sanpars[nsan-1]) {
@@ -59,6 +74,8 @@ read_ln(char **pname, char **name)
 	static char ln[16];
 	char *c;
 
+	/* can't use scanf because there's no whitespace */
+
 	if (!fgets(ln, LEN(ln), stdin))
 		return 0;
 	if (!(c = strchr(ln, ')')))
@@ -71,6 +88,9 @@ read_ln(char **pname, char **name)
 	return 1;
 }
 
+/*
+ * Get or create an orbit with the given name.
+ */
 static Orb *
 get_orb(char *name)
 {
@@ -91,6 +111,10 @@ get_orb(char *name)
 	return &orbs[i];
 }
 
+/*
+ * Get the full list of all ancestors (parents, 'pars') of the given 
+ * orbit, starting at orb and ending with COM.
+ */
 static size_t
 get_pars(Orb *orb, Orb **pars, size_t sz)
 {
