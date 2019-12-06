@@ -16,19 +16,19 @@ Assembler synax
 ----------------
 The base format is:
 
-*instruction* *arguments*
+*instruction* *argument*, *argument*, ...
 
 The following instructions are supported:
 
- - **add** *op1* *op2* *dst* - add two numbers.
- - **mul** *op1* *op2* *dst* - multiply two numbers.
+ - **add** *op1*, *op2*, *dst* - add two numbers.
+ - **mul** *op1*, *op2*, *dst* - multiply two numbers.
  - **in** *dst* - read a number (IO).
  - **out** *src* - output a number (IO).
- - **jt** *op* *target* - jump to *target* if *op* is nonzero.
- - **jf** *op* *target* - jump to *target if *op* is zero.
- - **lt** *op1* *op2* *dst* - write 1 to *dst* if *op1* is less than
-   **op2**, or 0 otherwise.
- - **eq** *op1* *op2* *dst* - write 1 to *dst* if *op1* and *op* are
+ - **jt** *op*, *target* - jump to *target* if *op* is nonzero.
+ - **jf** *op*, *target* - jump to *target if *op* is zero.
+ - **lt** *op1*, *op2*, *dst* - write 1 to *dst* if *op1* is less than
+   *op2* or 0 otherwise.
+ - **eq** *op1*, *op2*, *dst* - write 1 to *dst* if *op1* and *op* are
    equal, or 0 otherwise.
  - **hlt** - stop execution
 
@@ -37,13 +37,13 @@ Arguments can be given in these forms:
  - `out 0` - **immediate**: output the value 0.
  - `out foo` - **immediate (label)**: output the location of *foo*.
  - `out [0]` - **indirect**: output the value of the memory location 0.
- - `out [label] - **indirect (lable)**: output the value at the
+ - `out [label]` - **indirect (label)**: output the value at the
    labeled location.
 
 Note that destination arguments must always be indirect:
 
-    add [1], 2, [3]  # good
-    add [1], 2, 3    # bad
+            add [1], 2, [3]  # good
+            add [1], 2, 3    # bad
 
 Labels are used to name specific memory locations (including arguments,
 making it easy to write self-modifying code) like so:
@@ -58,8 +58,8 @@ Comments start with `#` and run through the end of the line.
 
 Limitations
 -----------
-Largely untested. A notable missing feature is raw data, e.g. for
-variables:
+Largely untested. Error messages are terrible. Hard limits abound. A
+notable missing feature is raw data, e.g. for variables:
 
             add [var1], [var2], [var1]
     var1:   1
@@ -98,15 +98,6 @@ Given `fizzbuzz.s`;
     
     done:
             hlt
-        loop:
-                add 1, [n], [n]
-                eq n:0, 101, [is_done]; jt is_done:0, done
-
-            eq next_fibu:15, [n], [is_fibu]; jt is_fibu:0, fibu
-            eq next_fizz: 3, [n], [is_fizz]; jt is_fizz:0, fizz
-            eq next_buzz: 5, [n], [is_buzz]; jt is_buzz:0, buzz
-            out [n]
-            jt 1, loop
 
 Assemble:
 
