@@ -13,7 +13,6 @@ typedef struct icarg {
 	int mode;
 #define IC_INDIRECT 0
 #define IC_IMMEDIATE 1
-	char label[32]; /* used by intas */
 } Icarg;
 
 typedef struct icop {
