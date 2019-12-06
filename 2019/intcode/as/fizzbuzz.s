@@ -1,4 +1,4 @@
-loop:	add	[n],	1,	[n]0
+loop:	add	[n],	1,	[n]
 	eq	[n],	101,	[acc]
 	jt	[acc],	end
 	eq	[n],	[f_at],	[acc]
