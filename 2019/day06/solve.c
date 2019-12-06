@@ -4,6 +4,8 @@
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
+#define MAXORB (256*1024)
+
 typedef struct orb Orb;
 
 struct orb {
@@ -15,14 +17,14 @@ static int read_ln(char **, char **);
 static Orb *get_orb(char *);
 static size_t get_pars(Orb *, Orb **, size_t);
 
-static Orb orbs[4096];
+static Orb orbs[MAXORB];
 static size_t norbs;
 
 int
 main()
 {
-	static Orb *youpars[512];
-	static Orb *sanpars[512];
+	static Orb *youpars[MAXORB];
+	static Orb *sanpars[MAXORB];
 
 	char *name, *pname;
 	Orb *orb;
