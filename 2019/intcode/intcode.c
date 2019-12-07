@@ -146,7 +146,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	case IC_OUT: fputs("out ", f); break;
 	case IC_JNZ: fputs("jnz ", f); break;
 	case IC_JZ:  fputs("jz  ", f); break;
-	case IC_LT:  fputs("jt  ", f); break;
+	case IC_LT:  fputs("lt  ", f); break;
 	case IC_EQ:  fputs("eq  ", f); break;
 	case IC_HLT: fputs("hlt ", f); break;
 	default:
