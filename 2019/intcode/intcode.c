@@ -101,19 +101,14 @@ ic_exec(Icvm *vm, Icop *op)
 		*op->args[2].p = *op->args[0].p * *op->args[1].p;
 		break;
 	case IC_IN:
-		if (vm->prompt) {
-			fprintf(vm->prompt, "> ");
-			fflush(vm->prompt);
-		}
-		if (!vm->input)
-			errx(1, "IN: no input stream");
-		if (fscanf(vm->input, " %d", op->args[0].p) != 1)
-			errx(1, "IN: expected input");
+		if (!vm->in_cb)
+			errx(1, "IN: no input callback");
+		*op->args[0].p = vm->in_cb(vm->user);
 		break;
 	case IC_OUT:
-		if (!vm->output)
-			errx(1, "OUT: no output stream");
-		fprintf(vm->output, "%d\n", *op->args[0].p);
+		if (!vm->out_cb)
+			errx(1, "OUT: no output callback");
+		vm->out_cb(*op->args[0].p, vm->user);
 		break;
 	case IC_JT:
 		if (*op->args[0].p)

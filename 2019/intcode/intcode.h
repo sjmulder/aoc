@@ -3,9 +3,9 @@ typedef struct icvm {
 	int ic;
 	int flags;
 #define IC_HALTED 0x1
-	FILE *input;
-	FILE *output;
-	FILE *prompt;
+	int (*in_cb)(void *);
+	void (*out_cb)(int, void *);
+	void *user;	/* passed to callbacks */
 } Icvm;
 
 typedef struct icarg {

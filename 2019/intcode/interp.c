@@ -7,7 +7,12 @@
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
+static int in_cb(void *);
+static void out_cb(int, void *);
 static void usage(void);
+
+static FILE *input;
+static int prompt;
 
 int
 main(int argc, char **argv)
@@ -33,6 +38,9 @@ main(int argc, char **argv)
 	if (argc < 1 || argc > 2)
 		usage();
 
+	vm.in_cb = in_cb;
+	vm.out_cb = out_cb;
+
 	if (strcmp(argv[0], "-") == 0)
 		ic_load(&vm, stdin);
 	else {
@@ -42,18 +50,40 @@ main(int argc, char **argv)
 	}
 
 	if (argc < 2 || strcmp(argv[1], "-") == 0) {
-		vm.input = stdin;
-		if (isatty(0))
-			vm.prompt = stdout;
-	} else if (!(vm.input = fopen(argv[1], "r")))
+		prompt = isatty(0);
+		input = stdin;
+	} else if (!(input = fopen(argv[1], "r")))
 		err(1, "%s", argv[1]);
-
-	vm.output = stdout;
 
 	while (!(vm.flags & IC_HALTED))
 		ic_step(&vm, verbose ? stderr : NULL);
 
 	return 0;
+}
+
+static int
+in_cb(void *user)
+{
+	int val;
+
+	(void)user;
+
+	if (prompt) {
+		printf("> ");
+		fflush(stdout);
+	}
+	if (fscanf(input, " %d", &val) != 1)
+		errx(1, "unexpected input");
+
+	return val;
+}
+
+static void
+out_cb(int val, void *user)
+{
+	(void)user;
+
+	printf("%d\n", val);
 }
 
 static void
