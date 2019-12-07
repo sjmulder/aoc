@@ -1,3 +1,6 @@
+DESTDIR ?=
+PREFIX  ?= /usr/local
+
 CFLAGS += -Wall -Wextra
 
 ALL        = libintcode.so interp intas
@@ -9,6 +12,20 @@ all: $(ALL)
 
 clean:
 	rm -f $(ALL) *.o
+
+install: all
+	install -d $(DESTDIR)$(PREFIX)/bin \
+	           $(DESTDIR)$(PREFIX)/lib \
+	           $(DESTDIR)$(PREFIX)/include
+	install -m755 interp intas  $(DESTDIR)$(PREFIX)/bin/
+	install -m755 libintcode.so $(DESTDIR)$(PREFIX)/lib/
+	install -m644 intcode.h     $(DESTDIR)$(PREFIX)/include/
+
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/interp \
+	      $(DESTDIR)$(PREFIX)/bin/intas \
+	      $(DESTDIR)$(PREFIX)/lib/libintcode.so \
+	      $(DESTDIR)$(PREFIX)/include/intcode.h
 
 libintcode.so: $(OBJ_lib)
 	$(LINK.c) -shared -o libintcode.so $(OBJ_lib) $(LDLIBS)
@@ -23,4 +40,4 @@ interp.o:  intcode.h
 intas.o:   intcode.h
 intcode.o: intcode.h
 
-.PHONY: all clean
+.PHONY: all clean install uninstall

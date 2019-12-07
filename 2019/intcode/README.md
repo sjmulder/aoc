@@ -132,6 +132,8 @@ Installation
 Should work on Linux, macOS, BSD, etc.
 
     make
+    make install   [DESTDIR=] [PREFIX=/usr/local]
+    make uninstall [DESTDIR=] [PREFIX=/usr/local]
 
 Author
 ------
