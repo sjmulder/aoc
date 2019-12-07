@@ -1,9 +1,9 @@
 CFLAGS += -Wall -Wextra
 
-all: solve input.big
+all: solve solve-v2 input.big
 
 clean:
-	rm -f solve mkbig input.big
+	rm -f solve solve-v2 mkbig input.big
 
 input.big: mkbig
 	./mkbig >input.big
