@@ -159,8 +159,8 @@ as_rdop(As *as)
 	else if (strcmp(name, "mul") == 0) op->op = IC_MUL;
 	else if (strcmp(name, "in" ) == 0) op->op = IC_IN;
 	else if (strcmp(name, "out") == 0) op->op = IC_OUT;
-	else if (strcmp(name, "jt" ) == 0) op->op = IC_JT;
-	else if (strcmp(name, "jf" ) == 0) op->op = IC_JF;
+	else if (strcmp(name, "jnz") == 0) op->op = IC_JNZ;
+	else if (strcmp(name, "jz" ) == 0) op->op = IC_JZ;
 	else if (strcmp(name, "lt" ) == 0) op->op = IC_LT;
 	else if (strcmp(name, "eq" ) == 0) op->op = IC_EQ;
 	else if (strcmp(name, "hlt") == 0) op->op = IC_HLT;

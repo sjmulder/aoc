@@ -21,8 +21,8 @@ typedef struct icop {
 #define IC_MUL 2
 #define IC_IN  3
 #define IC_OUT 4
-#define IC_JT  5
-#define IC_JF  6
+#define IC_JNZ 5
+#define IC_JZ  6
 #define IC_LT  7
 #define IC_EQ  8
 #define IC_HLT 99

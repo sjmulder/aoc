@@ -52,8 +52,8 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 	case IC_MUL: op->nin = 2; op->nout = 1; break;
 	case IC_IN:  op->nin = 0; op->nout = 1; break;
 	case IC_OUT: op->nin = 1; op->nout = 0; break;
-	case IC_JT:  op->nin = 2; op->nout = 0; break;
-	case IC_JF:  op->nin = 2; op->nout = 0; break;
+	case IC_JNZ: op->nin = 2; op->nout = 0; break;
+	case IC_JZ:  op->nin = 2; op->nout = 0; break;
 	case IC_LT:  op->nin = 2; op->nout = 1; break;
 	case IC_EQ:  op->nin = 2; op->nout = 1; break;
 	case IC_HLT: op->nin = 0; op->nout = 0; break;
@@ -110,11 +110,11 @@ ic_exec(Icvm *vm, Icop *op)
 			errx(1, "OUT: no output callback");
 		vm->out_cb(*op->args[0].p, vm->user);
 		break;
-	case IC_JT:
+	case IC_JNZ:
 		if (*op->args[0].p)
 			vm->ic = *op->args[1].p;
 		break;
-	case IC_JF:
+	case IC_JZ:
 		if (!*op->args[0].p)
 			vm->ic = *op->args[1].p;
 		break;
@@ -144,8 +144,8 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	case IC_MUL: fputs("mul ", f); break;
 	case IC_IN:  fputs("in  ", f); break;
 	case IC_OUT: fputs("out ", f); break;
-	case IC_JT:  fputs("jt  ", f); break;
-	case IC_JF:  fputs("jf  ", f); break;
+	case IC_JNZ: fputs("jnz ", f); break;
+	case IC_JZ:  fputs("jz  ", f); break;
 	case IC_LT:  fputs("jt  ", f); break;
 	case IC_EQ:  fputs("eq  ", f); break;
 	case IC_HLT: fputs("hlt ", f); break;

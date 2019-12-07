@@ -12,15 +12,15 @@
 	out	[var0]
 	out	var0
 
-	jt	0,	fail
-	jt	0,	[failp]
-	jt	[zero],	fail
-	jt	[zero],	[failp]
+	jnz	0,	fail
+	jnz	0,	[failp]
+	jnz	[zero],	fail
+	jnz	[zero],	[failp]
 
-	jf	1,	fail
-	jf	1,	[failp]
-	jf	[one],	fail
-	jf	[one],	[failp]
+	jz	1,	fail
+	jz	1,	[failp]
+	jz	[one],	fail
+	jz	[one],	[failp]
 
 	lt	var0,	var1,	[var2]
 	lt	var0,	[var1],	[var2]
