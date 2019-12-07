@@ -5,6 +5,9 @@
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
+#define LOG(...) ((void)0)
+/*#define LOG(...) fprintf(stderr, __VA_ARGS__)*/
+
 typedef struct amp {
 	Icvm vm;
 	int phase;
@@ -41,7 +44,7 @@ main()
 		    l == m)
 			continue;
 
-		printf("%d %d %d %d %d\n", i, j, k, l, m);
+		LOG("%d %d %d %d %d\n", i, j, k, l, m);
 
 		for (a = 0; a < (int)LEN(amps); a++) {
 			memcpy(&amps[a].vm, &image, sizeof(amps[a].vm));
@@ -70,13 +73,12 @@ main()
 				val = amps[a].output;
 				amps[a].flags &= ~AMP_PAUSED;
 				a = (a+1) % LEN(amps);
-				fprintf(stderr, " %12d -> amp %d\n",
-				    val, a);
+				LOG(" %12d -> amp %d\n", val, a);
 				amps[a].input = val;
 			}
 		}
 
-		fprintf(stderr, " %d\n", val);
+		LOG(" %d\n", val);
 		if (val > max)
 			max = val;
 	}
