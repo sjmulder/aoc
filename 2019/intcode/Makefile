@@ -1,13 +1,17 @@
 CFLAGS += -Wall -Wextra
 
-BIN        = interp intas
+ALL        = libintcode.so interp intas
+OBJ_lib    = intcode.o
 OBJ_interp = interp.o intcode.o
 OBJ_intas  = intas.o intcode.o
 
-all: $(BIN)
+all: $(ALL)
 
 clean:
-	rm -f $(BIN) *.o
+	rm -f $(ALL) *.o
+
+libintcode.so: $(OBJ_lib)
+	$(LINK.c) -shared -o libintcode.so $(OBJ_lib) $(LDLIBS)
 
 interp: $(OBJ_interp)
 	$(LINK.c) -o interp $(OBJ_interp) $(LDLIBS)
