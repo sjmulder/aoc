@@ -31,6 +31,7 @@ typedef struct icop {
 	int nargs;
 } Icop;
 
+void ic_run(Icvm *vm, FILE *log);
 void ic_step(Icvm *vm, FILE *log);
 
 void ic_load(Icvm *vm, FILE *f);

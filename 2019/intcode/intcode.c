@@ -5,6 +5,13 @@
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
 void
+ic_run(Icvm *vm, FILE *log)
+{
+	while (!(vm->flags & IC_HALTED))
+		ic_step(vm, log);
+}
+
+void
 ic_step(Icvm *vm, FILE *log)
 {
 	Icop op;
