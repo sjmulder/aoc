@@ -3,7 +3,9 @@
 *.obj
 *.pdb
 *.ilk
+xcuserdata/
 */*/day*
 !*/*/day*.c
+!*/*/day*.xcodeproj
 solve*
 !solve*.c
