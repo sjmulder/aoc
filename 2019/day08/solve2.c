@@ -16,10 +16,9 @@ main()
 		errx(1, "input too small");
 
 	for (l = 1; l < L; l++)
-	for (i = 0; i < W*H; i++) {
+	for (i = 0; i < W*H; i++)
 		if (layers[0][i] == '2')
 			layers[0][i] = layers[l][i];
-	}
 
 	for (r = 0; r < H; r++) {
 		for (c = 0; c < W; c++)
