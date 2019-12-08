@@ -1,4 +1,5 @@
 CFLAGS += -Wall -Wextra
+CFLAGS += -O3 -march=native
 
 all: solve1 solve2
 

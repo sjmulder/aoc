@@ -3,6 +3,8 @@
 *.obj
 *.pdb
 *.ilk
+bin/
+obj/
 xcuserdata/
 */*/day*
 !*/*/day*.c
