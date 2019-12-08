@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <limits.h>
 #include <err.h>
 
 #define L 100
