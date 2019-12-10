@@ -77,20 +77,7 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 	divisor = 100;
 	for (i = 0; i < op->nargs; i++) {
 		op->args[i].mode = vm->mem[pos] / divisor % 10;
-		switch (op->args[i].mode) {
-		case IC_INDIRECT:
-			op->args[i].p = &vm->mem[vm->mem[pos+i+1]];
-			break;
-		case IC_IMMEDIATE:
-			op->args[i].p = &vm->mem[pos+i+1];
-			break;
-		default:
-			errx(1, "pos %d: invalid mode %d for arg %d",
-			    pos, op->args[i].mode, i);
-		}
-		if (op->args[i].p < vm->mem ||
-		    op->args[i].p >= vm->mem + LEN(vm->mem))
-			errx(1, "pos: %d: arg %d out of bound", pos, i);
+		op->args[i].val = vm->mem[pos+1+i];
 		divisor *= 10;
 	}
 
@@ -98,39 +85,68 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 		errx(1, "pos %d: too many mode digits", pos);
 }
 
+int64_t *
+ic_arg_ptr(Icvm *vm, Icarg *arg, int pos)
+{
+	int64_t *p;
+
+	switch (arg->mode) {
+	case IC_INDIRECT:
+		if (arg->val < 0 || arg->val >= (int64_t)LEN(vm->mem))
+			errx(1, "pos %d: arg out of bounds: [%ld]",
+			    pos, arg->val);
+		p = &vm->mem[arg->val];
+		break;
+	case IC_IMMEDIATE:
+		p = &arg->val;
+		break;
+	default:
+		errx(1, "pos %d: invalid mode %d for arg", pos,
+		    arg->mode);
+	}
+
+	return p;
+}
+
 void
 ic_exec(Icvm *vm, Icop *op)
 {
+	int i;
+	int64_t *argps[LEN(op->args)];
+
+	for (i = 0; i < (int)LEN(argps); i++)
+		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
+
 	switch (op->op) {
 	case IC_ADD:
-		*op->args[2].p = *op->args[0].p + *op->args[1].p;
+		*argps[2] = *argps[0] + *argps[1];
 		break;
 	case IC_MUL:
-		*op->args[2].p = *op->args[0].p * *op->args[1].p;
+		*argps[2] = *argps[0] * *argps[1];
 		break;
 	case IC_IN:
 		if (!vm->in_cb)
 			errx(1, "IN: no input callback");
-		*op->args[0].p = vm->in_cb(vm->user);
+		*argps[0] = vm->in_cb(vm->user);
 		break;
 	case IC_OUT:
 		if (!vm->out_cb)
 			errx(1, "OUT: no output callback");
-		vm->out_cb(*op->args[0].p, vm->user);
+		vm->out_cb(*argps[0], vm->user);
 		break;
 	case IC_JNZ:
-		if (*op->args[0].p)
-			vm->ic = *op->args[1].p;
+		if (*argps[0])
+			vm->ic = *argps[1];
 		break;
 	case IC_JZ:
-		if (!*op->args[0].p)
-			vm->ic = *op->args[1].p;
+		if (!*argps[0])
+			vm->ic = *argps[1];
 		break;
 	case IC_LT:
-		*op->args[2].p = *op->args[0].p < *op->args[1].p;
+		*argps[2] = *argps[0] < *argps[1];
 		break;
 	case IC_EQ:
-		*op->args[2].p = *op->args[0].p == *op->args[1].p;
+		*argps[2] = *argps[0] == *argps[1];
 		break;
 	case IC_HLT:
 		vm->flags |= IC_HALTED;
@@ -144,6 +160,10 @@ void
 ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 {
 	int i;
+	int64_t *argps[LEN(op->args)];
+
+	for (i = 0; i < (int)LEN(argps); i++)
+		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
 
 	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
 
@@ -164,16 +184,15 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	if (op->nargs == 0)
 		fprintf(f, "       ");
 	else if (op->args[0].mode == IC_IMMEDIATE)
-		fprintf(f, "%7ld", *op->args[0].p);
+		fprintf(f, "%7ld", op->args[0].val);
 	else
-		fprintf(f, "  [%3d]", (int)(op->args[0].p - vm->mem));
+		fprintf(f, "  [%3ld]", op->args[0].val);
 
 	for (i = 1; i < op->nargs; i++) {
 		if (op->args[i].mode == IC_IMMEDIATE)
-			fprintf(f, ",%7ld", *op->args[i].p);
+			fprintf(f, ",%7ld", op->args[i].val);
 		else
-			fprintf(f, ",  [%3d]",
-			    (int)(op->args[i].p - vm->mem));
+			fprintf(f, ",  [%3ld]", op->args[i].val);
 	}
 	for (i = op->nargs; i < 3; i++)
 		fprintf(f, "        ");
@@ -181,9 +200,9 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	if (op->nargs > 0)
 		fprintf(f, " ;");
 	if (op->nin > 0)
-		fprintf(f, " %7ld", *op->args[0].p);
+		fprintf(f, " %7ld", *argps[0]);
 	for (i = 1; i < op->nin; i++)
-		fprintf(f, ",%7ld", *op->args[i].p);
+		fprintf(f, ",%7ld", *argps[i]);
 	for (i = op->nin; i < 2; i++)
 		fprintf(f, "        ");
 
@@ -194,8 +213,11 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 void
 ic_log_post(Icvm *vm, Icop *op, FILE *f)
 {
-	(void)vm;
+	int64_t *argp;
 
-	if (op->nout)
-		fprintf(f, " -> %7ld\n", *op->args[op->nin].p);
+	if (op->nout) {
+		argp = ic_arg_ptr(vm, &op->args[op->nin],
+		    vm->ic+1+op->nout);
+		fprintf(f, " -> %7ld\n", *argp);
+	}
 }
