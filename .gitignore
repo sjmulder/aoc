@@ -11,3 +11,5 @@ xcuserdata/
 !*/*/day*.xcodeproj
 solve*
 !solve*.c
+!*.csproj
+!*.fsproj
