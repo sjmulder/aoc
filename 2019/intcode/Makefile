@@ -2,6 +2,7 @@ DESTDIR ?=
 PREFIX  ?= /usr/local
 
 CFLAGS += -Wall -Wextra
+CFLAGS += -fPIC
 
 ALL        = libintcode.so interp intas
 OBJ_lib    = intcode.o
