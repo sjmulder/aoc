@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <err.h>
 #include "intcode.h"
 
@@ -38,9 +39,9 @@ ic_step(Icvm *vm, FILE *log)
 void
 ic_load(Icvm *vm, FILE *f)
 {
-	int i = 0;
+	uint64_t i = 0;
 
-	while (fscanf(f, " %d ,", &vm->mem[i]) == 1)
+	while (fscanf(f, " %ld ,", &vm->mem[i]) == 1)
 		if (++i >= (int)LEN(vm->mem))
 			errx(1, "program too large");
 }
@@ -144,7 +145,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 {
 	int i;
 
-	fprintf(f, " %3d: %05d ", vm->ic, vm->mem[vm->ic]);
+	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
 
 	switch (op->op) {
 	case IC_ADD: fputs("add ", f); break;
@@ -163,13 +164,13 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	if (op->nargs == 0)
 		fprintf(f, "       ");
 	else if (op->args[0].mode == IC_IMMEDIATE)
-		fprintf(f, "%7d", *op->args[0].p);
+		fprintf(f, "%7ld", *op->args[0].p);
 	else
 		fprintf(f, "  [%3d]", (int)(op->args[0].p - vm->mem));
 
 	for (i = 1; i < op->nargs; i++) {
 		if (op->args[i].mode == IC_IMMEDIATE)
-			fprintf(f, ",%7d", *op->args[i].p);
+			fprintf(f, ",%7ld", *op->args[i].p);
 		else
 			fprintf(f, ",  [%3d]",
 			    (int)(op->args[i].p - vm->mem));
@@ -180,9 +181,9 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	if (op->nargs > 0)
 		fprintf(f, " ;");
 	if (op->nin > 0)
-		fprintf(f, " %7d", *op->args[0].p);
+		fprintf(f, " %7ld", *op->args[0].p);
 	for (i = 1; i < op->nin; i++)
-		fprintf(f, ",%7d", *op->args[i].p);
+		fprintf(f, ",%7ld", *op->args[i].p);
 	for (i = op->nin; i < 2; i++)
 		fprintf(f, "        ");
 
@@ -196,5 +197,5 @@ ic_log_post(Icvm *vm, Icop *op, FILE *f)
 	(void)vm;
 
 	if (op->nout)
-		fprintf(f, " -> %7d\n", *op->args[op->nin].p);
+		fprintf(f, " -> %7ld\n", *op->args[op->nin].p);
 }

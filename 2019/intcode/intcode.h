@@ -1,15 +1,15 @@
 typedef struct icvm {
-	int mem[4096];
+	int64_t mem[4096];
 	int ic;
 	int flags;
 #define IC_HALTED 0x1
-	int (*in_cb)(void *);
-	void (*out_cb)(int, void *);
+	int64_t (*in_cb)(void *);
+	void (*out_cb)(int64_t, void *);
 	void *user;	/* passed to callbacks */
 } Icvm;
 
 typedef struct icarg {
-	int *p;
+	int64_t *p;
 	int mode;
 #define IC_INDIRECT 0
 #define IC_IMMEDIATE 1

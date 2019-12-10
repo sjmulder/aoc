@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -7,8 +8,8 @@
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 
-static int in_cb(void *);
-static void out_cb(int, void *);
+static int64_t in_cb(void *);
+static void out_cb(int64_t, void *);
 static void usage(void);
 
 static FILE *input;
@@ -61,10 +62,10 @@ main(int argc, char **argv)
 	return 0;
 }
 
-static int
+static int64_t
 in_cb(void *user)
 {
-	int val;
+	int64_t val;
 
 	(void)user;
 
@@ -72,18 +73,18 @@ in_cb(void *user)
 		printf("> ");
 		fflush(stdout);
 	}
-	if (fscanf(input, " %d", &val) != 1)
+	if (fscanf(input, " %ld", &val) != 1)
 		errx(1, "unexpected input");
 
 	return val;
 }
 
 static void
-out_cb(int val, void *user)
+out_cb(int64_t val, void *user)
 {
 	(void)user;
 
-	printf("%d\n", val);
+	printf("%ld\n", val);
 }
 
 static void
