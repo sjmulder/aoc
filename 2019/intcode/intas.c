@@ -16,7 +16,7 @@ typedef struct aslab {
 typedef struct asarg {
 	int val;
 	char ref[32];
-	int mode;
+	int mode;	/* see Icarg.mode */
 	int flags;
 #define AS_UNRESOLVED 1
 } Asarg;
