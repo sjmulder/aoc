@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "day08-cs": {
+      "commandName": "Project",
+      "workingDirectory": "."
+    }
+  }
+}

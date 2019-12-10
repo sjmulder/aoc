@@ -9,6 +9,7 @@ xcuserdata/
 */*/day*
 !*/*/day*.c
 !*/*/day*.xcodeproj
+!*/*/day*.csproj
 solve*
 !solve*.c
 !*.csproj
