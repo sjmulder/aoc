@@ -39,7 +39,7 @@ void ic_step(Icvm *vm, FILE *log);
 
 void ic_load(Icvm *vm, FILE *f);
 void ic_decode(Icvm *vm, int pos, Icop *op);
-int64_t *ic_arg_ptr(Icvm *vm, Icarg *arg, int pos);
+int64_t *ic_deref(Icvm *vm, Icarg *arg, int pos);
 void ic_exec(Icvm *vm, Icop *op);
 void ic_log_pre(Icvm *vm, Icop *op, FILE *f);
 void ic_log_post(Icvm *vm, Icop *op, FILE *f);

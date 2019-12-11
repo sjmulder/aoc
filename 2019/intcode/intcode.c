@@ -87,7 +87,7 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 }
 
 int64_t *
-ic_arg_ptr(Icvm *vm, Icarg *arg, int pos)
+ic_deref(Icvm *vm, Icarg *arg, int pos)
 {
 	int64_t *p;
 
@@ -123,7 +123,7 @@ ic_exec(Icvm *vm, Icop *op)
 	int64_t *argps[LEN(op->args)];
 
 	for (i = 0; i < op->nargs; i++)
-		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
+		argps[i] = ic_deref(vm, &op->args[i], vm->ic+1+i);
 
 	switch (op->op) {
 	case IC_ADD:
@@ -174,7 +174,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	int64_t *argps[LEN(op->args)];
 
 	for (i = 0; i < op->nargs; i++)
-		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
+		argps[i] = ic_deref(vm, &op->args[i], vm->ic+1+i);
 
 	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
 
@@ -234,7 +234,7 @@ ic_log_post(Icvm *vm, Icop *op, FILE *f)
 	int64_t *argp;
 
 	if (op->nout) {
-		argp = ic_arg_ptr(vm, &op->args[op->nin],
+		argp = ic_deref(vm, &op->args[op->nin],
 		    vm->ic+1+op->nout);
 		fprintf(f, " -> %7ld\n", *argp);
 	}
