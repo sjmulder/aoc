@@ -1,6 +1,7 @@
 typedef struct icvm {
 	int64_t mem[4096];
-	int ic;
+	int ic;		/* instruction counter */
+	int64_t bp;	/* base pointer */
 	int flags;
 #define IC_HALTED 0x1
 	int64_t (*in_cb)(void *);
@@ -11,21 +12,23 @@ typedef struct icvm {
 typedef struct icarg {
 	int64_t val;
 	int mode;
-#define IC_INDIRECT 0
+#define IC_INDIRECT  0
 #define IC_IMMEDIATE 1
+#define IC_RELATIVE  2
 } Icarg;
 
 typedef struct icop {
 	int op;
-#define IC_ADD 1
-#define IC_MUL 2
-#define IC_IN  3
-#define IC_OUT 4
-#define IC_JNZ 5
-#define IC_JZ  6
-#define IC_LT  7
-#define IC_EQ  8
-#define IC_HLT 99
+#define IC_ADD    1
+#define IC_MUL    2
+#define IC_IN     3
+#define IC_OUT    4
+#define IC_JNZ    5
+#define IC_JZ     6
+#define IC_LT     7
+#define IC_EQ     8
+#define IC_ADDBP  9
+#define IC_HLT   99
 	Icarg args[3];
 	int nin, nout;
 	int nargs;

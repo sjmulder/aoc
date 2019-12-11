@@ -56,15 +56,16 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 
 	op->op = vm->mem[pos] % 100;
 	switch (op->op) {
-	case IC_ADD: op->nin = 2; op->nout = 1; break;
-	case IC_MUL: op->nin = 2; op->nout = 1; break;
-	case IC_IN:  op->nin = 0; op->nout = 1; break;
-	case IC_OUT: op->nin = 1; op->nout = 0; break;
-	case IC_JNZ: op->nin = 2; op->nout = 0; break;
-	case IC_JZ:  op->nin = 2; op->nout = 0; break;
-	case IC_LT:  op->nin = 2; op->nout = 1; break;
-	case IC_EQ:  op->nin = 2; op->nout = 1; break;
-	case IC_HLT: op->nin = 0; op->nout = 0; break;
+	case IC_ADD:   op->nin = 2; op->nout = 1; break;
+	case IC_MUL:   op->nin = 2; op->nout = 1; break;
+	case IC_IN:    op->nin = 0; op->nout = 1; break;
+	case IC_OUT:   op->nin = 1; op->nout = 0; break;
+	case IC_JNZ:   op->nin = 2; op->nout = 0; break;
+	case IC_JZ:    op->nin = 2; op->nout = 0; break;
+	case IC_LT:    op->nin = 2; op->nout = 1; break;
+	case IC_EQ:    op->nin = 2; op->nout = 1; break;
+	case IC_ADDBP: op->nin = 1; op->nout = 0; break;
+	case IC_HLT:   op->nin = 0; op->nout = 0; break;
 	default:
 		errx(1, "pos %d: unknown op: %d", pos, op->op);
 	}
@@ -92,13 +93,20 @@ ic_arg_ptr(Icvm *vm, Icarg *arg, int pos)
 
 	switch (arg->mode) {
 	case IC_INDIRECT:
-		if (arg->val < 0 || arg->val >= (int64_t)LEN(vm->mem))
-			errx(1, "pos %d: arg out of bounds: [%ld]",
-			    pos, arg->val);
 		p = &vm->mem[arg->val];
+		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
+			errx(1, "pos %d: arg out of bounds: %ld", pos,
+			    arg->val);
 		break;
 	case IC_IMMEDIATE:
 		p = &arg->val;
+		break;
+	case IC_RELATIVE:
+		p = &vm->mem[vm->bp + arg->val];
+		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
+			errx(1, "pos %d: arg out of bounds: "
+			    "bp+%ld (%ld)", pos, arg->val,
+			    vm->bp + arg->val);
 		break;
 	default:
 		errx(1, "pos %d: invalid mode %d for arg", pos,
@@ -148,6 +156,9 @@ ic_exec(Icvm *vm, Icop *op)
 	case IC_EQ:
 		*argps[2] = *argps[0] == *argps[1];
 		break;
+	case IC_ADDBP:
+		vm->bp += *argps[0];
+		break;
 	case IC_HLT:
 		vm->flags |= IC_HALTED;
 		break;
@@ -168,31 +179,38 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
 
 	switch (op->op) {
-	case IC_ADD: fputs("add ", f); break;
-	case IC_MUL: fputs("mul ", f); break;
-	case IC_IN:  fputs("in  ", f); break;
-	case IC_OUT: fputs("out ", f); break;
-	case IC_JNZ: fputs("jnz ", f); break;
-	case IC_JZ:  fputs("jz  ", f); break;
-	case IC_LT:  fputs("lt  ", f); break;
-	case IC_EQ:  fputs("eq  ", f); break;
-	case IC_HLT: fputs("hlt ", f); break;
+	case IC_ADD:   fputs("add   ", f); break;
+	case IC_MUL:   fputs("mul   ", f); break;
+	case IC_IN:    fputs("in    ", f); break;
+	case IC_OUT:   fputs("out   ", f); break;
+	case IC_JNZ:   fputs("jnz   ", f); break;
+	case IC_JZ:    fputs("jz    ", f); break;
+	case IC_LT:    fputs("lt    ", f); break;
+	case IC_EQ:    fputs("eq    ", f); break;
+	case IC_ADDBP: fputs("addbp ", f); break;
+	case IC_HLT:   fputs("hlt   ", f); break;
 	default:
 		errx(1, "unknown op: %d", op->op);
 	}
 	
 	if (op->nargs == 0)
 		fprintf(f, "       ");
-	else if (op->args[0].mode == IC_IMMEDIATE)
-		fprintf(f, "%7ld", op->args[0].val);
-	else
-		fprintf(f, "  [%3ld]", op->args[0].val);
-
-	for (i = 1; i < op->nargs; i++) {
-		if (op->args[i].mode == IC_IMMEDIATE)
-			fprintf(f, ",%7ld", op->args[i].val);
-		else
-			fprintf(f, ",  [%3ld]", op->args[i].val);
+	for (i = 0; i < op->nargs; i++) {
+		if (i)
+			fputc(',', f);
+		switch (op->args[i].mode) {
+		case IC_INDIRECT:
+			fprintf(f, "  [%3ld]", op->args[i].val);
+			break;
+		case IC_IMMEDIATE:
+			fprintf(f, "%7ld", op->args[i].val);
+			break;
+		case IC_RELATIVE:
+			fprintf(f, "[bp%+3ld]", op->args[i].val);
+			break;
+		default:
+			errx(1, "unknown mode: %d", op->args[i].mode);
+		}
 	}
 	for (i = op->nargs; i < 3; i++)
 		fprintf(f, "        ");
