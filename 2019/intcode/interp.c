@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 #include <unistd.h>
 #include <err.h>
 #include "intcode.h"
@@ -73,7 +74,7 @@ in_cb(void *user)
 		printf("> ");
 		fflush(stdout);
 	}
-	if (fscanf(input, " %ld", &val) != 1)
+	if (fscanf(input, " %"PRId64, &val) != 1)
 		errx(1, "unexpected input");
 
 	return val;
@@ -84,7 +85,7 @@ out_cb(int64_t val, void *user)
 {
 	(void)user;
 
-	printf("%ld\n", val);
+	printf("%"PRId64"\n", val);
 }
 
 static void

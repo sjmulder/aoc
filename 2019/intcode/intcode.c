@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <inttypes.h>
 #include <err.h>
 #include "intcode.h"
 
@@ -41,7 +42,7 @@ ic_load(Icvm *vm, FILE *f)
 {
 	uint64_t i = 0;
 
-	while (fscanf(f, " %ld ,", &vm->mem[i]) == 1)
+	while (fscanf(f, " %"PRId64" ,", &vm->mem[i]) == 1)
 		if (++i >= (int)LEN(vm->mem))
 			errx(1, "program too large");
 }
@@ -95,8 +96,8 @@ ic_deref(Icvm *vm, Icarg *arg, int pos)
 	case IC_INDIRECT:
 		p = &vm->mem[arg->val];
 		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
-			errx(1, "pos %d: arg out of bounds: %ld", pos,
-			    arg->val);
+			errx(1, "pos %d: arg out of bounds: %"PRId64,
+			    pos, arg->val);
 		break;
 	case IC_IMMEDIATE:
 		p = &arg->val;
@@ -104,9 +105,9 @@ ic_deref(Icvm *vm, Icarg *arg, int pos)
 	case IC_RELATIVE:
 		p = &vm->mem[vm->bp + arg->val];
 		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
-			errx(1, "pos %d: arg out of bounds: "
-			    "bp+%ld (%ld)", pos, arg->val,
-			    vm->bp + arg->val);
+			errx(1, "pos %d: arg out of  bounds: "
+			    "bp+%"PRId64" (%"PRId64")", pos,
+			    arg->val, vm->bp + arg->val);
 		break;
 	default:
 		errx(1, "pos %d: invalid mode %d for arg", pos,
@@ -176,7 +177,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	for (i = 0; i < op->nargs; i++)
 		argps[i] = ic_deref(vm, &op->args[i], vm->ic+1+i);
 
-	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
+	fprintf(f, " %3d: %05"PRId64" ", vm->ic, vm->mem[vm->ic]);
 
 	switch (op->op) {
 	case IC_ADD:   fputs("add   ", f); break;
@@ -200,13 +201,13 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 			fputc(',', f);
 		switch (op->args[i].mode) {
 		case IC_INDIRECT:
-			fprintf(f, "  [%3ld]", op->args[i].val);
+			fprintf(f, "  [%3"PRId64"]", op->args[i].val);
 			break;
 		case IC_IMMEDIATE:
-			fprintf(f, "%7ld", op->args[i].val);
+			fprintf(f, "%7"PRId64"", op->args[i].val);
 			break;
 		case IC_RELATIVE:
-			fprintf(f, "[bp%+3ld]", op->args[i].val);
+			fprintf(f, "[bp%+3"PRId64"]", op->args[i].val);
 			break;
 		default:
 			errx(1, "unknown mode: %d", op->args[i].mode);
@@ -218,9 +219,9 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	if (op->nargs > 0)
 		fprintf(f, " ;");
 	if (op->nin > 0)
-		fprintf(f, " %7ld", *argps[0]);
+		fprintf(f, " %7"PRId64, *argps[0]);
 	for (i = 1; i < op->nin; i++)
-		fprintf(f, ",%7ld", *argps[i]);
+		fprintf(f, ",%7"PRId64, *argps[i]);
 	for (i = op->nin; i < 2; i++)
 		fprintf(f, "        ");
 
@@ -236,6 +237,6 @@ ic_log_post(Icvm *vm, Icop *op, FILE *f)
 	if (op->nout) {
 		argp = ic_deref(vm, &op->args[op->nin],
 		    vm->ic+1+op->nout);
-		fprintf(f, " -> %7ld\n", *argp);
+		fprintf(f, " -> %7"PRId64"\n", *argp);
 	}
 }
