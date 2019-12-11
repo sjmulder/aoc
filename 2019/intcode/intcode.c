@@ -114,7 +114,7 @@ ic_exec(Icvm *vm, Icop *op)
 	int i;
 	int64_t *argps[LEN(op->args)];
 
-	for (i = 0; i < (int)LEN(argps); i++)
+	for (i = 0; i < op->nargs; i++)
 		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
 
 	switch (op->op) {
@@ -162,7 +162,7 @@ ic_log_pre(Icvm *vm, Icop *op, FILE *f)
 	int i;
 	int64_t *argps[LEN(op->args)];
 
-	for (i = 0; i < (int)LEN(argps); i++)
+	for (i = 0; i < op->nargs; i++)
 		argps[i] = ic_arg_ptr(vm, &op->args[i], vm->ic+1+i);
 
 	fprintf(f, " %3d: %05ld ", vm->ic, vm->mem[vm->ic]);
