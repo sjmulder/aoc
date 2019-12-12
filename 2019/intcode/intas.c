@@ -1,10 +1,14 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
-#include <err.h>
 #include "intcode.h"
+#ifndef _WIN32
+# include <unistd.h>
+# include <err.h>
+#endif
+#include "compat.h"
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 

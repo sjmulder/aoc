@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include <err.h>
+#ifndef _WIN32
+# include <err.h>
+#endif
 #include "intcode.h"
+#include "compat.h"
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))
 

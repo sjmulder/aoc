@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-#include <unistd.h>
-#include <err.h>
+#ifndef _WIN32
+# include <unistd.h>
+# include <err.h>
+#endif
+#include "compat.h"
 #include "intcode.h"
 
 #define LEN(a) (sizeof((a))/sizeof((a)[0]))

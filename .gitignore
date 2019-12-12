@@ -3,14 +3,11 @@
 *.obj
 *.pdb
 *.ilk
+*.user
 bin/
 obj/
 xcuserdata/
 */*/day*
-!*/*/day*.c
-!*/*/day*.xcodeproj
-!*/*/day*.csproj
+!*/*/day*.*
 solve*
-!solve*.c
-!*.csproj
-!*.fsproj
+!solve*.*
