@@ -148,11 +148,11 @@ ic_exec(Icvm *vm, Icop *op)
 		break;
 	case IC_JNZ:
 		if (*argps[0])
-			vm->ic = *argps[1];
+			vm->ic = (int)*argps[1];
 		break;
 	case IC_JZ:
 		if (!*argps[0])
-			vm->ic = *argps[1];
+			vm->ic = (int)*argps[1];
 		break;
 	case IC_LT:
 		*argps[2] = *argps[0] < *argps[1];
