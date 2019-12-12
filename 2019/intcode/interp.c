@@ -24,13 +24,13 @@ main(int argc, char **argv)
 {
 	static Icvm vm;
 	int c;
-	int verbose = 0;
+	int verbosity = 0;
 	FILE *f;
 
 	while ((c = getopt(argc, argv, "v")) != -1) {
 		switch (c) {
 		case 'v':
-			verbose = 1;
+			verbosity++;
 			break;
 		default:
 			usage();
@@ -61,7 +61,15 @@ main(int argc, char **argv)
 		err(1, "%s", argv[1]);
 
 	while (!(vm.flags & IC_HALTED))
-		ic_step(&vm, verbose ? stderr : NULL);
+		ic_step(&vm, verbosity>1 ? stderr : NULL);
+
+	if (verbosity)
+		fprintf(stderr,
+		    " steps: %d\n"
+		    " words: %d\n"
+		    " min value: %"PRId64"\n"
+		    " max value: %"PRId64"\n",
+		    vm.nsteps, vm.maxmem+1, vm.minval, vm.maxval);
 
 	return 0;
 }

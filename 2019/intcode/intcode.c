@@ -78,6 +78,8 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 	if (pos + op->nargs > (int)LEN(vm->mem))
 		errx(1, "pos %d: args out of bounds: %d", pos,
 		    op->nargs);
+	if (pos + op->nargs-1 >= vm->maxmem)
+		vm->maxmem = pos + op->nargs-1;
 
 	divisor = 100;
 	for (i = 0; i < op->nargs; i++) {
@@ -93,31 +95,27 @@ ic_decode(Icvm *vm, int pos, Icop *op)
 int64_t *
 ic_deref(Icvm *vm, Icarg *arg, int pos)
 {
-	int64_t *p;
+	int64_t addr;
 
 	switch (arg->mode) {
-	case IC_INDIRECT:
-		p = &vm->mem[arg->val];
-		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
-			errx(1, "pos %d: arg out of bounds: %"PRId64,
-			    pos, arg->val);
-		break;
-	case IC_IMMEDIATE:
-		p = &arg->val;
-		break;
-	case IC_RELATIVE:
-		p = &vm->mem[vm->bp + arg->val];
-		if (p < vm->mem || p >= vm->mem + LEN(vm->mem))
-			errx(1, "pos %d: arg out of  bounds: "
-			    "bp+%"PRId64" (%"PRId64")", pos,
-			    arg->val, vm->bp + arg->val);
-		break;
+	case IC_INDIRECT:  addr = arg->val; break;
+	case IC_RELATIVE:  addr = arg->val + vm->bp; break;
+	case IC_IMMEDIATE: return &arg->val; /* not using addr */
 	default:
 		errx(1, "pos %d: invalid mode %d for arg", pos,
 		    arg->mode);
 	}
 
-	return p;
+	if (addr < 0 || addr >= LEN(vm->mem))
+		errx(1, "pos %d: out of bounds: %"PRId64, pos, addr);
+	if (addr >= vm->maxmem)
+		vm->maxmem = addr;
+	if (vm->mem[addr] < vm->minval)
+		vm->minval = vm->mem[addr];
+	if (vm->mem[addr] > vm->maxval)
+		vm->maxval = vm->mem[addr];
+
+	return &vm->mem[addr];
 }
 
 void
@@ -169,6 +167,8 @@ ic_exec(Icvm *vm, Icop *op)
 	default:
 		errx(1, "unknown op: %d", op->op);
 	}
+
+	vm->nsteps++;
 }
 
 void

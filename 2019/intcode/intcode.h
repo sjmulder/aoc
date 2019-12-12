@@ -4,9 +4,17 @@ typedef struct icvm {
 	int64_t bp;	/* base pointer */
 	int flags;
 #define IC_HALTED 0x1
+
+	/* callbacks */
 	int64_t (*in_cb)(void *);
 	void (*out_cb)(int64_t, void *);
 	void *user;	/* passed to callbacks */
+
+	/* stats */
+	int nsteps;	/* no. of executed ops */
+	int maxmem;	/* largest used memory address */
+	int64_t minval;	/* lowest value read */
+	int64_t maxval;	/* highest value read */
 } Icvm;
 
 typedef struct icarg {
