@@ -16,13 +16,10 @@ main(int argc, char **argv)
 			return 1;
 		}
 
-	fprintf(stderr, "read %d nums\n", count);
-
 	for (i=0; i < count-1; i++)
 	for (j=1; j < count; j++) {
 		nsteps++;
 		if (nums[i] + nums[j] == 2020) {
-			fprintf(stderr, "%d steps\n", nsteps);
 			printf("%d\n", nums[i] * nums[j]);
 			return 0;
 		}

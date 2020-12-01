@@ -14,6 +14,8 @@ cmp_short(const void *a, const void *b)
 int
 main(int argc, char **argv)
 {
+	/* Looks like this is less efficient than solve2-sort */
+
 	int count=0, i, j, k;
 	int k_min, k_max;
 	int nsteps=0;
