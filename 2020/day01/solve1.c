@@ -17,7 +17,7 @@ main(int argc, char **argv)
 		}
 
 	for (i=0; i < count-1; i++)
-	for (j=1; j < count; j++) {
+	for (j=i+1; j < count; j++) {
 		nsteps++;
 		if (nums[i] + nums[j] == 2020) {
 			printf("%d\n", nums[i] * nums[j]);

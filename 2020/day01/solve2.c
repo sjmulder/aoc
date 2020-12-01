@@ -16,8 +16,8 @@ main(int argc, char **argv)
 		}
 
 	for (i=0; i < count-2; i++)
-	for (j=1; j < count-1; j++)
-	for (k=2; k < count; k++)
+	for (j=i+1; j < count-1; j++)
+	for (k=j+2; k < count; k++)
 		if (nums[i] + nums[j] + nums[k] == 2020) {
 			printf("%d\n", nums[i] * nums[j] * nums[k]);
 			return 0;
