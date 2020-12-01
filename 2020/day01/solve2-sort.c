@@ -26,7 +26,7 @@ main(int argc, char **argv)
 	qsort(nums, count, sizeof(nums[0]), cmp_short);
 
 	for (i=0; i < count-2; i++)
-	for (j=1; j < count-1; j++)
+	for (j=i+1; j < count-1; j++)
 	for (k = count-1; k>j; k--) {
 		sum = nums[i] + nums[j] + nums[k];
 		if (sum < 2020)
