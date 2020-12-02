@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAXNUMS 256
+#define MAXNUMS 200001
 
 static short nums[MAXNUMS];
 

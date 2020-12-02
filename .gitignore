@@ -11,3 +11,5 @@ xcuserdata/
 !*/*/day*.*
 solve*
 !solve*.*
+input.gen
+gen-input

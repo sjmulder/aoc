@@ -1,12 +1,16 @@
 CFLAGS+=	-Wall -Werror
 CFLAGS+=	-O2
 
-PROGS+=		solve1 solve1-sort
-PROGS+=		solve2 solve2-sort solve2-bsearch
+ALL+=		solve1 solve1-sort
+ALL+=		solve2 solve2-sort solve2-bsearch
+ALL+=		gen-input input.gen
 
-all: ${PROGS}
+all: ${ALL}
 
 clean:
-	rm -f ${PROGS}
+	rm -f ${ALL}
+
+input.gen: gen-input
+	./gen-input >input.gen
 
 .PHONY: all clean
