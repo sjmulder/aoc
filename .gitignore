@@ -7,10 +7,10 @@
 bin/
 obj/
 xcuserdata/
-*.exe
 */*/day*
 !*/*/day*.*
 solve*
 !solve*.*
+*.exe
 input.gen
 gen-input
