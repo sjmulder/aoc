@@ -5,9 +5,9 @@ static char buf[1024*1024];
 static size_t sz, w;
 
 static size_t f(int dx, int dy) {
-	size_t c,r,i,n=0;
-	for (c=r=i=0; i<sz; i = (r+=dy)*(w+1) + (c=(c+dx)%w))
-		n += buf[i] == '#';
+	size_t i,n=0;
+	for (i=0; i*dy*(w+1) < sz-w; i++)
+		n += buf[i*dy*(w+1)+(i*dx%w)] == '#';
 	return n;
 }
 
