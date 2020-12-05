@@ -12,7 +12,7 @@ cmp_short(const void *a, const void *b)
 }
 
 int
-main(int argc, char **argv)
+main()
 {
 	int count=0, i, j;
 	short sum;

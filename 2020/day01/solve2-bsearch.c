@@ -12,7 +12,7 @@ cmp_short(const void *a, const void *b)
 }
 
 int
-main(int argc, char **argv)
+main()
 {
 	/* Looks like this is less efficient than solve2-sort */
 

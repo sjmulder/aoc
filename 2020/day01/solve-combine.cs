@@ -14,7 +14,7 @@ static class Extensions
 
         while (true)
         {
-            yield return idxs.Select(i => xs[i]);
+            yield return idxs.Select(ix => xs[ix]);
             int i = n-1;
             while (++idxs[i] > xs.Length-n+i) if (--i < 0) yield break;
             while (++i < n) idxs[i] = idxs[i-1]+1;

@@ -5,7 +5,7 @@
 static short nums[MAXNUMS];
 
 int
-main(int argc, char **argv)
+main()
 {
 	int count=0, i, j, k;
 
