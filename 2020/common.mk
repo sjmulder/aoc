@@ -14,4 +14,3 @@ clean:
 
 .cs.exe:
 	$(CSC) $(CSFLAGS) -out:$@ $<
-
