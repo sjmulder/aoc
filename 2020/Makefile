@@ -1,10 +1,13 @@
-all: day01
+DIRS!=	find . -name day\*
+DAYS=	${DIRS:S,./,,}
+CLEANS=	${DAYS:S,^,clean-,}
 
-clean: clean-day01
+all:	${DAYS}
+clean:	${CLEANS}
 
-day01: ;	${MAKE} -C day01
+.for day in ${DAYS}
+${day}:		; ${MAKE} -C ${day}
+clean-${day}:	; ${MAKE} -C ${day} clean
+.endfor
 
-clean-day01: ;	${MAKE} -C day01 clean
-
-.PHONY: all clean
-.PHONY: day01 clean-day01
+.PHONY: all ${DAYS} ${CLEANS}
