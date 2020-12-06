@@ -1,4 +1,4 @@
-CFLAGS += -Weverything -ansi
+CFLAGS += -Wall -Wextra -ansi
 
 all: day02a day02b
 clean: ; rm -f day02a day02b
