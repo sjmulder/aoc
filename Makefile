@@ -1,5 +1,8 @@
-DIRS!=	find . -name day\*
-DAYS=	${DIRS:S,./,,}
+FILES!=	find . -name Makefile \
+	 | grep '^./20../day../Makefile$$' \
+	 | grep -v 2019/day07/ \
+	 | grep -v 2019/day10/
+DAYS=	${FILES:S,./,,:S,/Makefile,,}
 CLEANS=	${DAYS:S,^,clean-,}
 
 all:	${DAYS}
