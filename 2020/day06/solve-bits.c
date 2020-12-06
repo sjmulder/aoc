@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main() {
-	int c=0, prev, p1=0, p2=0, gpsz=0;
+	int c=0, prev, p1=0, p2=0;
 	uint32_t mask=0, any=0, all=(1<<26)-1;
 
 	while ((prev = c) != EOF)
@@ -12,9 +12,9 @@ int main() {
 		else if (prev == '\n') {
 			p1 += __builtin_popcount(any);
 			p2 += __builtin_popcount(all);
-			gpsz=0; any=0; all=(1<<26)-1;
+			any=0; all=(1<<26)-1;
 		} else
-			{ any |= mask; all &= mask; mask=0; gpsz++; }
+			{ any |= mask; all &= mask; mask=0; }
 
 	printf("%d %d\n", p1, p2);
 }
