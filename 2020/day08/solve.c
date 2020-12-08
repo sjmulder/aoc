@@ -5,64 +5,46 @@
 #define MAXOPS 1024
 
 enum {ONOP, OACC, OJMP};
-struct op {int type, arg, hits;};
-struct vm {int pc, acc;};
+static struct {int type, arg, hits;} ops[MAXOPS];
+static struct {int pc, acc;} vm;
+static int nops;
 
-static void
-run(struct vm *vmp, struct op *ops, int nops)
-{
-	static int hits[MAXOPS];
-	struct vm vm = {};
+static void run(void) {
+	int hits[MAXOPS] = {};
 
-	memset(hits, 0, sizeof(hits));
-
-	while (1) {
-		switch (ops[vm.pc].type) {
-			case OACC: vm.acc += ops[vm.pc].arg; break;
-			case OJMP: vm.pc += ops[vm.pc].arg-1; break;
-		}
-		if (++vm.pc<0 || vm.pc>=nops || hits[vm.pc]++)
-			{ *vmp = vm; return; }
-	}
+	do switch (ops[vm.pc].type) {
+		case OACC: vm.acc += ops[vm.pc].arg;   break;
+		case OJMP: vm.pc  += ops[vm.pc].arg-1; break;
+	} while (++vm.pc>=0 && vm.pc<nops && !hits[vm.pc]++);
 }
 
-int
-main()
-{
-	static struct op ops[MAXOPS];
-	struct vm vm = {};
-	char name[4];
-	int n,i, nops=0, new,old;
+int main() {
+	char s[4];
+	int i, new,old;
 
-	while ((n = scanf("%3s %d", name, &ops[nops].arg)) > 0) {
-		if (!strcmp(name, "nop") && n==2)
-			ops[nops].type = ONOP;
-		else if (!strcmp(name, "acc") && n==2)
-			ops[nops].type = OACC;
-		else if (!strcmp(name, "jmp") && n==2)
-			ops[nops].type = OJMP;
-		else
-			errx(1, "bad op at line %d", nops+1);
+	while ((scanf("%3s %d", s, &ops[nops].arg)) == 2) {
+		     if (!strcmp(s, "nop")) ops[nops].type = ONOP;
+		else if (!strcmp(s, "acc")) ops[nops].type = OACC;
+		else if (!strcmp(s, "jmp")) ops[nops].type = OJMP;
+		else errx(1, "bad op at line %d", nops+1);
 
 		if (++nops >= MAXOPS)
 			errx(1, "ops overflow");
 	}
 
-	run(&vm, ops, nops);
+	run();
 	printf("%d ", vm.acc);
 
-	for (i=0; i<nops; i++) {
+	for (i=0; i<nops && vm.pc != nops; i++) {
 		old = new = ops[i].type;
 		     if (old == ONOP) new = OJMP;
 		else if (old == OJMP) new = ONOP;
 		else continue;
 
-		ops[i].type = new;
 		memset(&vm, 0, sizeof(vm));
-		run(&vm, ops, nops);
+		ops[i].type = new; run();
 		ops[i].type = old;
-
-		if (vm.pc == nops)
-			{ printf("%d\n", vm.acc); return 0; }
 	}
+
+	printf("%d\n", vm.acc);
 }
