@@ -28,6 +28,7 @@ main()
 	}
 
 	while (sum != target || end-start <= 2) {
+		/* goes OOB if no solution exists! */
 		while (sum < target) sum += ns[end++];
 		while (sum > target) sum -= ns[start++];
 	}
