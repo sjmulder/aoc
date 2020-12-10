@@ -10,7 +10,7 @@ int
 main()
 {
 	static long ns[CAP];
-	long target=0, min,max, sum;
+	long target=0, min=0,max=0, sum;
 	int i,j,k, len=0;
 
 	while (scanf(" %ld", &ns[len]) == 1)
