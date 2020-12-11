@@ -37,20 +37,10 @@ reset(void)
 			g[y][x] = 'L';
 }
 
-static char
-hittest(int x, int y, int dx, int dy, int depth)
-{
-	while (depth-- && (y+=dy) >= 0 && (x+=dx) >= 0 && y<h && x<w)
-		if (g[y][x] != '.')
-			return g[y][x];
-
-	return '.';
-}
-
 static int
 step(int hitdepth, int adjrule)
 {
-	int x,y, dx,dy, nchange=0;
+	int i, x,y, dx,dy, x2,y2, nchange=0;
 
 	memset(nadj, 0, sizeof(nadj));
 
@@ -59,7 +49,12 @@ step(int hitdepth, int adjrule)
 	for (dx=-1; dx<2; dx++)
 	for (dy=-1; dy<2; dy++)
 		if (dx || dy)
-			nadj[y][x] += hittest(x,y,dx,dy,hitdepth)=='#';
+			for (i=0, y2=y, x2=x; i<hitdepth; i++) {
+				if ((y2 += dy) < 0 || y2 >= h) break;
+				if ((x2 += dx) < 0 || x2 >= w) break;
+				if (g[y2][x2] == '#') nadj[y][x]++;
+				if (g[y2][x2] != '.') break;
+			}
 
 	for (y=0; y<h; y++)
 	for (x=0; x<w; x++)
