@@ -80,9 +80,12 @@ run(int hitdepth, int adjrule)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	char *c;
+
+	if (argc == 2 && !freopen(argv[1], "r", stdin))
+		err(1, "%s", argv[1]);
 
 	for (h=0; h<CAP; h++) {
 		if (!fgets(g[h], CAP, stdin))
