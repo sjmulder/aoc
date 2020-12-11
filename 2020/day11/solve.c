@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <string.h>
+#include <err.h>
+
+#define CAP	128
+#define VERBOSE	0
+
+static char g[CAP][CAP], nadj[CAP][CAP];
+static int w,h;
+
+static void
+dump(void)
+{
+#if VERBOSE
+	int x,y;
+
+	printf("  %d x %d\n", w, h);
+
+	for (y=0; y<h; y++) {
+		for (x=0; x<w; x++)
+			printf("%d", nadj[y][x]);
+		printf(" %.*s\n", w, g[y]);
+	}
+
+	putchar('\n');
+#endif
+}
+
+static void
+reset(void)
+{
+	int x,y;
+
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+		if (g[y][x] == '#')
+			g[y][x] = 'L';
+}
+
+static char
+hittest(int x, int y, int dx, int dy, int depth)
+{
+	while (depth-- && (y+=dy) >= 0 && (x+=dx) >= 0 && y<h && x<w)
+		if (g[y][x] != '.')
+			return g[y][x];
+
+	return '.';
+}
+
+static int
+step(int hitdepth, int adjrule)
+{
+	int x,y, dx,dy, nchange=0;
+
+	memset(nadj, 0, sizeof(nadj));
+
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+	for (dx=-1; dx<2; dx++)
+	for (dy=-1; dy<2; dy++)
+		if (dx || dy)
+			nadj[y][x] += hittest(x,y,dx,dy,hitdepth)=='#';
+
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+		if (g[y][x] == 'L' && !nadj[y][x])
+			{ nchange++; g[y][x] = '#'; }
+		else if (g[y][x] == '#' && nadj[y][x] >= adjrule)
+			{ nchange++; g[y][x] = 'L'; }
+
+	return nchange;
+}
+
+static void
+run(int hitdepth, int adjrule)
+{
+	int x,y, nocc=0;
+
+	dump();
+	while (step(hitdepth, adjrule))
+		dump();
+
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+		nocc += g[y][x] == '#';
+
+	printf("%d\n", nocc);
+}
+
+int
+main()
+{
+	char *c;
+
+	for (h=0; h<CAP; h++) {
+		if (!fgets(g[h], CAP, stdin))
+			break;
+		if (!(c = strchr(g[h], '\n')))
+			errx(1, "input to wide");
+		if (h==1)
+			w = c-g[h]; 
+	}
+
+	run(1, 4); reset();
+	run(CAP, 5);
+}
