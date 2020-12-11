@@ -4,6 +4,7 @@
 
 #define CAP	128
 #define VERBOSE	0
+#define NTRIALS	100
 
 static char g[CAP][CAP], nadj[CAP][CAP];
 static int w,h;
@@ -24,17 +25,6 @@ dump(void)
 
 	putchar('\n');
 #endif
-}
-
-static void
-reset(void)
-{
-	int x,y;
-
-	for (y=0; y<h; y++)
-	for (x=0; x<w; x++)
-		if (g[y][x] == '#')
-			g[y][x] = 'L';
 }
 
 static int
@@ -69,15 +59,22 @@ step(int hitdepth, int adjrule)
 static void
 run(int hitdepth, int adjrule)
 {
-	int x,y, nocc=0;
+	int trial, x,y, nocc=0;
 
-	dump();
-	while (step(hitdepth, adjrule))
+	for (trial=0; trial<100; trial++) {
+		for (y=0; y<h; y++)
+		for (x=0; x<w; x++)
+			if (g[y][x] == '#')
+				g[y][x] = 'L';
+
 		dump();
+		while (step(hitdepth, adjrule))
+			dump();
 
-	for (y=0; y<h; y++)
-	for (x=0; x<w; x++)
-		nocc += g[y][x] == '#';
+		for (y=0; y<h; y++)
+		for (x=0; x<w; x++)
+			nocc += g[y][x] == '#';
+	}
 
 	printf("%d\n", nocc);
 }
@@ -96,6 +93,6 @@ main()
 			w = c-g[h]; 
 	}
 
-	run(1, 4); reset();
+	run(1, 4);
 	run(CAP, 5);
 }
