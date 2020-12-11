@@ -1,3 +1,3 @@
-PROGS+=	solve
+PROGS+=	solve solve-pre
 
 include ../common.mk
