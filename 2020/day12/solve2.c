@@ -6,7 +6,7 @@ int
 main()
 {
 	char c;
-	int n, x=0,y=0, wx=10,wy=-1, rot, wx0,wy0;
+	int n,tmp, x=0,y=0, wx=10,wy=-1, rot;
 
 	while(scanf(" %c%d", &c, &n) == 2) {
 		switch (c) {
@@ -18,11 +18,10 @@ main()
 			case 'L': rot = 360-n; break;
 			case 'F': x += wx*n; y += wy*n; break;
 		}
-		wx0=wx; wy0=wy;
 		switch (rot) {
-			case  90: wx=-wy0; wy= wx0; break;
-			case 180: wx=-wx0; wy=-wy0; break;
-			case 270: wx= wy0; wy=-wx0; break;
+			case  90: tmp=wx; wx=-wy; wy= tmp; break;
+			case 270: tmp=wx; wx= wy; wy=-tmp; break;
+			case 180: wx=-wx; wy=-wy; break;
 		}
 		rot=0;
 	}
