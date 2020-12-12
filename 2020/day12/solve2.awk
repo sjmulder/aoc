@@ -1,3 +1,5 @@
+#!/usr/bin/awk -f
+
 function abs(x) { return x<0 ? -x : x }
 
 BEGIN	{ wx = 10; wy = -1 }

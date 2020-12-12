@@ -1,3 +1,5 @@
+#!/usr/bin/awk -f
+
 function abs(x) { return x<0 ? -x : x }
 
 	{ n = substr($0, 2) }
