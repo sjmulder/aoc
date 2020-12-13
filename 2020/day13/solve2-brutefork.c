@@ -5,14 +5,16 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <signal.h>
 #include <err.h>
 
 #define BUFSZ	1024
 #define CAP	128
-#define NJOBS	4
+#define MAXJOBS	1024
 
 static int ids[CAP], offs[CAP], nids;
+static int njobs=1;
 static long t0, step=1;
 
 static void
@@ -47,7 +49,7 @@ run(int job)
 	long t;
 	int i;
 
-	for (t=t0 + step*job; ; t += step*NJOBS) {
+	for (t=t0 + step*job; ; t += step*njobs) {
 		for (i=0; i<nids; i++)
 			if ((t+offs[i]) % ids[i])
 				break;
@@ -59,14 +61,25 @@ run(int job)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
-	int job;
-	pid_t pids[NJOBS];
+	int job, c;
+	pid_t pids[MAXJOBS];
+
+	while ((c = getopt(argc, argv, "j:")) != -1)
+		switch (c) {
+			case 'j':
+				njobs = atoi(optarg);
+				if (njobs < 1 || njobs > MAXJOBS)
+					errx(1, "bad -j");
+				break;
+			default:
+				return 1;
+		}
 
 	load();
 
-	for (job=0; job < NJOBS; job++)
+	for (job=0; job < njobs; job++)
 		switch ((pids[job] = fork())) {
 		case -1:
 			err(1, "fork()");
@@ -77,7 +90,7 @@ main()
 
 	if (wait(NULL) == -1)
 		err(1, "wait()");
-	for (job=0; job < NJOBS; job++)
+	for (job=0; job < njobs; job++)
 		if (kill(pids[job], SIGTERM) && errno != ESRCH)
 			err(1, "kill()");
 	while (wait(NULL) != -1)
