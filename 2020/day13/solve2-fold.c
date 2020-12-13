@@ -1,36 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <err.h>
 
 #define BUFSZ 1024
-#define CAP 128
 
 int
 main()
 {
 	char buf[BUFSZ], *rest, *field;
-	int freqs[CAP], nfreqs=0, i;
-	long t=0, step=0;
+	long t=0, step=0, off, freq;
 
 	fgets(buf, BUFSZ, stdin);
 	rest = fgets(buf, BUFSZ, stdin);
 
-	while (nfreqs < CAP && (field = strsep(&rest, ",")))
-		freqs[nfreqs++] = atoi(field);
-	if (nfreqs >= CAP)
-		errx(1, "nfreqs overflow");
-	
-	for (i=0; i<nfreqs; i++)
-		if (!freqs[i])
+	for (off=0; (field = strsep(&rest, ",")); off++)
+		if (!(freq = atoi(field)))
 			;
 		else if (!step) {
-			t = i;
-			step = freqs[i];
+			t = off;
+			step = freq;
 		} else {
-			while ((t+i) % freqs[i])
+			while ((t+off) % freq)
 				t += step;
-			step *= freqs[i];
+			step *= freq;
 		}
 
 	printf("%ld\n", t);
