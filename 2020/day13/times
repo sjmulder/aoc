@@ -5,3 +5,16 @@ sijmens-pc$ time ./solve2-brute <input
 sijmens-pc$ time ./solve2-brutefork <input
 534035653563227 (job 2)
    18m41.37s real    73m50.68s user     0m00.38s system
+
+joosts-mbp% time ./solve2-brutefork -j8 <input
+534035653563227 (job 6)
+./solve2-brutefork -j8 < input  7313,33s user 14,21s system 729% cpu 16:44,31 total
+
+# Amazon EC2 c6g.16xlarge (64x arm64)
+
+admin@ip-172-30-0-208:~/day13$ time ./solve2-brutefork -j64 <input
+
+534035653563227 (job 38)
+real    1m0.396s
+user    64m24.058s
+sys     0m0.007s
