@@ -1,0 +1,7 @@
+sijmens-pc$ time ./solve2-brute <input
+534035653563227
+   71m02.68s real    71m02.69s user     0m00.00s system
+
+sijmens-pc$ time ./solve2-brutefork <input
+534035653563227 (job 2)
+   18m41.37s real    73m50.68s user     0m00.38s system
