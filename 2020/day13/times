@@ -13,8 +13,16 @@ joosts-mbp% time ./solve2-brutefork -j8 <input
 # Amazon EC2 c6g.16xlarge (64x arm64)
 
 admin@ip-172-30-0-208:~/day13$ time ./solve2-brutefork -j64 <input
-
 534035653563227 (job 38)
 real    1m0.396s
 user    64m24.058s
 sys     0m0.007s
+
+# Dell Latitude E5570, WSL
+
+$ time ./solve2-brute -j4 <input
+534035653563227 (job 2)
+
+real    25m47.555s
+user    91m41.922s
+sys     0m19.375s
