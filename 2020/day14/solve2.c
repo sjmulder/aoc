@@ -12,11 +12,7 @@ struct cell { long addr, val; };
 static struct cell mem[MEMCAP];
 
 static long cur_ones, cur_floats;
-static long sum;
-
-/* for diagnostics */
-static long nmatch, match_isum, match_imax;
-static long nempty, empty_isum, empty_imax;
+static long sum; /* updated live */
 
 static struct cell *
 getcell(long addr)
@@ -27,20 +23,9 @@ getcell(long addr)
 
 	/* open addressing */
 	for (i=0; i < MEMCAP; i++) {
-		/* match */
-		if (mem[off].addr == addr) {
-			nmatch++;
-			match_isum += i;
-			match_imax = MAX(match_imax, i);
-
+		if (mem[off].addr == addr)	/* match */
 			return &mem[off];
-		}
-		/* unclaimed, claim */
-		if (!mem[off].addr) {
-			nempty++;
-			empty_isum += i;
-			empty_imax = MAX(empty_imax, i);
-
+		if (!mem[off].addr) {		/* unclaimed */
 			mem[off].addr = addr;
 			return &mem[off];
 		}
@@ -109,11 +94,6 @@ main()
 		} else
 			errx(1, "bad line: %s", buf);
 	}
-
-	fprintf(stderr, " matches: %ld (avg off: %ld avg, max: %ld)\n",
-	    nmatch, match_isum / nmatch, match_imax);
-	fprintf(stderr, " empties: %ld (avg off: %ld avg, max: %ld)\n",
-	    nempty, empty_isum / nempty, empty_imax);
 
 	printf("%ld\n", sum);
 }
