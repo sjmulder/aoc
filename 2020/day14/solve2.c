@@ -5,8 +5,6 @@
 
 #define MEMCAP (1L<<20)
 
-#define MAX(a,b) ((a)>(b)?(a):(b))
-
 /* hash table w/ open addressing */
 struct cell { long addr, val; };
 static struct cell mem[MEMCAP];
