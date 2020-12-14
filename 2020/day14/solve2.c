@@ -17,12 +17,10 @@ static long sum;
 /* for diagnostics */
 static long nmatch, match_isum, match_imax;
 static long nempty, empty_isum, empty_imax;
-static long nzero;
 
 static struct cell *
 getcell(long addr)
 {
-	struct cell *zero=NULL;
 	long off=0,i;
 
 	off = addr % MEMCAP;
@@ -46,18 +44,11 @@ getcell(long addr)
 			mem[off].addr = addr;
 			return &mem[off];
 		}
-		/* last resort, steal empty entry */
-		if (!zero && !mem[off].val)
-			zero = &mem[off];
 		if (++off == MEMCAP)
 			off = 0;
 	}
 
-	if (!zero)
-		errx(1, "out of cells");
-
-	nzero++;
-	return zero;
+	errx(1, "out of cells");
 }
 
 static void
@@ -123,7 +114,6 @@ main()
 	    nmatch, match_isum / nmatch, match_imax);
 	fprintf(stderr, " empties: %ld (avg off: %ld avg, max: %ld)\n",
 	    nempty, empty_isum / nempty, empty_imax);
-	fprintf(stderr, " zeroes:  %ld\n", nzero);
 
 	printf("%ld\n", sum);
 }
