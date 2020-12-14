@@ -10,7 +10,7 @@ main()
 {
 	char buf[BUFSZ], *rest, *field;
 	long freq, idx;
-	long p1now, p1tm, p1bestid, p1besttm=LONG_MAX;
+	long p1now, p1tm, p1bestid=0, p1besttm=LONG_MAX;
 	long p2t=0, p2step=1;
 
 	p1now = atoi(fgets(buf, BUFSZ, stdin));
