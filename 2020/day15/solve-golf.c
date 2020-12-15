@@ -1,2 +1,2 @@
-m[1<<25],t,n,*p,a;main(){while(t<30000000){p=m+n;if(scanf("%d,",&n)<0)n=
-*p?t-*p:0;if(t<2020)a=n;*p=t++;}printf("%d %d",a,n);}
+m[1<<25],t,n,*p,a;main(){while(t<30000000)p=m+n,n=~scanf("%d,",&n)?n:*p?
+t-*p:0,a=t<2020?n:a,*p=t++;printf("%d %d",a,n);}
