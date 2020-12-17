@@ -20,8 +20,6 @@ parse(void)
 			{ gr[w][z][y][x] = 1; non++; }
 		else if (c == '\n')
 			{ x = SZ/2-1; y++; }
-
-	printf(" (parse) %ld\n", non);
 }
 
 static void
@@ -29,18 +27,6 @@ step(void)
 {
 	static char nadj[SZ][SZ][SZ][SZ];
 	int x,y,z,w, x2,y2,z2,w2;
-
-#if 0
-	printf("___\n");
-	for (z = SZ/2-2; z < SZ/2+3; z++) {
-		printf("\nz=%d\n", z);
-		for (y = SZ/2-1; y < SZ/2+5; y++) {
-			for (x = SZ/2-1; x < SZ/2+5; x++)
-				putchar(gr[z][y][x] ? '#' : '.');
-			putchar('\n');
-		}
-	}
-#endif
 
 	memset(nadj, 0, sizeof(nadj));
 
@@ -74,8 +60,6 @@ step(void)
 			gr[w][z][y][x] = 0;
 			non--;
 		}
-
-	printf(" (step) %ld\n", non);
 }
 
 int
