@@ -26,19 +26,19 @@ static void
 step(void)
 {
 	static char nadj[SZ][SZ][SZ][SZ];
-	int x,y,z,w, x2,y2,z2,w2;
+	int x,y,z,w, dx,dy,dz,dw;
 
 	memset(nadj, 0, sizeof(nadj));
 
+	for (dw=-1; dw<2; dw++)
+	for (dz=-1; dz<2; dz++)
+	for (dy=-1; dy<2; dy++)
+	for (dx=-1; dx<2; dx++)
 	for (w=1; w<SZ-1; w++)
 	for (z=1; z<SZ-1; z++)
 	for (y=1; y<SZ-1; y++)
 	for (x=1; x<SZ-1; x++)
-	for (w2=w-1; w2<w+2; w2++)
-	for (z2=z-1; z2<z+2; z2++)
-	for (y2=y-1; y2<y+2; y2++)
-	for (x2=x-1; x2<x+2; x2++)
-		if ((w!=w2||z!=z2||y!=y2||x!=x2) && gr[w2][z2][y2][x2])
+		if ((dx||dy||dz||dw) && gr[w+dw][z+dz][y+dy][x+dx])
 			nadj[w][z][y][x]++;
 
 	for (w=1; w<SZ-1; w++)
