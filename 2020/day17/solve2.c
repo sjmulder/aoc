@@ -10,15 +10,11 @@ static char gr[SZ][SZ][SZ][SZ];
 static void
 parse(void)
 {
-	int x,y,z,w, c;
-
-	x=y=z=w = SZ/2;
+	int x=SZ/2,y=SZ/2,z=SZ/2,w=SZ/2, c;
 
 	for (; (c = getchar()) != EOF; x++)
-		if (c == '#')
-			gr[w][z][y][x] = 1;
-		else if (c == '\n')
-			{ x = SZ/2-1; y++; }
+		     if (c == '#')  gr[w][z][y][x] = 1;
+		else if (c == '\n') { x = SZ/2-1; y++; }
 }
 
 static void
