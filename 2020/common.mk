@@ -1,5 +1,5 @@
 CFLAGS+=	-Wall -Wextra
-CFLAGS+=	-O2
+CFLAGS+=	-O3
 
 GOLF_CC?=	clang
 GOLF_CFLAGS+=	-Wno-empty-body
