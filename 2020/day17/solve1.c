@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <err.h>
 
 #define SZ 30
 
@@ -63,7 +61,6 @@ main()
 	int i;
 
 	parse();
-	for (i=0; i<6; i++)
-		step();
+	for (i=0; i<6; i++) step();
 	printf("%d\n", counton());
 }
