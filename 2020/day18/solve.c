@@ -10,7 +10,7 @@ nextval(char **sp, int pt)
 	long val;
 	char *end;
 
-	while (1) {
+	while (1)
 		switch (**sp) {
 		case ' ': (*sp)++; continue;
 		case '(':
@@ -27,7 +27,6 @@ nextval(char **sp, int pt)
 			*sp = end;
 			return val;
 		}
-	}
 }
 
 static long
@@ -37,7 +36,7 @@ eval(char **sp, int pt)
 
 	acc = nextval(sp, pt);
 
-	while (1) {
+	while (1)
 		switch (**sp) {
 		case '\0': return acc;
 		case '\n': return acc;
@@ -50,7 +49,6 @@ eval(char **sp, int pt)
 			break;
 		default:   errx(1, "unexpected: %c\n", **sp);
 		}
-	}
 }
 
 int
