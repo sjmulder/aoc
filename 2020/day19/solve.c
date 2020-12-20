@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-#include <err.h>
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
@@ -32,18 +31,14 @@ matchsub(char *rule, char *s, char **endps, int maxendps)
 {
 	int i, nendps=0, id, nmatch;
 
+	assert(maxendps > 0);
+
 	while (*rule == ' ')
 		rule++;
-	if (!*rule || *rule == '|') {
-		assert(maxendps > 0);
-		endps[0] = s;
-		return 1;
-	}
-	if (*rule == '"') {
-		assert(maxendps > 0);
-		endps[0] = s+1;
-		return *s == rule[1];
-	}
+	if (!*rule || *rule == '|')
+		{ endps[0] = s; return 1; }
+	if (*rule == '"')
+		{ endps[0] = s+1; return *s == rule[1]; }
 
 	assert(isdigit(*rule));
 
@@ -51,19 +46,26 @@ matchsub(char *rule, char *s, char **endps, int maxendps)
 	assert(id >= 0 && id < LEN(rules));
 	assert(*rules[id]);
 
-	nmatch = match(rules[id], s, endps, maxendps);
-	nendps += nmatch;
-
+	nendps = nmatch = match(rules[id], s, endps, maxendps);
 	if (nmatch == 0)
 		return 0;
 	if (nmatch == 1) /* tail call */
 		return matchsub(rule, endps[0], endps, maxendps);
 
+	/*
+	 * We have matched the first term, now recursively match the
+	 * rest of the rule.
+	 *
+	 * Note that if we have 2 matches, and the continuations each
+	 * yield 3, it's those 6 matches we should return. Hence our
+	 * original matches in endps should be overwritten.
+	 */
 	for (i=0; i<nmatch; i++)
 		nendps += matchsub(rule, endps[i], endps+nendps,
 		    maxendps-nendps);
 
-	memmove(&endps[0], &endps[nmatch], (nendps-nmatch) * sizeof(*endps));
+	memmove(&endps[0], &endps[nmatch], (nendps-nmatch) *
+	   sizeof(*endps));
 	return nendps-nmatch;
 }
 
@@ -76,15 +78,12 @@ static int
 match(char *rule, char *s, char **endps, int maxendps)
 {
 	int nendps = 0;
-	char *pipe;
 
-	while (1) {
+	do {
 		nendps += matchsub(rule, s, endps+nendps,
 		    maxendps-nendps);
-		if (!(pipe = strchr(rule, '|')))
-			break;
-		rule = pipe+1;
-	}
+		rule = strchr(rule, '|')+1;
+	} while (rule != NULL+1);
 
 	return nendps;
 }
@@ -98,7 +97,7 @@ match(char *rule, char *s, char **endps, int maxendps)
 static int
 matchfull(char *rule, char *s)
 {
-	static char *endps[128];
+	static char *endps[16];
 	int i, nmatch, nfull=0;
 
 	nmatch = match(rule, s, endps, LEN(endps));
@@ -119,6 +118,7 @@ main()
 		if ((cp = strchr(buf, '\n'))) *cp = '\0';
 		if (!*buf) break;
 		id = atoi(buf);
+		assert(id >= 0 && id < LEN(rules));
 		cp = strchr(buf, ':');
 		assert(cp);
 		assert(strlen(cp+1) < LEN(*rules));
