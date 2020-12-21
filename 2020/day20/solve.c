@@ -182,17 +182,8 @@ dolayout(int slot)
 
 	assert(slot >= 0 && slot < ntiles);
 
-#if 0
-	printf("solve:");
-	for (i=0; i<slot; i++)
-		printf(" %d", layout[i]->id);
-	putchar('\n');
-#endif
-
 	for (cand=slot; cand<ntiles; cand++)
 	for (mut=0; mut<8; mut++) {
-		//printf("  cand %d, mut %d\n", cand, mut);
-
 		if (testslot(layout[cand], slot)) {
 			if (slot == ntiles-1)
 				return 1;
@@ -251,96 +242,11 @@ hunt(void)
 	return 0;
 }
 
-static void
-dump_tile(struct tile *tile)	/* without title */
-{
-	int x,y;
-
-	for (y=0; y < tilesz; y++) {
-		for (x=0; x < tilesz; x++)
-			putchar(tile->g[y][x] ? '#' : '.');
-		putchar('\n');
-	}
-}
-
-static void
-dump_tiles(void)
-{
-	int i;
-	struct tile *tile;
-
-	for (i=0; i < ntiles; i++) {
-		tile = &tiles[i];
-		printf("Tile %d:\n", tile->id);
-		dump_tile(tile);
-		putchar('\n');
-	}
-}
-
-static void
-dump_layout(int n)
-{
-	int i;
-
-	for (i=0; i<n; i++) {
-		assert(layout[i]);
-		if (i && i % layoutsz == 0)
-			putchar('\n');
-		printf("%8d", layout[i]->id);
-	}
-
-	putchar('\n');
-}
-
-static void
-dump_grid(void)
-{
-	int x,y;
-
-	for (y=0; y<gridsz; y++) {
-		for (x=0; x<gridsz; x++)
-			putchar(grid[y][x] ? '#' : '.');
-		putchar('\n');
-	}
-}
-
-static void
-dump_stats(void)
-{
-	printf("%d %dx%d tiles = %dx%d layout\n", ntiles, tilesz,
-	    tilesz, layoutsz, layoutsz);
-}
-
-static void
-dump_mutations(struct tile *tile)
-{
-	int i;
-
-	for (i=0; i<4; i++) {
-		printf("Rotation %d:\n", i);
-		dump_tile(tile);
-		putchar('\n');
-		rotate(tile);
-	}
-
-	for (i=0; i<2; i++) {
-		printf("Flip %d:\n", i);
-		dump_tile(tile);
-		putchar('\n');
-		flip(tile);
-	}
-}
-
 int
 main()
 {
 	long long p1;
 	int p2=0, x,y;
-
-	//dump_tiles();
-	//dump_layout(ntiles);
-	//dump_mutations(&tiles[0]);
-	//dump_stats();
 
 	parse();
 
@@ -365,9 +271,6 @@ main()
 	for (y=0; y<gridsz; y++)
 	for (x=0; x<gridsz; x++)
 		p2 += grid[y][x];
-
-	//dump_layout(ntiles);
-	//dump_grid();
 
 	printf("%lld %d\n", p1, p2);
 }
