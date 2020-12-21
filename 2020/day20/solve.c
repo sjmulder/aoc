@@ -10,7 +10,7 @@
  *  tile   - single block
  *  layout - arrangement of tiles (references)
  *  slot   - position in a layout
- *  grid   - rendered layout
+ *  grid   - rendered layout (edges removed)
  */
 
 struct tile {
@@ -18,11 +18,19 @@ struct tile {
 	char g[10][10];
 };
 
+static const char monster[3][21] = {
+    "                  # ",
+    "#    ##    ##    ###",
+    " #  #  #  #  #  #   "
+};
+
 static struct tile tiles[144];
 static struct tile *layout[144];
+static char grid[100][100];
 static int ntiles;
 static int tilesz;
 static int layoutsz;
+static int gridsz;
 
 static void
 parse(void)
@@ -62,6 +70,10 @@ parse(void)
 			x++;
 		}
 	}
+
+	gridsz = layoutsz * (tilesz-2);
+	assert(gridsz <= LEN(grid));
+	assert(gridsz <= LEN(grid[0]));
 }
 
 static void
@@ -78,6 +90,19 @@ rotate(struct tile *tile)
 }
 
 static void
+rotategrid(void)
+{
+	char orig[LEN(grid)][LEN(grid[0])];
+	int x,y;
+
+	memcpy(orig, grid, sizeof(orig));
+
+	for (y=0; y<gridsz; y++)
+	for (x=0; x<gridsz; x++)
+		grid[x][gridsz-1-y] = orig[y][x];
+}
+
+static void
 flip(struct tile *tile)
 {
 	struct tile orig;
@@ -88,6 +113,37 @@ flip(struct tile *tile)
 	for (y=0; y<tilesz; y++)
 	for (x=0; x<tilesz; x++)
 		tile->g[y][tilesz-1-x] = orig.g[y][x];
+}
+
+static void
+flipgrid(void)
+{
+	char orig[LEN(grid)][LEN(grid[0])];
+	int x,y;
+
+	memcpy(orig, grid, sizeof(orig));
+
+	for (y=0; y<gridsz; y++)
+	for (x=0; x<gridsz; x++)
+		grid[y][gridsz-1-x] = orig[y][x];
+}
+
+static void
+render(void)
+{
+	int i=0, tx,ty, x0,y0, x,y;
+	struct tile *tile;
+	
+	for (ty=0; ty<layoutsz; ty++)
+	for (tx=0; tx<layoutsz; tx++) {
+		tile = layout[i++];
+		y0 = ty * (tilesz-2);
+		x0 = tx * (tilesz-2);
+
+		for (y=0; y<tilesz-2; y++)
+		for (x=0; x<tilesz-2; x++)
+			grid[y0+y][x0+x] =  tile->g[y+1][x+1];
+	}
 }
 
 /* 1 if tile, in slot, fits its top and left neighbours */
@@ -119,7 +175,7 @@ testslot(struct tile *tile, int slot)
  * the tiles in layout[slot..]
  */
 static int
-solve(int slot)
+dolayout(int slot)
 {
 	int cand, mut;
 	struct tile *tmp;
@@ -145,7 +201,7 @@ solve(int slot)
 			/* provisially assign slot and recurse */
 			layout[slot] = layout[cand];
 			layout[cand] = tmp;
-			if (solve(slot+1))
+			if (dolayout(slot+1))
 				return 1;
 
 			/* no dice, restore slots */
@@ -156,6 +212,40 @@ solve(int slot)
 		if ((mut+1) % 4 == 0)
 			flip(layout[cand]);
 		rotate(layout[cand]);
+	}
+
+	return 0;
+}
+
+static int
+hunt(void)
+{
+	int mut, gx,gy, mx,my, nhits=0;
+	
+	for (mut=0; mut<8; mut++) {
+		for (gy=0; gy<gridsz-LEN(monster); gy++)
+		for (gx=0; gx<gridsz-LEN(monster[0])+1; gx++) {
+			for (my=0; my<LEN(monster); my++)
+			for (mx=0; mx<LEN(monster[0])-1; mx++)
+				if (monster[my][mx] == '#' &&
+				    !grid[gy+my][gx+mx])
+					goto nonessy;
+
+			nhits++;
+
+			for (my=0; my<LEN(monster); my++)
+			for (mx=0; mx<LEN(monster[0])-1; mx++)
+				if (monster[my][mx] == '#')
+					grid[gy+my][gx+mx] = 0;
+		nonessy: ;
+		}
+
+		if (nhits)
+			return nhits;
+		
+		if ((mut+1) % 4 == 0)
+			flipgrid();
+		rotategrid();
 	}
 
 	return 0;
@@ -203,6 +293,18 @@ dump_layout(int n)
 }
 
 static void
+dump_grid(void)
+{
+	int x,y;
+
+	for (y=0; y<gridsz; y++) {
+		for (x=0; x<gridsz; x++)
+			putchar(grid[y][x] ? '#' : '.');
+		putchar('\n');
+	}
+}
+
+static void
 dump_stats(void)
 {
 	printf("%d %dx%d tiles = %dx%d layout\n", ntiles, tilesz,
@@ -232,21 +334,40 @@ dump_mutations(struct tile *tile)
 int
 main()
 {
-	parse();
+	long long p1;
+	int p2=0, x,y;
 
 	//dump_tiles();
 	//dump_layout(ntiles);
 	//dump_mutations(&tiles[0]);
 	//dump_stats();
 
-	if (solve(0))
-		printf("%lld\n", (long long)
-		    layout[0]->id *
-		    layout[layoutsz-1]->id *
-		    layout[ntiles-layoutsz]->id *
-		    layout[ntiles-1]->id);
-	else
-		printf("not solved\n");
+	parse();
+
+	if (!dolayout(0)) {
+		printf("no p1 solution\n");
+		return 0;
+	}
+
+	p1 = (long long)
+	    layout[0]->id *
+	    layout[layoutsz-1]->id *
+	    layout[ntiles-layoutsz]->id *
+	    layout[ntiles-1]->id;
+
+	render();
+
+	if (!hunt()) {
+		printf("no nessie\n");
+		return 0;
+	}
+
+	for (y=0; y<gridsz; y++)
+	for (x=0; x<gridsz; x++)
+		p2 += grid[y][x];
 
 	//dump_layout(ntiles);
+	//dump_grid();
+
+	printf("%lld %d\n", p1, p2);
 }
