@@ -220,7 +220,7 @@ hunt(void)
 			for (mx=0; mx<LEN(monster[0])-1; mx++)
 				if (monster[my][mx] == '#' &&
 				    !grid[gy+my][gx+mx])
-					goto nonessy;
+					goto nonessie;
 
 			nhits++;
 
@@ -228,7 +228,7 @@ hunt(void)
 			for (mx=0; mx<LEN(monster[0])-1; mx++)
 				if (monster[my][mx] == '#')
 					grid[gy+my][gx+mx] = 0;
-		nonessy: ;
+		nonessie: ;
 		}
 
 		if (nhits)
