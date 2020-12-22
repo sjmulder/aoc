@@ -7,7 +7,7 @@
 
 #define NAMESZ 16
 
-/* ingredient of allergen */
+/* ingredient or allergen */
 struct thing { char nm[16]; struct thing *other; };
 
 struct meal {
@@ -21,6 +21,7 @@ static struct thing ingreds[256];
 static struct thing allergs[32];
 static int nmeals, ningreds, nallergs;
 
+/* ingredient<->allergent possibility matrix */
 static char canbe[LEN(ingreds)][LEN(allergs)];
 
 static int
