@@ -79,39 +79,6 @@ parse(void)
 }
 
 static void
-dump_meals(void)
-{
-	int i,j;
-
-	for (i=0; i<nmeals; i++) {
-		for (j=0; j < meals[i].ningreds; j++)
-			printf("%s ", ingreds[meals[i].ingreds[j]].nm);
-		putchar('|');
-		for (j=0; j < meals[i].nallergs; j++)
-			printf(" %s", allergs[meals[i].allergs[j]].nm);
-		putchar('\n');
-	}
-}
-
-static void
-dump_canbe(void)
-{
-	int i,j;
-
-	fputs("          ", stdout);
-	for (i=0; i<nallergs; i++)
-		printf("%10s", allergs[i].nm);
-	putchar('\n');
-
-	for (i=0; i<ningreds; i++) {
-		printf("%10s", ingreds[i].nm);
-		for (j=0; j<nallergs; j++)
-			printf("%10d", canbe[i][j]);
-		putchar('\n');
-	}
-}
-
-static void
 pair(int ingred, int allerg)
 {
 	int i;
