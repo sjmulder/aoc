@@ -13,7 +13,7 @@ struct state {
 
 /* returns winner; score is optional */
 static int
-game(struct state *initst, int *score)
+game(struct state *initst, int part, int *score)
 {
 	struct state st, st2;
 	int p,c, round, win;
@@ -28,17 +28,15 @@ game(struct state *initst, int *score)
 		if (round > MAXROUNDS)
 			{ win=0; break; }
 
-		for (p=0; p<2; p++)
-			if (st.cards[p][0] >= st.ncards[p])
-				break;
-
-		if (p==2) {
+		if (part == 2 &&
+		    st.cards[0][0] < st.ncards[0] &&
+		    st.cards[1][0] < st.ncards[1]) {
 			for (p=0; p<2; p++) {
 				st2.ncards[p] = st.cards[p][0];
 				memcpy(st2.cards[p], st.cards[p]+1,
 				    sizeof(**st.cards) * st2.ncards[p]);
 			}
-			win = game(&st2, NULL);
+			win = game(&st2, part, NULL);
 		} else
 			win = st.cards[0][0] < st.cards[1][0];
 
@@ -66,7 +64,7 @@ main()
 {
 	struct state st = {};
 	char buf[16];
-	int p=0, val, score=0;
+	int p=0, val, pt1=0, pt2=0;
 
 	while (fgets(buf, sizeof(buf), stdin))
 		if (sscanf(buf, "Player %d", &p) == 1) {
@@ -77,6 +75,7 @@ main()
 			st.cards[p][st.ncards[p]++] = val;
 		}
 
-	game(&st, &score);
-	printf("%d\n", score);
+	game(&st, 1, &pt1);
+	game(&st, 2, &pt2);
+	printf("%d %d\n", pt1, pt2);
 }
