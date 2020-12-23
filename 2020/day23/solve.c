@@ -66,6 +66,6 @@ main()
 	run(P2ENDNUM, P2ROUNDS);
 	printf(" %"PRi64"d\n", (i64)succ[1] * succ[succ[1]]);
 
-	getchar();
-	//return 0;
+	//getchar();
+	return 0;
 }
