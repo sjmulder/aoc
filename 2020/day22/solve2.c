@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #define NCARDS 52
-#define NHIST (8*1024)
+#define MAXROUNDS 1000
 
 struct state {
 	int cards[2][NCARDS];
@@ -15,16 +15,19 @@ struct state {
 static int
 game(struct state *initst, int *score)
 {
-	struct state *hist;
 	struct state st, st2;
-	int p,c,i, nhist=0, win, bailout=0;
+	int p,c, round, win;
 
-	hist = calloc(NHIST, sizeof(*hist));
-	assert(hist);
-	
 	st = *initst;
 
-	while (1) {
+	for (round=0; ; round++) {
+		/*
+		 * Who needs hash tables when you can use
+		 * /u/mendelmunkis' dirty tricks!
+		 */
+		if (round > MAXROUNDS)
+			{ win=0; break; }
+
 		for (p=0; p<2; p++)
 			if (st.cards[p][0] >= st.ncards[p])
 				break;
@@ -39,10 +42,6 @@ game(struct state *initst, int *score)
 		} else
 			win = st.cards[0][0] < st.cards[1][0];
 
-		for (i=0; i<nhist-1; i++)
-			if (!memcmp(&st, &hist[i], sizeof(st)))
-				{ win = 0; bailout = 1; break; }
-
 		assert(st.ncards[win]+2 <= NCARDS);
 		st.cards[win][st.ncards[win]++] = st.cards[ win][0];
 		st.cards[win][st.ncards[win]++] = st.cards[!win][0];
@@ -51,11 +50,8 @@ game(struct state *initst, int *score)
 			memmove(st.cards[p], st.cards[p]+1,
 			    sizeof(**st.cards) * --st.ncards[p]);
 
-		if (bailout || !st.ncards[!win])
+		if (!st.ncards[!win])
 			break;
-
-		assert(nhist < NHIST);
-		hist[nhist++] = st;
 	}
 
 	if (score)
