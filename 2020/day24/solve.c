@@ -6,15 +6,15 @@
 #define GMID	(GSZ/2)
 #define NROUNDS	100
 
-static signed char grid[GSZ][GSZ];
+static char grid[GSZ][GSZ];
 static int nset;
 
 static void
 step(void)
 {
-	static const signed char dx[] = {-1, 0,-1, 1, 0, 1};
-	static const signed char dy[] = {-1,-1, 0, 0, 1, 1};
-	static signed char nadj[GSZ][GSZ];
+	static const char dx[] = {-1, 0,-1, 1, 0, 1};
+	static const char dy[] = {-1,-1, 0, 0, 1, 1};
+	static char nadj[GSZ][GSZ];
 	int i,x,y;
 
 	memset(nadj, 0, sizeof(nadj));
