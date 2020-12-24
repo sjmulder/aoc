@@ -12,8 +12,8 @@ static int nset;
 static void
 step(void)
 {
-	static const char dx[] = {-1, 0,-1, 1, 0, 1};
-	static const char dy[] = {-1,-1, 0, 0, 1, 1};
+	static const int dx[] = {-1, 0,-1, 1, 0, 1};
+	static const int dy[] = {-1,-1, 0, 0, 1, 1};
 	static char nadj[GSZ][GSZ];
 	int i,x,y;
 
