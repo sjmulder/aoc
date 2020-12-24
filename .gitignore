@@ -8,6 +8,8 @@ day*
 .vs/
 bin/
 obj/
+Debug/
+Release/
 xcuserdata/
 *.o
 *.obj
@@ -15,4 +17,7 @@ xcuserdata/
 *.ilk
 *.user
 *.DSYM
+*.plg
+*.ncb
+*.opt
 *.exe
