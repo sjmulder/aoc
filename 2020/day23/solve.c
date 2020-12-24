@@ -20,7 +20,7 @@ static int succ[P2ENDNUM+1];
 static void
 run(int endnum, int nrounds)
 {
-	int i, first=0,min=0,max=0,cur=0,tmp,dest, gpstart,gpend;
+	int i, first=0,min=0,max=0,cur=0,dest, gp1,gp2,gp3;
 	const char *input = INPUT;
 
 	while (*input)
@@ -37,19 +37,17 @@ run(int endnum, int nrounds)
 	cur = succ[cur] = first;
 
 	for (i=0; i < nrounds; i++) {
+		gp1 = succ[cur]; gp2 = succ[gp1]; gp3 = succ[gp2];
+
 		if ((dest = cur-1) < min)
 			dest = max;
-		while (dest == (tmp = succ[cur]) ||
-		       dest == (tmp = succ[tmp]) ||
-		       dest == (tmp = succ[tmp]))
+		while (dest == gp1 || dest == gp2 || dest == gp3)
 			if ((dest = dest-1) < min)
 				dest = max;
 
-		gpstart = succ[cur];
-		gpend   = succ[succ[gpstart]];
-		succ[cur]   = succ[gpend];
-		succ[gpend] = succ[dest];
-		succ[dest]  = gpstart;
+		succ[cur] = succ[gp3];
+		succ[gp3] = succ[dest];
+		succ[dest] = gp1;
 		cur = succ[cur];
 	}
 }
