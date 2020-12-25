@@ -1,21 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <err.h>
+#include <assert.h>
 
 #define PRESZ 25
 #define CAP 1024
 
 int
-main()
+main(int argc, char **argv)
 {
 	static long ns[CAP];
+	FILE *f;
 	long target=0, start=0,end=0,sum=0, min=LONG_MAX,max=LONG_MIN;
 	int i,j,k, len=0;
 
-	while (scanf(" %ld", &ns[len]) == 1)
-		if (++len >= CAP)
-			errx(1, "ns overflow");
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	while (fscanf(f, " %ld", &ns[len]) == 1) {
+		len++;
+		assert(len < CAP);
+	}
 	
 	for (i=PRESZ; !target && i<len; i++) {
 		for (j=i-PRESZ; j<i; j++)
@@ -39,4 +44,6 @@ main()
 	}
 
 	printf("%ld %ld\n", target, min+max);
+	//getchar();
+	return 0;
 }
