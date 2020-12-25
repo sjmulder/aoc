@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include "../compat/stdio.h"
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
@@ -83,7 +83,7 @@ match(char *rule, char *s, char **endps, int maxendps)
 		nendps += matchsub(rule, s, endps+nendps,
 		    maxendps-nendps);
 		rule = strchr(rule, '|')+1;
-	} while (rule != NULL+1);
+	} while (rule != (char *)NULL+1);
 
 	return nendps;
 }
@@ -108,13 +108,17 @@ matchfull(char *rule, char *s)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static char buf[128];
+	FILE *f;
 	int id, count=0;
 	char *cp;
 
-	while (fgets(buf, sizeof(buf), stdin)) {
+	f = argc > 1 ? fopen(argv[1], "r") : stdin;
+	assert(f);
+
+	while (fgets(buf, sizeof(buf), f)) {
 		if ((cp = strchr(buf, '\n'))) *cp = '\0';
 		if (!*buf) break;
 		id = atoi(buf);
@@ -127,10 +131,12 @@ main()
 
 	assert(*rules[0]);
 
-	while (fgets(buf, sizeof(buf), stdin)) {
+	while (fgets(buf, sizeof(buf), f)) {
 		if ((cp = strchr(buf, '\n'))) *cp = '\0';
 		count += matchfull(rules[0], buf);
 	}
 	
 	printf("%d\n", count);
+	//getchar();
+	return 0;
 }
