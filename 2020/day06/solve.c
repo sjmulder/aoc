@@ -1,22 +1,20 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
 int main() {
-	int i, c=0, prev, p1=0, p2=0, groupsz=0;
-	char map[256]={};
+	int c=0, prev, p1=0, p2=0;
+	uint32_t mask=0, any=0, all=(1<<26)-1;
 
 	while ((prev = c) != EOF)
 		if ((c = getchar()) != '\n' && c != EOF)
-			map[c]++;
+			mask |= 1 << (c-'a');
 		else if (prev == '\n') {
-			for (i='a'; i<='z'; i++) {
-				p1 += map[i] > 0;
-				p2 += map[i] == groupsz;
-			}
-			groupsz = 0;
-			memset(map, 0, 256);
+			p1 += __builtin_popcount(any);
+			p2 += __builtin_popcount(all);
+			any=0; all=(1<<26)-1;
 		} else
-			groupsz++;
+			{ any |= mask; all &= mask; mask=0; }
 
 	printf("%d %d\n", p1, p2);
 }
