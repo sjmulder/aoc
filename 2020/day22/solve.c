@@ -60,13 +60,19 @@ game(struct state *initst, int part, int *score)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
-	struct state st = {};
+	struct state st;
+	FILE *f;
 	char buf[16];
 	int p=0, val, pt1=0, pt2=0;
 
-	while (fgets(buf, sizeof(buf), stdin))
+	f = argc > 1 ? fopen(argv[1], "r") : stdin;
+	assert(f);
+
+	memset(&st, 0, sizeof(st));
+
+	while (fgets(buf, sizeof(buf), f))
 		if (sscanf(buf, "Player %d", &p) == 1) {
 			p--;
 			assert(p>=0 && p<2);
@@ -77,5 +83,8 @@ main()
 
 	game(&st, 1, &pt1);
 	game(&st, 2, &pt2);
+
 	printf("%d %d\n", pt1, pt2);
+	//getchar();
+	return 0;
 }
