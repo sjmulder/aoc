@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <assert.h>
+#include "../compat/string.h"
 
 static int
 validate(char *name, char *val)
@@ -43,22 +44,39 @@ validate(char *name, char *val)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
+	static const char fields[][4] = {"byr", "iyr", "eyr", "hgt",
+	    "hcl", "ecl", "pid"};
+
+	FILE *f;
 	char buf[256], *line, *rest, *lf, *name, *val;
-	int nok_total=0, nok=0;
+	int i, p1=0,p2=0, nf=0,nok=0;
+
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
 
 	do {
-		line = rest = fgets(buf, sizeof(buf), stdin);
-		if (!line || buf[0]=='\0' || buf[0]=='\n')
-			{nok_total += nok==7; nok = 0; continue;}
+		line = rest = fgets(buf, sizeof(buf), f);
+		if (!line || buf[0]=='\0' || buf[0]=='\n') {
+			p1 += nf==7;
+			p2 += nok==7;
+			nok = nf = 0;
+			continue;
+		}
+
 		if ((lf = strchr(line, '\n')))
 			*lf = '\0';
+		
 		while ((val = strsep(&rest, " "))) {
 			name = strsep(&val, ":");
 			nok += validate(name, val);
+			for (i=0; i<7; i++)
+				nf += !!strstr(name, fields[i]);
 		}
 	} while (line);
 
-	printf("%d\n", nok_total);
+	printf("%d %d\n", p1, p2);
+	//getchar();
+	return 0;
 }
