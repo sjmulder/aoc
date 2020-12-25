@@ -81,24 +81,22 @@ step(int adjrule)
 static void
 run(int hitdepth, int adjrule)
 {
-	int trial, x,y, nocc=0;
+	int x,y, nocc=0;
 
-	for (trial=0; trial<100; trial++) {
-		for (y=0; y<h; y++)
-		for (x=0; x<w; x++)
-			if (g[y][x] == '#')
-				g[y][x] = 'L';
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+		if (g[y][x] == '#')
+			g[y][x] = 'L';
 
-		precomp(hitdepth);
+	precomp(hitdepth);
 
+	dump();
+	while (step(adjrule))
 		dump();
-		while (step(adjrule))
-			dump();
 
-		for (y=0; y<h; y++)
-		for (x=0; x<w; x++)
-			nocc += g[y][x] == '#';
-	}
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++)
+		nocc += g[y][x] == '#';
 
 	printf("%d\n", nocc);
 }
@@ -124,6 +122,6 @@ main(int argc, char **argv)
 	run(1, 4);
 	run(CAP, 5);
 
-	// getchar();
+	//getchar();
 	return 0;
 }
