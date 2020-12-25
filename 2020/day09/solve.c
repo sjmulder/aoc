@@ -10,7 +10,7 @@ int
 main()
 {
 	static long ns[CAP];
-	long target=0, min=0,max=0, sum;
+	long target=0, start=0,end=0,sum=0, min=LONG_MAX,max=LONG_MIN;
 	int i,j,k, len=0;
 
 	while (scanf(" %ld", &ns[len]) == 1)
@@ -27,17 +27,15 @@ main()
 	good:	;
 	}
 
-	for (i=0; i<len; i++) {
-		sum=0; min=LONG_MAX; max=LONG_MIN;
+	while (sum != target || end-start <= 2) {
+		/* goes OOB if no solution exists! */
+		while (sum < target) sum += ns[end++];
+		while (sum > target) sum -= ns[start++];
+	}
 
-		for (j=i-1; sum<target &&  j>=0; j--) {
-			min = ns[j]<min ? ns[j] : min;
-			max = ns[j]>max ? ns[j] : max;
-			sum += ns[j];
-		}
-
-		if (sum == target && j < i-1 )
-			break;
+	for (i=start; i<=end; i++) {
+		min = ns[i]<min ? ns[i] : min;
+		max = ns[i]>max ? ns[i] : max;
 	}
 
 	printf("%ld %ld\n", target, min+max);
