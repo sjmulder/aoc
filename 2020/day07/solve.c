@@ -94,6 +94,6 @@ main(int argc, char **argv)
 	p2 = bagcount(gold)-1;
 
 	printf("%d %d\n", p1, p2);
-	getchar();
+	//getchar();
 	return 0;
 }
