@@ -19,6 +19,6 @@ main(int argc, char **argv)
 		if (map[i-1] && !map[i] && map[i+1])
 			{ printf("%d %d\n", max, i); break; }
 
-	getchar();
+	//getchar();
 	return 0;
 }
