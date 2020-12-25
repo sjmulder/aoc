@@ -8,11 +8,15 @@
 int
 main()
 {
-	uint64_t pub=1, key=1;
+	uint64_t pub=1, key1=1, key2=1, key=0;
 
-	while (pub != CARD_PUB) {
-		pub = pub*7 % 20201227;
-		key = key*DOOR_PUB % 20201227;
+	/* credit to /u/ramuuns-u for checking both pub keys at once */
+	while (1) {
+		pub  = pub*7 % 20201227;
+		key1 = key1*CARD_PUB % 20201227;
+		key2 = key1*DOOR_PUB % 20201227;
+		if (pub == CARD_PUB) {key=key2; break;}
+		if (pub == DOOR_PUB) {key=key1; break;}
 	}
 
 	printf("%" PRIu64 "\n", key);
