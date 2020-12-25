@@ -35,7 +35,7 @@ main(int argc, char **argv)
 			continue;
 		if (map[TARGET-sum]) {
 			printf("%d\n", nums[i]*nums[j]*(TARGET-sum));
-			getchar();
+			//getchar();
 			return 0;
 		}
 	}
