@@ -1,13 +1,6 @@
 #include <stdio.h>
-
-#ifdef _MSC_VER
-typedef __int64 i64;
-# define PRi64 "%I64"
-#else
-typedef long long i64;
-# define PRi64 "ll"
-#endif
-
+#include "../compat/stdint.h"
+#include "../compat/inttypes.h"
 
 //#define INPUT		"389125467" /* sample */
 #define INPUT		"326519478" /* input */
@@ -62,7 +55,7 @@ main()
 		putchar('0'+cur);
 
 	run(P2ENDNUM, P2ROUNDS);
-	printf(" %"PRi64"d\n", (i64)succ[1] * succ[succ[1]]);
+	printf(" %" PRId64 "d\n", (int64_t)succ[1] * succ[succ[1]]);
 
 	//getchar();
 	return 0;
