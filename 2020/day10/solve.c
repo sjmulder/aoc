@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <err.h>
+#include <assert.h>
 
 #define CAP 128
 
@@ -11,15 +11,18 @@ cmp(const void *a, const void *b)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static int nums[CAP];
 	static long npaths[CAP];
+	FILE *f;
 	int i,j, len=1, n1=0,n3=1;
 
-	while (scanf(" %d", &nums[len]) == 1)
-		if (++len >= CAP)
-			errx(1, "nums overflow");
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	while (fscanf(f, " %d", &nums[len]) == 1)
+		{ len++; assert(len < CAP); }
 
 	qsort(nums, len, sizeof(nums[0]), cmp);
 
@@ -35,4 +38,6 @@ main()
 			npaths[i] += npaths[j];
 	
 	printf("%d %ld\n", n1*n3, npaths[0]);
+	//getchar();
+	return 0;
 }
