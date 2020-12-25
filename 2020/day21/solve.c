@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "../compat/stdio.h"
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
@@ -40,7 +40,7 @@ getthing(struct thing *things, int *num, char *nm)
 }
 
 static void
-parse(void)
+parse(FILE *f)
 {
 	struct meal *meal=NULL;
 	char word[16], *cp;
@@ -49,7 +49,7 @@ parse(void)
 	assert(sizeof(word) == sizeof(ingreds[0].nm));
 	assert(sizeof(word) == sizeof(allergs[0].nm));
 
-	while (scanf("%s\n", word) == 1) {
+	while (fscanf(f, "%s\n", word) == 1) {
 		if (newmeal) {
 			assert(nmeals < LEN(meals));
 			meal = &meals[nmeals++];
@@ -157,11 +157,15 @@ cmp_nm(const void *a, const void *b)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
+	FILE *f;
 	int i,j, p1=0;
 
-	parse();
+	f = argc > 1 ? fopen(argv[1], "r") : stdin;
+	assert(f);
+
+	parse(f);
 	solve_prep();
 
 	while (solve_crisscross())
@@ -186,4 +190,7 @@ main()
 	for (i=0; i<nallergs; i++)
 		printf("%s%s", i?",":"", allergs[i].other->nm);
 	putchar('\n');
+
+	//getchar();
+	return 0;
 }
