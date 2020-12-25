@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-#include <err.h>
+#include "../compat/stdio.h"
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
@@ -19,35 +18,37 @@ getid(const char *name)
 	for (i=0; i<nnames; i++)
 		if (!strcmp(names[i], name))
 			return i;
-	if (++nnames > LEN(names))
-		errx(1, "name overflow");
-
+	
+	nnames++;
+	assert(nnames <= LEN(names));
 	snprintf(names[i], LEN(names[i]), "%s", name);
+
 	return i;
 }
 
 static void
-parse(void)
+parse(FILE *f)
 {
 	char adj[16], col[16], name[32];
 	int c=0, subj, count;
 
 	while (c != EOF) {
-		if (scanf("%15s %15s", adj, col) != 2)
+		if (fscanf(f, "%15s %15s", adj, col) != 2)
 			return;
 		snprintf(name, 32, "%s %s", adj, col);
 		subj = getid(name);
 
-		while ((c=getchar()) != EOF && c!='\n')
+		while ((c=fgetc(f)) != EOF && c!='\n')
 			if (isdigit(c))
-				{ ungetc(c, stdin); break; }
+				{ ungetc(c, f); break; }
 		while (c != EOF && c != '\n') {
-			if (scanf(" %d %15s %15s", &count,adj,col) != 3)
+			if (fscanf(f, " %d %15s %15s", &count,adj,col)
+			    != 3)
 				return;
 			snprintf(name, 32, "%s %s", adj, col);
 			counts[subj][getid(name)] = count;
 
-			while ((c=getchar())!=EOF && c!=',' && c!='\n')
+			while ((c=fgetc(f))!=EOF && c!=',' && c!='\n')
 				;
 		}
 	}
@@ -78,15 +79,21 @@ bagcount(int subj)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
+	FILE *f;
 	int i, p1=0,p2, gold;
 
-	parse();
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	parse(f);
 	gold = getid("shiny gold");
 	for (i=0; i<nnames; i++)
 		p1 += holds(i, gold);
 	p2 = bagcount(gold)-1;
 
 	printf("%d %d\n", p1, p2);
+	getchar();
+	return 0;
 }
