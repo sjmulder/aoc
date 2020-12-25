@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "../compat/stdint.h"
+#include "../compat/inttypes.h"
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
@@ -33,13 +35,13 @@ static int layoutsz;
 static int gridsz;
 
 static void
-parse(void)
+parse(FILE *f)
 {
 	int id, c, x,y;
 	struct tile *tile;
 
 	while (1) {
-		if (scanf("Tile %d:\n", &id) != 1)
+		if (fscanf(f, "Tile %d:\n", &id) != 1)
 			break;
 
 		assert(ntiles < LEN(tiles));
@@ -52,7 +54,7 @@ parse(void)
 		while (layoutsz*layoutsz < ntiles)
 			layoutsz++;
 
-		while ((c = getchar()) != EOF) {
+		while ((c = fgetc(f)) != EOF) {
 			if (c == '\n' && !x)
 				break;
 			if (c == '\n')
@@ -243,19 +245,23 @@ hunt(void)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
-	long long p1;
+	FILE *f;
+	int64_t p1;
 	int p2=0, x,y;
 
-	parse();
+	f = argc > 1 ? fopen(argv[1], "r") : stdin;
+	assert(f);
+
+	parse(f);
 
 	if (!dolayout(0)) {
 		printf("no p1 solution\n");
 		return 0;
 	}
 
-	p1 = (long long)
+	p1 = (int64_t)
 	    layout[0]->id *
 	    layout[layoutsz-1]->id *
 	    layout[ntiles-layoutsz]->id *
@@ -272,5 +278,7 @@ main()
 	for (x=0; x<gridsz; x++)
 		p2 += grid[y][x];
 
-	printf("%lld %d\n", p1, p2);
+	printf("%" PRId64 " %d\n", p1, p2);
+	//getchar();
+	return 0;
 }
