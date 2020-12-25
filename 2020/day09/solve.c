@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #define PRESZ 25
-#define CAP 1024
+#define CAP 2048
 
 int
 main(int argc, char **argv)
@@ -33,9 +33,10 @@ main(int argc, char **argv)
 	}
 
 	while (sum != target || end-start <= 2) {
-		/* goes OOB if no solution exists! */
-		while (sum < target) sum += ns[end++];
-		while (sum > target) sum -= ns[start++];
+		while (sum < target)
+			{ sum += ns[end++]; assert(end<CAP); }
+		while (sum > target)
+			{ sum -= ns[start++]; assert(start<CAP); }
 	}
 
 	for (i=start; i<=end; i++) {
