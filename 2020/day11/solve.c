@@ -3,29 +3,11 @@
 #include <assert.h>
 
 #define CAP	128
-#define VERBOSE	0
 #define NTRIALS	100
 
 static char g[CAP][CAP], nadj[CAP][CAP], *adjp[CAP][CAP][8];
 static int w,h;
 
-static void
-dump(void)
-{
-#if VERBOSE
-	int x,y;
-
-	printf("  %d x %d\n", w, h);
-
-	for (y=0; y<h; y++) {
-		for (x=0; x<w; x++)
-			printf("%d", nadj[y][x]);
-		printf(" %.*s\n", w, g[y]);
-	}
-
-	putchar('\n');
-#endif
-}
 
 static void
 precomp(int hitdepth)
@@ -90,9 +72,8 @@ run(int hitdepth, int adjrule)
 
 	precomp(hitdepth);
 
-	dump();
 	while (step(adjrule))
-		dump();
+		;
 
 	for (y=0; y<h; y++)
 	for (x=0; x<w; x++)
