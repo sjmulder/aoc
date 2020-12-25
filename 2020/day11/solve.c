@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <err.h>
+#include <assert.h>
 
 #define CAP	128
 #define VERBOSE	0
@@ -106,20 +106,24 @@ run(int hitdepth, int adjrule)
 int
 main(int argc, char **argv)
 {
+	FILE *f;
 	char *c;
 
-	if (argc == 2 && !freopen(argv[1], "r", stdin))
-		err(1, "%s", argv[1]);
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
 
 	for (h=0; h<CAP; h++) {
-		if (!fgets(g[h], CAP, stdin))
+		if (!fgets(g[h], CAP, f))
 			break;
-		if (!(c = strchr(g[h], '\n')))
-			errx(1, "input to wide");
+		c = strchr(g[h], '\n');
+		assert(c && "input to wide");
 		if (h==1)
 			w = c-g[h]; 
 	}
 
 	run(1, 4);
 	run(CAP, 5);
+
+	// getchar();
+	return 0;
 }
