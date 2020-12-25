@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <err.h>
+#include <assert.h>
 
 #define MAXOPS 1024
 
@@ -9,8 +9,12 @@ static struct {int type, arg, hits;} ops[MAXOPS];
 static struct {int pc, acc;} vm;
 static int nops;
 
-static void run(void) {
-	int hits[MAXOPS] = {};
+static void
+run(void)
+{
+	int hits[MAXOPS];
+
+	memset(hits, 0, sizeof(hits));
 
 	do switch (ops[vm.pc].type) {
 		case OACC: vm.acc += ops[vm.pc].arg;   break;
@@ -18,18 +22,24 @@ static void run(void) {
 	} while (++vm.pc>=0 && vm.pc<nops && !hits[vm.pc]++);
 }
 
-int main() {
+int
+main(int argc, char **argv)
+{
+	FILE *f;
 	char s[4];
 	int i, new,old;
 
-	while ((scanf("%3s %d", s, &ops[nops].arg)) == 2) {
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	while ((fscanf(f, "%3s %d", s, &ops[nops].arg)) == 2) {
 		     if (!strcmp(s, "nop")) ops[nops].type = ONOP;
 		else if (!strcmp(s, "acc")) ops[nops].type = OACC;
 		else if (!strcmp(s, "jmp")) ops[nops].type = OJMP;
-		else errx(1, "bad op at line %d", nops+1);
+		else assert(0 && "bad op");
 
-		if (++nops >= MAXOPS)
-			errx(1, "ops overflow");
+		nops++;
+		assert(nops < MAXOPS);
 	}
 
 	run();
@@ -47,4 +57,6 @@ int main() {
 	}
 
 	printf("%d\n", vm.acc);
+	//getchar();
+	return 0;
 }
