@@ -6,7 +6,7 @@
 #define VERBOSE	0
 #define NTRIALS	100
 
-static char g[CAP][CAP], nadj[CAP][CAP];
+static char g[CAP][CAP], nadj[CAP][CAP], *adjp[CAP][CAP][8];
 static int w,h;
 
 static void
@@ -27,24 +27,46 @@ dump(void)
 #endif
 }
 
-static int
-step(int hitdepth, int adjrule)
+static void
+precomp(int hitdepth)
 {
-	int i, x,y, dx,dy, x2,y2, nchange=0;
+	int x,y, dir, dx,dy, x2,y2, i;
+
+	memset(adjp, 0, sizeof(adjp));
+
+	for (y=0; y<h; y++)
+	for (x=0; x<w; x++) {
+		dir = 0;
+
+		for (dx=-1; dx<2; dx++)
+		for (dy=-1; dy<2; dy++) {
+			if (!dx && !dy)
+				continue;
+			for (i=0, y2=y, x2=x; i<hitdepth; i++) {
+				if ((y2 += dy) < 0 || y2 >= h) break;
+				if ((x2 += dx) < 0 || x2 >= w) break;
+				if (g[y2][x2] != '.') {
+					adjp[y][x][dir] = &g[y2][x2];
+					break;
+				}
+			}
+			dir++;
+		}
+	}
+}
+
+static int
+step(int adjrule)
+{
+	int x,y,dir, nchange=0;
 
 	memset(nadj, 0, sizeof(nadj));
 
 	for (y=0; y<h; y++)
 	for (x=0; x<w; x++)
-	for (dx=-1; dx<2; dx++)
-	for (dy=-1; dy<2; dy++)
-		if (dx || dy)
-			for (i=0, y2=y, x2=x; i<hitdepth; i++) {
-				if ((y2 += dy) < 0 || y2 >= h) break;
-				if ((x2 += dx) < 0 || x2 >= w) break;
-				if (g[y2][x2] == '#') nadj[y][x]++;
-				if (g[y2][x2] != '.') break;
-			}
+	for (dir=0; dir<8; dir++)
+		if (adjp[y][x][dir])
+			nadj[y][x] += *adjp[y][x][dir] == '#';
 
 	for (y=0; y<h; y++)
 	for (x=0; x<w; x++)
@@ -67,8 +89,10 @@ run(int hitdepth, int adjrule)
 			if (g[y][x] == '#')
 				g[y][x] = 'L';
 
+		precomp(hitdepth);
+
 		dump();
-		while (step(hitdepth, adjrule))
+		while (step(adjrule))
 			dump();
 
 		for (y=0; y<h; y++)

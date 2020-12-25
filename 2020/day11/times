@@ -1,3 +1,4 @@
+# note: solve-pre has now replaced solve
 ./solve < input  5,38s user 0,01s system 99% cpu 5,386 total
 ./solve < input  5,46s user 0,01s system 99% cpu 5,474 total
 ./solve < input  5,35s user 0,00s system 99% cpu 5,356 total
