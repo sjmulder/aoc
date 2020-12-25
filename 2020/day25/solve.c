@@ -8,16 +8,14 @@
 int
 main()
 {
-	int i, card_sec;
-	uint64_t val;
+	uint64_t pub=1, key=1;
 
-	for (val=1, card_sec=0; val != CARD_PUB; card_sec++)
-		val = val*7 % 20201227;
-	for (val=1, i=0; i<card_sec; i++)
-		val = val*DOOR_PUB % 20201227;
+	while (pub != CARD_PUB) {
+		pub = pub*7 % 20201227;
+		key = key*DOOR_PUB % 20201227;
+	}
 
-	printf("%" PRIu64 "\n", val);
+	printf("%" PRIu64 "\n", key);
 	//getchar();
-
 	return 0;
 }
