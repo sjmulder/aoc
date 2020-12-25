@@ -1,3 +1,3 @@
-PROGS+=	solve solve-2d
+PROGS+=	solve
 
 include ../common.mk

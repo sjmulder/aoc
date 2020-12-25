@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <assert.h>
 #include <err.h>
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
 static char names[1024][32];
-static struct { int subj, count, obj; } rules[4096];
-static int nnames, nrules;
+static int counts[1024][1024];
+static int nnames;
 
 static int
 getid(const char *name)
@@ -18,7 +19,6 @@ getid(const char *name)
 	for (i=0; i<nnames; i++)
 		if (!strcmp(names[i], name))
 			return i;
-
 	if (++nnames > LEN(names))
 		errx(1, "name overflow");
 
@@ -29,48 +29,26 @@ getid(const char *name)
 static void
 parse(void)
 {
-	static char buf[256];
-	char *c, *word, *rest;
-	int subj, count, obj;
+	char adj[16], col[16], name[32];
+	int c=0, subj, count;
 
-	while (fgets(buf, LEN(buf), stdin)) {
-		if ((c = strchr(buf, '\n')))
-			*c = '\0';
+	while (c != EOF) {
+		if (scanf("%15s %15s", adj, col) != 2)
+			return;
+		snprintf(name, 32, "%s %s", adj, col);
+		subj = getid(name);
 
-		word = rest = buf;
-		rest = strchr(rest+1, ' '); assert(rest);
-		rest = strchr(rest+1, ' '); assert(rest);
-		*(rest++) = '\0';
-		subj = getid(word);
+		while ((c=getchar()) != EOF && c!='\n')
+			if (isdigit(c))
+				{ ungetc(c, stdin); break; }
+		while (c != EOF && c != '\n') {
+			if (scanf(" %d %15s %15s", &count,adj,col) != 3)
+				return;
+			snprintf(name, 32, "%s %s", adj, col);
+			counts[subj][getid(name)] = count;
 
-		rest = strchr(rest+1, ' '); assert(rest);
-		rest = strchr(rest+1, ' '); assert(rest);
-		rest++;
-
-		while (1) {
-			word = rest;
-			rest = strchr(rest+1, ' '); assert(rest);
-			*(rest++) = '\0';
-			if (!strcmp(word, "no"))
-				break;
-			count = atoi(word);
-
-			word = rest;
-			rest = strchr(rest+1, ' '); assert(rest);
-			rest = strchr(rest+1, ' '); assert(rest);
-			*(rest++) = '\0';
-			obj = getid(word);
-
-			if (nrules >= LEN(rules))
-				errx(1, "rules overflow");
-			rules[nrules].subj = subj;
-			rules[nrules].count = count;
-			rules[nrules].obj = obj;
-			nrules++;
-
-			rest = strchr(rest+1, ' ');
-			if (!rest)
-				break;
+			while ((c=getchar())!=EOF && c!=',' && c!='\n')
+				;
 		}
 	}
 }
@@ -80,12 +58,11 @@ holds(int subj, int obj)
 {
 	int i;
 
-	for (i=0; i<nrules; i++) {
-		if (rules[i].subj != subj)    continue;
-		if (rules[i].obj == obj)      return 1;
-		if (holds(rules[i].obj, obj)) return 1;
-	}
-
+	if (counts[subj][obj])
+		return 1;
+	for (i=0; i<nnames; i++)
+		if (counts[subj][i] && holds(i, obj))
+			return 1;
 	return 0;
 }
 
@@ -94,10 +71,9 @@ bagcount(int subj)
 {
 	int i, acc=1;
 
-	for (i=0; i<nrules; i++)
-		if (rules[i].subj == subj)
-			acc += rules[i].count * bagcount(rules[i].obj);
-
+	for (i=0; i<nnames; i++)
+		if (counts[subj][i])
+			acc += counts[subj][i] * bagcount(i);
 	return acc;
 }
 
