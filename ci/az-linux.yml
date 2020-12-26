@@ -1,0 +1,12 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: cd 2020/c && make
+  displayName: Build
+
+- script: cd 2020/c && ./all.sh
+  displayName: Run
