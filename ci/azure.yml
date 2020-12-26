@@ -7,3 +7,11 @@ jobs:
     displayName: Build
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
+- job: macOS
+  pool:
+    vmImage: macOS-10.15
+  steps:
+  - script: cd 2020 && make -j
+    displayName: Build
+  - script: cd 2020/c && ./all.sh
+    displayName: Run (C)
