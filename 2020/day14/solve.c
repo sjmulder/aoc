@@ -52,6 +52,6 @@ main(int argc, char **argv)
 	}
 
 	printf("%" PRIu64 " %" PRIu64 "\n", p1_memsum(), p2_sum);
-	getchar();
+	//getchar();
 	return 0;
 }

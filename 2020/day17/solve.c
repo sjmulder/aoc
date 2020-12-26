@@ -26,6 +26,6 @@ main(int argc, char **argv)
 
 	printf("%d ",  p1_run());
 	printf("%d\n", p2_run());
-	getchar();
+	//getchar();
 	return 0;
 }

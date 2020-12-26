@@ -67,6 +67,6 @@ main(int argc, char **argv)
 	}
 
 	printf("%" PRId64 " %" PRId64 "\n", p1, p2);
-	getchar();
+	//getchar();
 	return 0;
 }
