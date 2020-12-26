@@ -12,7 +12,7 @@ CSFLAGS+=
 all: ${PROGS}
 
 clean:
-	rm -rf ${PROGS} *.dSYM
+	rm -rf ${PROGS} *.o *.dSYM
 
 .PHONY:    all clean
 .SUFFIXES: .cs .exe
