@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <err.h>
+#include <assert.h>
+#include "../compat/stdint.h"
+#include "../compat/inttypes.h"
 
-static long eval(char **, int);
+static int64_t eval(char **, int);
 
-static long
+static int64_t
 nextval(char **sp, int pt)
 {
-	long val;
+	int64_t val;
 	char *end;
 
 	while (1)
@@ -16,23 +18,21 @@ nextval(char **sp, int pt)
 		case '(':
 			(*sp)++;
 			val = eval(sp, pt);
-			if (**sp != ')')
-				errx(1, "expected ): %c\n", **sp);
+			assert(**sp == ')');
 			(*sp)++;
 			return val;
 		default:
 			val = strtol(*sp, &end, 10);
-			if (*sp == end)
-				errx(1, "expected number: %s\n", *sp);
+			assert(*sp != end);
 			*sp = end;
 			return val;
 		}
 }
 
-static long
+static int64_t
 eval(char **sp, int pt)
 {
-	long acc;
+	int64_t acc;
 
 	acc = nextval(sp, pt);
 
@@ -47,20 +47,26 @@ eval(char **sp, int pt)
 			(*sp)++;
 			acc *= pt==1 ? nextval(sp,pt) : eval(sp,pt);
 			break;
-		default:   errx(1, "unexpected: %c\n", **sp);
+		default:   assert(0 && "unexpected char");
 		}
 }
 
 int
-main()
+main(int argc, char **argv)
 {
-	long p1=0, p2=0;
+	FILE *f;
+	int64_t p1=0, p2=0;
 	char *s, buf[512];
 
-	while (fgets(buf, sizeof(buf), stdin)) {
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	while (fgets(buf, sizeof(buf), f)) {
 		s = buf; p1 += eval(&s, 1);
 		s = buf; p2 += eval(&s, 2);
 	}
 
-	printf("%ld %ld\n", p1, p2);
+	printf("%" PRId64 " %" PRId64 "\n", p1, p2);
+	getchar();
+	return 0;
 }
