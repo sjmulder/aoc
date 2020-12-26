@@ -8,7 +8,6 @@
 static char g[CAP][CAP], nadj[CAP][CAP], *adjp[CAP][CAP][8];
 static int w,h;
 
-
 static void
 precomp(int hitdepth)
 {
