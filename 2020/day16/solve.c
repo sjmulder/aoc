@@ -17,33 +17,6 @@ static struct ticket tickets[MAXTICKETS];
 static int nfields, ntickets;
 
 static void
-dump(void)
-{
-#if VERBOSE
-	int i, j;
-
-	printf("___\nrules:\n");
-	for (i=0; i < nfields; i++)
-		printf(" [%d]->[%d] %d-%d, %d-%d %s\n",
-		    i, rules[i].field,
-		    rules[i].min[0], rules[i].max[0],
-		    rules[i].min[1], rules[i].max[1],
-		    rules[i].isdep ? "DEP" : "");
-
-	printf("\ntickets:\n");
-	for (i=0; i < ntickets; i++) {
-		printf(" [%d] ", i);
-		for (j=0; j < nfields-1; j++)
-			printf("%d,", tickets[i].fs[j]);
-		printf("%d %s\n", tickets[i].fs[j],
-		    tickets[i].inval ? "BAD" : "");
-	}
-
-	putchar('\n');
-#endif
-}
-
-static void
 parse(FILE *f)
 {
 	static char buf[128];
@@ -119,7 +92,6 @@ main(int argc, char **argv)
 	assert(f);
 
 	parse(f);
-	dump();
 
 	for (ti=1; ti < ntickets; ti++)
 	for (fi=0; fi < nfields; fi++) {
@@ -130,8 +102,6 @@ main(int argc, char **argv)
 		part1 += tickets[ti].fs[fi];
 	anyvalid: ;
 	}
-
-	dump();
 
 	for (ri=0; ri < nfields; ri++)
 		rules[ri].field = -1;
@@ -156,8 +126,6 @@ main(int argc, char **argv)
 				nassigned++;
 			}
 		}
-
-	dump();
 
 	for (ri=0; ri < nfields; ri++)
 		if (rules[ri].isdep)
