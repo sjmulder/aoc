@@ -1,3 +1,3 @@
-PROGS+=	solve solve-brute solve-golf
+PROGS+=	solve solve-golf
 
 include ../common.mk
