@@ -1,12 +1,12 @@
 all: c c-golf cs
 
-c:	; make -C c
-c-golf:	; make -C c-golf
-cs:	; make -C cs
+c:	; ${MAKE} -C c
+c-golf:	; ${MAKE} -C c-golf
+cs:	; ${MAKE} -C cs
 
 clean:
-	make -C c clean
-	make -C c-golf clean
-	make -C cs clean
+	${MAKE} -C c clean
+	${MAKE} -C c-golf clean
+	${MAKE} -C cs clean
 
 .PHONY: all clean c c-golf cs
