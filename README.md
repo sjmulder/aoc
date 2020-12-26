@@ -1,7 +1,7 @@
 Advent of Code
 ==============
 
-Linux: [![Build Status](https://dev.azure.com/sjmulder/aoc/_apis/build/status/aoc-linux?branchName=master)](https://dev.azure.com/sjmulder/aoc/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://dev.azure.com/sjmulder/aoc/_apis/build/status/aoc?branchName=master)](https://dev.azure.com/sjmulder/aoc/_build/latest?definitionId=6&branchName=master)
 
 [Advent of Code](https://www.adventofcode.com) solutions by myself (Sijmen).
 
