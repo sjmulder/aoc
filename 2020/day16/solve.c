@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include <err.h>
+#include <assert.h>
+#include "../compat/stdint.h"
+#include "../compat/inttypes.h"
 
 #define MAXFIELDS	32
 #define MAXTICKETS	256
@@ -42,44 +44,42 @@ dump(void)
 }
 
 static void
-parse(void)
+parse(FILE *f)
 {
 	static char buf[128];
 	struct rule *rule;
 	struct ticket *ticket;
 	char *c;
-	int i;
+	int i, n;
 
-	while (fgets(buf, sizeof(buf), stdin)) {
+	while (fgets(buf, sizeof(buf), f)) {
 		if ((c = strchr(buf, '\n')))
 			*c = '\0';
 		if (!buf[0])
 			break;	/* end of rules */
-		if (nfields >= MAXFIELDS)	
-			errx(1, "too many rules");
+		assert(nfields < MAXFIELDS);
 		rule = &rules[nfields++];
 		rule->isdep = !!strstr(buf, "depart");
-		if (sscanf(strchr(buf, ':'), ": %d-%d or %d-%d",
+		n = sscanf(strchr(buf, ':'), ": %d-%d or %d-%d",
 		    &rule->min[0], &rule->max[0],
-		    &rule->min[1], &rule->max[1]) != 4)
-			errx(1, "bad rule line: %s", buf);
+		    &rule->min[1], &rule->max[1]);
+		assert(n == 4);
 	}
 
 	while (1) {
 		if (ntickets < 2)
-			fgets(buf, sizeof(buf), stdin);
+			fgets(buf, sizeof(buf), f);
 		if (ntickets == 1)
-			fgets(buf, sizeof(buf), stdin);
-		if (ntickets >= MAXTICKETS)
-			errx(1, "too many tickets");
+			fgets(buf, sizeof(buf), f);
+		assert(nfields < MAXFIELDS);
 		ticket = &tickets[ntickets];
 		for (i=0; i < nfields; i++)
-			if (scanf("%d", &ticket->fs[i]) == 1)
-				getchar();	/* , or \n */
+			if (fscanf(f, "%d", &ticket->fs[i]) == 1)
+				fgetc(f);	/* , or \n */
 			else if (i == 0)
 				return;
 			else
-				errx(1, "%d: missing field", ntickets);
+				assert(0 && "missing field");
 		ntickets++;
 	}
 }
@@ -109,12 +109,16 @@ testrule(struct rule *rule, int field)
 }
 
 int
-main(void)
+main(int argc, char **argv)
 {
+	FILE *f;
 	int ti,fi,ri, nassigned=0, nmatch, lastmatch=0;
-	long part1=0, part2=1;
+	int64_t part1=0, part2=1;
 
-	parse();
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	parse(f);
 	dump();
 
 	for (ti=1; ti < ntickets; ti++)
@@ -128,7 +132,6 @@ main(void)
 	}
 
 	dump();
-	printf("%ld\n", part1);
 
 	for (ri=0; ri < nfields; ri++)
 		rules[ri].field = -1;
@@ -160,5 +163,7 @@ main(void)
 		if (rules[ri].isdep)
 			part2 *= tickets[0].fs[rules[ri].field];
 
-	printf("%ld\n", part2);
+	printf("%" PRId64 " %" PRId64 "\n", part1, part2);
+	getchar();
+	return 0;
 }
