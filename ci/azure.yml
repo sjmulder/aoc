@@ -3,7 +3,7 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - script: cd 2020 && make -j
+  - script: cd 2020 && ../ci/az-make.sh -j
     displayName: Build
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
@@ -11,7 +11,7 @@ jobs:
   pool:
     vmImage: macOS-10.15
   steps:
-  - script: cd 2020 && make -j
+  - script: cd 2020 && ../ci/az-make.sh -j
     displayName: Build
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
