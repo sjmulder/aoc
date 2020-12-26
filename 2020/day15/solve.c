@@ -1,15 +1,20 @@
 #include <stdio.h>
+#include <assert.h>
 
 #define P1END 2020
 #define P2END 30000000
 
 int
-main()
+main(int argc, char **argv)
 {
 	static int map[P2END];
+	FILE *f;
 	int turn, n, prev=0;
 
-	for (turn=0; scanf("%d,", &n) == 1; turn++) {
+	f = argc<2 ? stdin : fopen(argv[1], "r");
+	assert(f);
+
+	for (turn=0; fscanf(f, "%d,", &n) == 1; turn++) {
 		map[prev] = turn;
 		prev = n;
 	}
@@ -24,5 +29,6 @@ main()
 	}
 
 	printf("%d\n", n);
+	getchar();
+	return 0;
 }
-
