@@ -91,6 +91,14 @@ SOURCE=.\solve.c
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\compat\inttypes.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\compat\stdint.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 
