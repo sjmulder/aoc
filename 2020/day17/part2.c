@@ -1,18 +1,17 @@
-#include <stdio.h>
+#include <assert.h>
 #include <string.h>
 
 #define SZ 30
 
 static char gr[SZ][SZ][SZ][SZ];
 
-static void
-parse(void)
+void
+p2_set(int x, int y, char val)
 {
-	int x=SZ/2,y=SZ/2,z=SZ/2,w=SZ/2, c;
+	x += SZ/2; assert(x>=0); assert(x<SZ);
+	y += SZ/2; assert(y>=0); assert(y<SZ);
 
-	for (; (c = getchar()) != EOF; x++)
-		     if (c == '#')  gr[w][z][y][x] = 1;
-		else if (c == '\n') { x = SZ/2-1; y++; }
+	gr[SZ/2][SZ/2][y][x] = val;
 }
 
 static void
@@ -60,11 +59,12 @@ counton(void)
 }
 
 int
-main()
+p2_run(void)
 {
 	int i;
 
-	parse();
-	for (i=0; i<6; i++) step();
-	printf("%d\n", counton());
+	for (i=0; i<6; i++)
+		step();
+	
+	return counton();
 }
