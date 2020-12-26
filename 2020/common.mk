@@ -17,10 +17,6 @@ clean:
 .PHONY:    all clean
 .SUFFIXES: .cs .exe
 
-${PROGS}: ../compat/*.h
-
-.c:
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< ${LDLIBS}
 .cs.exe:
 	$(CSC) $(CSFLAGS) -out:$@ $<
 
