@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: make -j
+- script: cd 2020 && make -j
   displayName: Build
 
 - script: cd 2020/c && ./all.sh
