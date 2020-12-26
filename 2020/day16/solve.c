@@ -164,6 +164,6 @@ main(int argc, char **argv)
 			part2 *= tickets[0].fs[rules[ri].field];
 
 	printf("%" PRId64 " %" PRId64 "\n", part1, part2);
-	getchar();
+	//getchar();
 	return 0;
 }

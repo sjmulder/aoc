@@ -29,6 +29,6 @@ main(int argc, char **argv)
 	}
 
 	printf("%d\n", n);
-	getchar();
+	//getchar();
 	return 0;
 }
