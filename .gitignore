@@ -12,6 +12,7 @@ Debug/
 Release/
 xcuserdata/
 *.o
+*.d
 *.obj
 *.pdb
 *.ilk
