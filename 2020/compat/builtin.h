@@ -14,5 +14,5 @@ int popcount(unsigned);
 #ifdef COMPAT_CTZ
 int ctz64(uint64_t);
 #else
-# define ctz64(x) __builtin_ctzl(x)
+# define ctz64(x) __builtin_ctzll(x)
 #endif
