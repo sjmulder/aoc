@@ -59,7 +59,7 @@ step(int adjrule)
 	return nchange;
 }
 
-static void
+static int
 run(int hitdepth, int adjrule)
 {
 	int x,y, nocc=0;
@@ -78,7 +78,7 @@ run(int hitdepth, int adjrule)
 	for (x=0; x<w; x++)
 		nocc += g[y][x] == '#';
 
-	printf("%d\n", nocc);
+	return nocc;
 }
 
 int
@@ -99,8 +99,8 @@ main(int argc, char **argv)
 			w = c-g[h]; 
 	}
 
-	run(1, 4);
-	run(CAP, 5);
+	printf("%d ",  run(1, 4));
+	printf("%d\n", run(CAP, 5));
 
 	//getchar();
 	return 0;

@@ -182,7 +182,7 @@ main(int argc, char **argv)
 		if (!ingreds[meals[i].ingreds[j]].other)
 			p1++;
 
-	printf("%d\n", p1);
+	printf("%d ", p1);
 
 	/* note, breaks references to allergs[] */
 	qsort(allergs, nallergs, sizeof(allergs[0]), cmp_nm);
