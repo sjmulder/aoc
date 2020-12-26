@@ -1,7 +1,7 @@
 jobs:
 - job: Linux
   pool:
-    vmImage: 'ubuntu-latest'
+    vmImage: ubuntu-20.04
   steps:
   - script: cd 2020 && make -j
     displayName: Build
