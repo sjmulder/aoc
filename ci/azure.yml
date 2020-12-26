@@ -1,4 +1,5 @@
 jobs:
+
 - job: Linux
   pool:
     vmImage: ubuntu-20.04
@@ -8,6 +9,7 @@ jobs:
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
     failOnStderr: true
+
 - job: macOS
   pool:
     vmImage: macOS-10.15
@@ -17,3 +19,13 @@ jobs:
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
     failOnStderr: true
+
+- job: Windows (VC++6)
+  pool:
+    name: default
+    demands: vc6
+  steps:
+  - script: cd 2020\c\vc6 & msdev aoc2020.dsw /make all /rebuild
+    displayName: Build
+  - script: cd 2020\c\vc6 & all.bat
+    displayName: Run
