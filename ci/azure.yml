@@ -20,7 +20,7 @@ jobs:
     displayName: Run (C)
     failOnStderr: true
 
-- job: Windows (VC++6)
+- job: Windows_VC6
   pool:
     name: default
     demands: vc6
