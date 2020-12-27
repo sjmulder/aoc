@@ -71,6 +71,17 @@ jobs:
       arguments: '"x64 Release"'
       workingDirectory: 2020/c/vs/
 
+- job: vc_arm
+  displayName: Visual C++ (arm)
+  pool:
+    vmImage: windows-2019
+  steps:
+  - task: VSBuild@1
+    displayName: Build
+    inputs:
+      platform: ARM
+      configuration: Release
+
 - job: vc6
   displayName: Visual C++ 6
   continueOnError: true
