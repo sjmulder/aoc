@@ -37,6 +37,23 @@ jobs:
     displayName: Run (C)
     failOnStderr: true
 
+- job: vc
+  displayName: Visual C++
+  pool:
+    vmImage: windows-2019
+  steps:
+  - task: VSBuild@1
+    displayName: Build
+    inputs:
+      platform: x86
+      configuration: Release
+  - task: PowerShell@2
+    displayName: Run (C)
+    inputs:
+      filePath: 2020/c/vs/all.ps1
+      arguments: '"Win32 Release"'
+      workingDirectory: 2020/c/vs/
+
 - job: vc6
   displayName: Visual C++ 6
   continueOnError: true
