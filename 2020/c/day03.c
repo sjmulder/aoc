@@ -26,7 +26,7 @@ main(int argc, char **argv)
 
 	in = argc<2 ? stdin : fopen(argv[1], "r");
 	assert(in);
-	sz = fread(buf, 1, sizeof(buf), in);
+	sz = (int)fread(buf, 1, sizeof(buf), in);
 	w = (int)(strchr(buf, '\n') - buf);
 
 	printf("%" PRId64 " %" PRId64 "\n",

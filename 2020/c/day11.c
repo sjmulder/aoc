@@ -96,7 +96,7 @@ main(int argc, char **argv)
 		c = strchr(g[h], '\n');
 		assert(c && "input to wide");
 		if (h==1)
-			w = c-g[h]; 
+			w = (int)(c-g[h]);
 	}
 
 	printf("%d ",  run(1, 4));
