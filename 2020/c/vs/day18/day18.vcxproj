@@ -21,10 +21,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\day18.c" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\compat\inttypes.h" />
-    <ClInclude Include="..\..\compat\stdint.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

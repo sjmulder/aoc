@@ -19,12 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\compat\builtin.c" />
     <ClCompile Include="..\..\day06.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\compat\builtin.h" />
-    <ClInclude Include="..\..\compat\stdint.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

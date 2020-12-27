@@ -19,15 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\compat\builtin.c" />
     <ClCompile Include="..\..\day14-p1.c" />
     <ClCompile Include="..\..\day14-p2.c" />
     <ClCompile Include="..\..\day14.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\compat\builtin.h" />
-    <ClInclude Include="..\..\compat\inttypes.h" />
-    <ClInclude Include="..\..\compat\stdint.h" />
+    <ProjectReference Include="..\compat\compat.vcxproj">
+      <Project>{5801e4e5-20fd-4c9a-9c7e-a440d6b7ac1d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -19,11 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\compat\string.c" />
     <ClCompile Include="..\..\day04.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\compat\string.h" />
+    <ProjectReference Include="..\compat\compat.vcxproj">
+      <Project>{5801e4e5-20fd-4c9a-9c7e-a440d6b7ac1d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

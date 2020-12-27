@@ -141,9 +141,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\day19.c" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\compat\stdio.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
