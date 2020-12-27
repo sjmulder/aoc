@@ -7,7 +7,7 @@ main(int argc, char **argv)
 {
 	FILE *f;
 	char c;
-	int n,tmp, x1=0,y1=0,dir1=0, x2=0,y2=0, wx=10,wy=-1, rot;
+	int n,tmp, x1=0,y1=0,dir1=0, x2=0,y2=0, wx=10,wy=-1, rot=0;
 
 	f = argc<2 ? stdin : fopen(argv[1], "r");
 	assert(f);
