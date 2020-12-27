@@ -5,6 +5,7 @@ PROGS+=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 PROGS+= day13-p2-brute
 
 CFLAGS+=	-Wall -Wextra
+CFLAGS+=	-Wno-unused-result
 CFLAGS+=	-O3
 CFLAGS+=	-MMD
 

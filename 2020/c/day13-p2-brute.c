@@ -24,7 +24,7 @@ load(void)
 	long off=0, id;
 	char *rest, *field;
 
-	(void)fgets(buf, BUFSZ, stdin);
+	fgets(buf, BUFSZ, stdin);
 	rest = fgets(buf, BUFSZ, stdin);
 
 	while ((field = strsep(&rest, ","))) {
