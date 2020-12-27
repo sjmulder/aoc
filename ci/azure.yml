@@ -13,6 +13,7 @@ jobs:
 
 - job: linux_arm
   displayName: Linux (arm)
+  continueOnError: true
   pool:
     name: default
     demands:
@@ -38,6 +39,7 @@ jobs:
 
 - job: vc6
   displayName: Visual C++ 6
+  continueOnError: true
   pool:
     name: default
     demands: vc6
