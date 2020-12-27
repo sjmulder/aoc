@@ -41,9 +41,9 @@ parse(FILE *f)
 
 	while (1) {
 		if (ntickets < 2)
-			fgets(buf, sizeof(buf), f);
+			(void)fgets(buf, sizeof(buf), f);
 		if (ntickets == 1)
-			fgets(buf, sizeof(buf), f);
+			(void)fgets(buf, sizeof(buf), f);
 		assert(nfields < MAXFIELDS);
 		ticket = &tickets[ntickets];
 		for (i=0; i < nfields; i++)
