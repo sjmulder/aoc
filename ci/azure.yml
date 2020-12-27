@@ -19,7 +19,7 @@ jobs:
     - agent.os -equals Linux
     - agent.osarchitecture -equals ARM
   steps:
-  - script: cd 2020 && ../ci/az-make.sh -j c c-golf
+  - script: cd 2020 && ../ci/az-make.sh -j c
     displayName: Build
   - script: cd 2020/c && ./all.sh
     displayName: Run (C)
