@@ -1,6 +1,6 @@
 #include "../compat/stdint.h"
 
-#if defined(_MSC_VER) && _MSC_VER <= 1200
+#if defined(_MSC_VER) && (_MSC_VER <= 1200 || _M_ARM)
 # define COMPAT_POPCOUNT
 #elif defined(_MSC_VER)
 # define popcount(x) __popcnt(x)
