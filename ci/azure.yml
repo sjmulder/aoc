@@ -11,6 +11,20 @@ jobs:
     displayName: Run (C)
     failOnStderr: true
 
+- job: linux_arm
+  displayName: Linux (arm)
+  pool:
+    name: default
+    demands:
+    - agent.os -equals Linux
+    - agent.osarchitecture -equals ARM
+  steps:
+  - script: cd 2020 && ../ci/az-make.sh -j c c-golf
+    displayName: Build
+  - script: cd 2020/c && ./all.sh
+    displayName: Run (C)
+    failOnStderr: true
+
 - job: macos
   displayName: macOS
   pool:
