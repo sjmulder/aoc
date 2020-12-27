@@ -37,8 +37,8 @@ jobs:
     displayName: Run (C)
     failOnStderr: true
 
-- job: vc_x86
-  displayName: Visual C++ (x86)
+- job: vs_x86
+  displayName: Visual Studio (x86)
   pool:
     vmImage: windows-2019
   steps:
@@ -54,8 +54,8 @@ jobs:
       arguments: '"Win32 Release"'
       workingDirectory: 2020/c/vs/
 
-- job: vc_x64
-  displayName: Visual C++ (x64)
+- job: vs_x64
+  displayName: Visual Studio (x64)
   pool:
     vmImage: windows-2019
   steps:
@@ -71,8 +71,8 @@ jobs:
       arguments: '"x64 Release"'
       workingDirectory: 2020/c/vs/
 
-- job: vc_arm
-  displayName: Visual C++ (arm)
+- job: vs_arm
+  displayName: Visual Studio (arm)
   pool:
     vmImage: windows-2019
   steps:
