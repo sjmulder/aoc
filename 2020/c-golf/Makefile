@@ -6,6 +6,7 @@ CFLAGS+=	-O3
 CFLAGS+=	-Wno-empty-body
 CFLAGS+=	-Wno-implicit-function-declaration
 CFLAGS+=	-Wno-implicit-int
+CFLAGS+=	-Wno-misleading-indentation
 
 all: ${PROGS}
 
