@@ -94,7 +94,7 @@ main(int argc, char **argv)
 		if (!fgets(g[h], CAP, f))
 			break;
 		c = strchr(g[h], '\n');
-		assert(c && "input to wide");
+		assert(c && "input too wide");
 		if (h==1)
 			w = (int)(c-g[h]);
 	}
