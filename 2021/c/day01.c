@@ -1,16 +1,16 @@
 #include <stdio.h>
+#include <string.h>
 
 int
 main()
 {
-	int cur, prev, ninc=0;
+	int a[4] = {0}, n=0, ninc1=0, ninc3=0;
 
-	prev = scanf(" %d", &prev);
-
-	while (scanf(" %d", &cur) == 1) {
-		ninc += cur > prev;
-		prev = cur;
+	for (; scanf(" %d", a) == 1; n++) {
+		ninc1 += n>0 && a[0] > a[1];
+		ninc3 += n>2 && a[0]+a[1]+a[2] > a[1]+a[2]+a[3];
+		memmove(a+1, a, sizeof(int)*3);
 	}
 
-	printf("%d\n", ninc);
+	printf("%d %d\n", ninc1, ninc3);
 }
