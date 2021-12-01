@@ -11,6 +11,7 @@ obj/
 Debug/
 Release/
 xcuserdata/
+cmake-build-*/
 *.o
 *.d
 *.obj
