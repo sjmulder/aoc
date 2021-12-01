@@ -1,6 +1,6 @@
 #include <string.h>
 
-#if defined(_MSC_VER)
+#ifdef _WIN32
 # define COMPAT_STRSEP
 #endif
 
