@@ -7,8 +7,8 @@ main()
 	int a[4] = {0}, n=0, ninc1=0, ninc3=0;
 
 	for (; scanf(" %d", a) == 1; n++) {
-		ninc1 += n>0 && a[0]>a[1];
-		ninc3 += n>2 && a[0]>a[3];
+		ninc1 += (n>0) * (a[0] > a[1]);
+		ninc3 += (n>2) * (a[0] > a[3]);
 		memmove(a+1, a, sizeof(int)*3);
 	}
 
