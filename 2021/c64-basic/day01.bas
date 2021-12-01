@@ -1,0 +1,9 @@
+#!/usr/bin/env cbmbasic
+10 OPEN 1,1,0,"data/01-input.txt"
+20 A=0:B=0:C=0:D=0:N=0:P1=0:P2=0
+30 INPUT#1,A:N=N+1
+40 IF ST>0 THEN GOTO 80
+50 IF N>1 AND A>B THEN P1=P1+1
+60 IF N>3 AND A+B+C>B+C+D THEN P2=P2+1
+70 D=C:C=B:B=A:GOTO 30
+80 PRINT P1,P2
