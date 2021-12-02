@@ -6,6 +6,7 @@ Advent of Code
 [Advent of Code](https://www.adventofcode.com) solutions by myself (Sijmen).
 
 **2021**
+
                 12
     C           **
     C#          *
@@ -14,6 +15,7 @@ Advent of Code
     Excel       **
 
 **2020**
+
                          1---------2-----
                 1234567890123456789012345
     C           *************************
