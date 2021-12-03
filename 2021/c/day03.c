@@ -6,55 +6,28 @@
 #define LEN(a) (sizeof(a)/sizeof(*(a)))
 
 static int
-sort_bybitval(uint16_t *nums, int len, int bit, int set)
+sort_bybitval(uint16_t *ns, int len, int bit, int set)
 {
-	int count=0, i;
+	int c=0, i;
 	uint16_t tmp;
 
 	for (i=0; i<len; i++)
-		if (((nums[i]>>bit) & 1) == set) {
-			tmp = nums[count];
-			nums[count++] = nums[i];
-			nums[i] = tmp;
-		}
+		if (((ns[i]>>bit) & 1) == set)
+			{ tmp = ns[c]; ns[c++] = ns[i]; ns[i] = tmp; }
 
-	return count;
-}
-
-static uint16_t
-get_gamma(uint16_t *nums, int len, int nbits)
-{
-	int counts[16]={0}, i,bit;
-	uint16_t gamma=0;
-	
-	for (i=0; i<len; i++)
-		for (bit=0; bit<nbits; bit++)
-			counts[bit] += (nums[i]>>bit) & 1;
-
-	for (bit=0; bit<nbits; bit++)
-		if (counts[bit] >= len-counts[bit])
-			gamma |= 1<<bit;
-
-	return gamma;
-}
-
-static uint16_t
-to_epsilon(uint16_t gamma, int nbits)
-{
-	return ~gamma & ((1<<nbits)-1);
+	return c;
 }
 
 static uint16_t
 get_measurement(uint16_t *nums, int len, int nbits, int use_epsilon)
 {
-	int bit;
-	uint16_t bits;
+	int bit, val, count, i;
 
 	for (bit=nbits-1; bit>=0 && len>1; bit--) {
-		bits = get_gamma(nums, len, nbits);
-		if (use_epsilon)
-			 bits = to_epsilon(bits, nbits);
-		len = sort_bybitval(nums, len, bit, (bits>>bit)&1);
+		for (i=0, count=0; i<len; i++)
+			count += (nums[i]>>bit) & 1;
+		val = (count >= (len+1)/2) ^ use_epsilon;
+		len = sort_bybitval(nums, len, bit, val);
 	}
 
 	return nums[0];
@@ -64,8 +37,8 @@ int
 main()
 {
 	char buf[17];
-	uint16_t nums[1024]={0}, gamma, epsilon, oxy, co2;
-	int nnums=0, nbits=0, i;
+	uint16_t nums[1024]={0}, gamma=0, epsilon, oxy, co2;
+	int nnums=0, nbits=0, ones, i,bit;
 
 	while (scanf(" %16s", buf) == 1) {
 		if (!nbits)
@@ -76,8 +49,12 @@ main()
 			{ fprintf(stderr, "too many nums"); return 1; }
 	}
 
-	gamma = get_gamma(nums, nnums, nbits);
-	epsilon = to_epsilon(gamma, nbits);
+	for (bit=0; bit<nbits; bit++)
+		for (ones=0, i=0; i<nnums; i++)
+			if (nums[i] & (1<<bit) && ++ones >= (nnums+1)/2)
+				{ gamma |= 1<<bit; break; }
+
+	epsilon = ~gamma & ((1<<nbits)-1);
 	oxy = get_measurement(nums, nnums, nbits, 0);
 	co2 = get_measurement(nums, nnums, nbits, 1);
 
