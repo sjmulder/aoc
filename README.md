@@ -7,8 +7,8 @@ Advent of Code
 
 **2021**
 
-                12
-    C           **
+                123
+    C           ***
     C#          *
     C64 BASIC   **
     AWK          *
