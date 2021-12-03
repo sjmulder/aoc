@@ -81,6 +81,6 @@ main()
 	oxy = get_measurement(nums, nnums, nbits, 0);
 	co2 = get_measurement(nums, nnums, nbits, 1);
 
-	printf("%d %d\n", (int)gamma * epsilon, (int)oxy * co2);
+	printf("03: %d %d\n", (int)gamma * epsilon, (int)oxy * co2);
 	return 0;
 }

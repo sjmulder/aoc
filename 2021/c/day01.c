@@ -16,5 +16,5 @@ main()
 		ninc3 += (n>2) * (a[n%4] > a[(n+1)%4]);
 	}
 
-	printf("%d %d\n", ninc1, ninc3);
+	printf("01: %d %d\n", ninc1, ninc3);
 }

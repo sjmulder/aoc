@@ -15,5 +15,5 @@ main()
 		default: fprintf(stderr, "bad input\n"); return 1;
 		}
 
-	printf("%d %d\n", h*a, h*d);
+	printf("02: %d %d\n", h*a, h*d);
 }
