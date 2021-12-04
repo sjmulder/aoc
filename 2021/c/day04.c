@@ -4,13 +4,10 @@
 #include <err.h>
 
 #define LEN(a) (sizeof(a)/sizeof(*(a)))
-
 #define SZ 5
 
 static int draws[100];
-static int boards[100][5][5];
-static int struck[100][5][5];
-static int won[100];
+static int boards[100][SZ][SZ], struck[100][SZ][SZ], won[100];
 static int ndraws, nboards, nwon;
 
 static int
