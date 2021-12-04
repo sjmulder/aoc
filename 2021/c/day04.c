@@ -38,10 +38,10 @@ main()
 	for (j=0; j<nboards; j++)
 	for (y=0; y<SZ; y++)
 	for (x=0; x<SZ; x++) {
+		if (won[j]) continue;
 		if (struck[j][y][x]) continue;
 		if (boards[j][y][x] != draws[i]) continue;
 		struck[j][y][x] = 1;
-		if (won[j]) continue;
 		for (x2=0; x2<SZ && struck[j][y][x2]; x2++) ;
 		for (y2=0; y2<SZ && struck[j][y2][x]; y2++) ;
 		if (x2 != SZ && y2 != SZ) continue;
