@@ -10,8 +10,8 @@ int
 main()
 {
 	static int draws[100];
-	static int cards[100][SZ][SZ], struck[100][SZ][SZ], won[100];
-	int ndraws=0, ncards=0, nwon=0;
+	static int boards[100][SZ][SZ], struck[100][SZ][SZ], won[100];
+	int ndraws=0, nboards=0, nwon=0;
 	int i,j, x,y, x2,y2, score, p1=0,p2=0;
 	char buf[400], *rest, *lf, *field;
 
@@ -25,35 +25,35 @@ main()
 		draws[ndraws++] = atoi(field);
 	}
 	while (!feof(stdin)) {
-		if (ncards >= (int)LEN(cards))
-			errx(1, "cards overflow");
+		if (nboards >= (int)LEN(boards))
+			errx(1, "boards overflow");
 		for (y=0; y<SZ; y++)
 		for (x=0; x<SZ; x++)
-			if (scanf(" %d ", &cards[ncards][y][x]) != 1)
-				errx(1, "not a full card");
-		ncards++;
+			if (scanf(" %d ", &boards[nboards][y][x]) != 1)
+				errx(1, "not a full board");
+		nboards++;
 	}
 
 	for (i=0; i<ndraws; i++)
-	for (j=0; j<ncards; j++)
+	for (j=0; j<nboards; j++)
 	for (y=0; y<SZ; y++)
 	for (x=0; x<SZ; x++) {
 		if (won[j]) continue;
 		if (struck[j][y][x]) continue;
-		if (cards[j][y][x] != draws[i]) continue;
+		if (boards[j][y][x] != draws[i]) continue;
 		struck[j][y][x] = 1;
 		for (x2=0; x2<SZ && struck[j][y][x2]; x2++) ;
 		for (y2=0; y2<SZ && struck[j][y2][x]; y2++) ;
 		if (x2 != SZ && y2 != SZ) continue;
 		won[j] = 1;
-		if (++nwon > 1 && nwon < ncards) continue;
+		if (++nwon > 1 && nwon < nboards) continue;
 		score = 0;
 		for (y2=0; y2<SZ; y2++)
 		for (x2=0; x2<SZ; x2++)
-			score += !struck[j][y2][x2] * cards[j][y2][x2];
+			score += !struck[j][y2][x2] * boards[j][y2][x2];
 		score *= draws[i];
 		if (nwon == 1) p1 = score;
-		if (nwon == ncards) { p2 = score; goto end; }
+		if (nwon == nboards) { p2 = score; goto end; }
 	}
 
 end:
