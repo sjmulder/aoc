@@ -9,7 +9,7 @@ Advent of Code
 
                 123456
     C           ******
-    C#          ****
+    C#          **** *
     C64 BASIC   **
     AWK          *
     Excel       **
