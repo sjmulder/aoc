@@ -4,4 +4,5 @@
 ./day04 <../data/04-input.txt &
 ./day05 <../data/05-input.txt &
 ./day06 <../data/06-input.txt &
+./day07 <../data/07-input.txt &
 wait
