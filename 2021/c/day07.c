@@ -2,25 +2,38 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/*
+ * Optimised verison using the median and average for part 1 and part 2
+ * respectively. Approach totally stolen from Reddit.
+ */
+
+static int
+compar(const void *a, const void *b)
+{
+	return *(int*)a - *(int*)b;
+}
+
 int
 main()
 {
 	static int a[1001];
-	int n=0,min=0,max=0, p1=0,p2=0, sum1,sum2,pos,d,i;
+	int n=0,sum=0, p1=0,p2=0, cost,pos,d,i;
 
-	for (; scanf("%d,", &a[n]) == 1; n++) {
-		if (!n || a[n]<min) min = a[n];
-		if (!n || a[n]>max) max = a[n];
-	}
+	while (scanf("%d,", &a[n]) == 1)
+		sum += a[n++];
 
-	for (pos=min; pos<=max; pos++) {
-		for (i=sum1=sum2=0; i<n; i++) {
+	qsort(a, n, sizeof(*a), compar);
+
+	for (i=0; i<n; i++)
+		p1 += abs(n/2-a[i]);
+
+	for (pos=sum/n; pos<=sum/n+1; pos++) {
+		for (i=cost=0; i<n; i++) {
 			d = abs(pos-a[i]);
-			sum1 += d;
-			sum2 += d*(d+1)/2;
+			cost += d*(d+1)/2;
 		}
-		if (pos==min || sum1<p1) p1 = sum1;
-		if (pos==min || sum2<p2) p2 = sum2;
+		if (!p2 || cost<p2)
+			p2 = cost;
 	}
 
 	printf("07: %d %d\n", p1, p2);
