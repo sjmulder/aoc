@@ -35,7 +35,7 @@ jobs:
     displayName: Run
 
 - job: vs_x86
-  displayName: Visual Studio (x86)
+  displayName: "2020: Visual Studio (x86)"
   pool:
     vmImage: windows-2019
   steps:
@@ -52,7 +52,7 @@ jobs:
       workingDirectory: 2020/c/vs/
 
 - job: vs_x64
-  displayName: Visual Studio (x64)
+  displayName: "2020: Visual Studio (x64)"
   pool:
     vmImage: windows-2019
   steps:
@@ -69,7 +69,7 @@ jobs:
       workingDirectory: 2020/c/vs/
 
 - job: vs_arm
-  displayName: Visual Studio (arm)
+  displayName: "2020: Visual Studio (arm)"
   pool:
     vmImage: windows-2019
   steps:
@@ -80,7 +80,7 @@ jobs:
       configuration: Release
 
 - job: vc6
-  displayName: Visual C++ 6
+  displayName: "2020: Visual C++ 6"
   continueOnError: true
   pool:
     name: default
