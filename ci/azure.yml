@@ -5,6 +5,10 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.x
   - script: ci/az-make.sh -j
     displayName: Build
   - script: ci/az-make.sh -j run
@@ -19,6 +23,10 @@ jobs:
     - agent.os -equals Linux
     - agent.osarchitecture -equals ARM
   steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.x
   - script: ci/az-make.sh -j
     displayName: Build
   - script: ci/az-make.sh -j run
@@ -29,6 +37,10 @@ jobs:
   pool:
     vmImage: macOS-10.15
   steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.x
   - script: ci/az-make.sh -j
     displayName: Build
   - script: ci/az-make.sh -j run
