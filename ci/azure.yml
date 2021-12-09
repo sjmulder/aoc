@@ -5,9 +5,9 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - script: ../ci/az-make.sh -j
+  - script: ci/az-make.sh -j
     displayName: Build
-  - script: ../ci/az-make.sh -j run
+  - script: ci/az-make.sh -j run
     displayName: Run
 
 - job: linux_arm
@@ -19,9 +19,9 @@ jobs:
     - agent.os -equals Linux
     - agent.osarchitecture -equals ARM
   steps:
-  - script: ../ci/az-make.sh -j
+  - script: ci/az-make.sh -j
     displayName: Build
-  - script: ../ci/az-make.sh -j run
+  - script: ci/az-make.sh -j run
     displayName: Run
 
 - job: macos
@@ -29,9 +29,9 @@ jobs:
   pool:
     vmImage: macOS-10.15
   steps:
-  - script: ../ci/az-make.sh -j
+  - script: ci/az-make.sh -j
     displayName: Build
-  - script: ../ci/az-make.sh -j run
+  - script: ci/az-make.sh -j run
     displayName: Run
 
 - job: vs_x86
