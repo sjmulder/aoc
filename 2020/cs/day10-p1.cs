@@ -13,7 +13,7 @@ class Program
 		nums.Add(nums.Max() + 3);
 		nums.Sort();
 
-		Console.WriteLine(nums
+		Console.WriteLine("10 (p1): " + nums
 			.Zip(nums.Skip(1), (a, b) => b-a)
 			.Where(d => d==1 || d==3)
 			.GroupBy(d => d)

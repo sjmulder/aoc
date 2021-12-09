@@ -22,6 +22,6 @@ class Program {
 				part2++;
 		}
 
-		Console.WriteLine($"{part1} {part2}");
+		Console.WriteLine($"02: {part1} {part2}");
 	}
 }

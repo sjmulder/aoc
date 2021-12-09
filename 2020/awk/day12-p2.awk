@@ -18,4 +18,4 @@ r==270	{ tmp = wx; wx =  wy; wy = -tmp }
 r==180	{ wx = -wx; wy = -wy; }
 	{ r = 0 }
 
-END	{ print abs(x) + abs(y) }
+END	{ print "12 (p2):", abs(x) + abs(y) }

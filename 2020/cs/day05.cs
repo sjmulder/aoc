@@ -12,10 +12,12 @@ static class Program
 			.OrderBy(x => x)
 			.ToList();
 
-		Console.WriteLine(nums.Max());
-		Console.WriteLine(nums
+		var p1 = nums.Max();
+		var p2 = nums
 			.Zip(nums.Skip(1), (a,b) => (a,b))
 			.First(p => p.Item1+2 == p.Item2)
-			.Item1 + 1);
+			.Item1 + 1;
+
+		Console.WriteLine($"05: {p1} {p2}");
 	}
 }

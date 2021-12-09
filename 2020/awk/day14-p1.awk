@@ -12,4 +12,4 @@
 END	{ sum = 0
 	  for (addr in mem)
 		sum += mem[addr]
-	  print sum }
+	  print "14 (p1):", sum }

@@ -9,7 +9,8 @@ class Program {
 		Func<int,int,long> f = (dx, dy) => ls
 			.Where((l,i) => i%dy == 0 && l[i*dx/dy%w] == '#')
 			.Count();
-		Console.WriteLine(f(3,1));
-		Console.WriteLine(f(1,1)*f(3,1)*f(5,1)*f(7,1)*f(1,2));
+		var p1 = f(3,1);
+		var p2 = f(1,1)*f(3,1)*f(5,1)*f(7,1)*f(1,2);
+		Console.WriteLine($"03: {p1} {p2}");
 	}
 }

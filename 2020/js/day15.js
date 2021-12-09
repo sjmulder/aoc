@@ -16,4 +16,4 @@ for (let turn=0; turn < 30000000; turn++) {
 	if (turn == 2019) part1 = cur;
 }
 
-console.log(part1, cur);
+console.log("15:", part1, cur);

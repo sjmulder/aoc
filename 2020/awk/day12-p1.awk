@@ -10,4 +10,4 @@ function abs(x) { return x<0 ? -x : x }
 /E/	{ x += n }
 /R/	{ dir = (dir+  n/90) % 4 }
 /L/	{ dir = (dir+4-n/90) % 4 }
-END	{ print abs(x) + abs(y) }
+END	{ print "12 (p1):", abs(x) + abs(y) }

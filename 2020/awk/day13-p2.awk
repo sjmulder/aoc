@@ -3,5 +3,4 @@
 BEGIN		{ RS="[,\n]"; step=1 }
 NR>1 && /[^x]/	{ while ((t+NR-2) % $1) t += step;
 		  step *= $1; }
-		{ print NR, $1, t, step }
-END		{ print t }
+END		{ print "13 (p2):", t }
