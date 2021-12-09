@@ -14,6 +14,9 @@ all: ${PROGS}
 clean:
 	rm -f ${PROGS} *.o *.d
 
+run: all
+	@./all.sh
+
 .c:
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $< ${LDFLAGS}
 day14: day14.o day14-p1.o day14-p2.o
@@ -23,4 +26,4 @@ day17: day17.o day17-p1.o day17-p2.o
 
 -include *.d
 
-.PHONY: all clean
+.PHONY: all clean run

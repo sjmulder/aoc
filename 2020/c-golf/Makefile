@@ -11,6 +11,9 @@ CFLAGS+=	-Wno-misleading-indentation
 all: ${PROGS}
 
 clean:
-	rm -r ${PROGS}
+	rm -f ${PROGS}
 
-.PHONY:  all clean
+run: all
+	@./all.sh
+
+.PHONY: all clean

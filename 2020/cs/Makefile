@@ -7,7 +7,10 @@ all: ${PROGS}
 clean:
 	rm -f ${PROGS}
 
-.PHONY: all clean
+run: all
+	@./all.sh
+
+.PHONY: all clean run
 .SUFFIXES: .cs .exe
 
 .cs.exe:
