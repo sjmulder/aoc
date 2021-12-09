@@ -5,7 +5,7 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - template: steps-unix.yml
+  - template: steps-linux.yml
 
 - job: linux_arm
   displayName: Linux (arm)
@@ -16,14 +16,21 @@ jobs:
     - agent.os -equals Linux
     - agent.osarchitecture -equals ARM
   steps:
-  - template: steps-unix.yml
+  - template: steps-linux.yml
 
 - job: macos
   displayName: macOS
   pool:
     vmImage: macOS-10.15
   steps:
-  - template: steps-unix.yml
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.x
+  - script: make -j nobasic
+    displayName: Build
+  - script: make -j run-nobasic
+    displayName: Run
 
 - job: vs_x86
   displayName: "2020: Visual Studio (x86)"
