@@ -93,3 +93,17 @@ jobs:
     displayName: Build
   - script: cd 2020\c\vc6 & all.bat
     displayName: Run
+
+- job: vs_dotnet
+  displayName: "2021: Windows (dotnet)"
+  pool:
+    vmImage: windows-2019
+  steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.0
+  - task: VSBuild@1
+    displayName: Build
+    inputs:
+      workingDirectory: 2021/cs
