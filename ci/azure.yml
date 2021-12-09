@@ -9,9 +9,9 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: ci/az-make.sh -j
+  - script: make -j
     displayName: Build
-  - script: ci/az-make.sh -j run
+  - script: make -j run
     displayName: Run
 
 - job: linux_arm
@@ -27,9 +27,9 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: ci/az-make.sh -j
+  - script: make -j
     displayName: Build
-  - script: ci/az-make.sh -j run
+  - script: make -j run
     displayName: Run
 
 - job: macos
@@ -41,9 +41,9 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: ci/az-make.sh -j
+  - script: make -j
     displayName: Build
-  - script: ci/az-make.sh -j run
+  - script: make -j run
     displayName: Run
 
 - job: vs_x86
