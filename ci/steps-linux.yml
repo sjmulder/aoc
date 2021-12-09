@@ -4,13 +4,13 @@ steps:
   inputs:
     version: 6.x
 - script: sudo apt install -y dos2unix
-  displayName: Packages
+  displayName: Install packages
 - script: |
     set -e
     curl -L https://github.com/mist64/cbmbasic/archive/refs/heads/master.tar.gz | tar -xzf -
     make -j -C cbmbasic-master
     sudo cp cbmbasic-master/cbmbasic /usr/local/bin/
-  displayName: Build cbmbasic
+  displayName: Install cbmbasic
 - script: make -j
   displayName: Build
 - script: make -j run
