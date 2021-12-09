@@ -9,6 +9,8 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
+  - script: sudo apt install -y dos2unix
+    displayName: Packages
   - script: make -j
     displayName: Build
   - script: make -j run
@@ -27,6 +29,8 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
+  - script: sudo apt install -y dos2unix
+    displayName: Packages
   - script: make -j
     displayName: Build
   - script: make -j run
@@ -41,6 +45,8 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
+  - script: sudo apt install -y dos2unix
+    displayName: Packages
   - script: make -j
     displayName: Build
   - script: make -j run
