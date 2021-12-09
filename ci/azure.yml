@@ -5,18 +5,22 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - template: steps-linux.yml
-
-- job: linux_arm
-  displayName: Linux (arm)
-  continueOnError: true
-  pool:
-    name: default
-    demands:
-    - agent.os -equals Linux
-    - agent.osarchitecture -equals ARM
-  steps:
-  - template: steps-linux.yml
+  - task: UseDotNet@2
+    displayName: Use .NET 6
+    inputs:
+      version: 6.x
+  - script: sudo apt install -y dos2unix
+    displayName: Install packages
+  - script: |
+      set -e
+      curl -L https://github.com/mist64/cbmbasic/archive/refs/heads/master.tar.gz | tar -xzf -
+      make -j -C cbmbasic-master
+      sudo cp cbmbasic-master/cbmbasic /usr/local/bin/
+    displayName: Install cbmbasic
+  - script: make -j
+    displayName: Build
+  - script: make -j run
+    displayName: Run
 
 - job: macos
   displayName: macOS
