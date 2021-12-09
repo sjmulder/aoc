@@ -115,7 +115,7 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - task: VSBuild@1
+  - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       workingDirectory: 2021/cs
