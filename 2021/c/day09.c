@@ -42,11 +42,11 @@ main()
 
 	for (r=0; r<h; r++)
 	for (c=0; c<w; c++) {
-		p1 += (!r || grid[r][c] < grid[r-1][c]) *
-		      (!c || grid[r][c] < grid[r][c-1]) *
-		      (r>=h-1 || grid[r][c] < grid[r+1][c]) *
-		      (c>=w-1 || grid[r][c] < grid[r][c+1]) *
-		      (1 + grid[r][c]-'0');
+		if ((!r || grid[r][c] < grid[r-1][c]) &&
+		    (!c || grid[r][c] < grid[r][c-1]) &&
+		    (r>=h-1 || grid[r][c] < grid[r+1][c]) &&
+		    (c>=w-1 || grid[r][c] < grid[r][c+1]))
+			p1 += 1 + grid[r][c]-'0';
 		if (!visited[r][c] && grid[r][c] != '9')
 			flood(r, c, ngroups++);
 	}
