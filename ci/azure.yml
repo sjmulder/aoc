@@ -5,11 +5,10 @@ jobs:
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - script: cd 2020 && ../ci/az-make.sh -j
+  - script: ../ci/az-make.sh -j
     displayName: Build
-  - script: cd 2020/c && ./all.sh
-    displayName: Run (C)
-    failOnStderr: true
+  - script: ../ci/az-make.sh -j run
+    displayName: Run
 
 - job: linux_arm
   displayName: Linux (arm)
@@ -20,22 +19,20 @@ jobs:
     - agent.os -equals Linux
     - agent.osarchitecture -equals ARM
   steps:
-  - script: cd 2020 && ../ci/az-make.sh -j c
+  - script: ../ci/az-make.sh -j
     displayName: Build
-  - script: cd 2020/c && ./all.sh
-    displayName: Run (C)
-    failOnStderr: true
+  - script: ../ci/az-make.sh -j run
+    displayName: Run
 
 - job: macos
   displayName: macOS
   pool:
     vmImage: macOS-10.15
   steps:
-  - script: cd 2020 && ../ci/az-make.sh -j
+  - script: ../ci/az-make.sh -j
     displayName: Build
-  - script: cd 2020/c && ./all.sh
-    displayName: Run (C)
-    failOnStderr: true
+  - script: ../ci/az-make.sh -j run
+    displayName: Run
 
 - job: vs_x86
   displayName: Visual Studio (x86)
