@@ -102,7 +102,7 @@ jobs:
   - task: UseDotNet@2
     displayName: Use .NET 6
     inputs:
-      version: 6.0
+      version: 6.x
   - task: VSBuild@1
     displayName: Build
     inputs:
