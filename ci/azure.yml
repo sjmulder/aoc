@@ -42,6 +42,7 @@ jobs:
   - task: VSBuild@1
     displayName: Build
     inputs:
+      solution: aoc.sln
       platform: x86
       configuration: Release
   - task: PowerShell@2
@@ -59,6 +60,7 @@ jobs:
   - task: VSBuild@1
     displayName: Build
     inputs:
+      solution: aoc.sln
       platform: x64
       configuration: Release
   - task: PowerShell@2
@@ -76,6 +78,7 @@ jobs:
   - task: VSBuild@1
     displayName: Build
     inputs:
+      solution: aoc.sln
       platform: ARM
       configuration: Release
 
