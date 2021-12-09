@@ -6,8 +6,8 @@
 
 #define SZ 100
 
-static uint8_t grid[SZ][SZ];
-static int groups[SZ][SZ], counts[SZ*SZ/2];
+static char grid[SZ][SZ+3], visited[SZ][SZ];
+static int counts[SZ*SZ/2];
 static int w,h, ngroups;
 
 static int
@@ -19,11 +19,11 @@ cmp_rint(const void *a, const void *b)
 static void
 flood(int r, int c, int group)
 {
-	if (groups[r][c] || grid[r][c] == 9)
+	if (visited[r][c] || grid[r][c] == '9')
 		return;
 
-	groups[r][c] = group;
-	counts[group-1]++;
+	visited[r][c] = 1;
+	counts[group]++;
 
 	if (r) flood(r-1, c, group);
 	if (c) flood(r, c-1, group);
@@ -34,16 +34,11 @@ flood(int r, int c, int group)
 int
 main()
 {
-	char buf[SZ+3], *lf;
 	int r,c, p1=0,p2;
 
-	while (fgets(buf, sizeof(buf), stdin)) {
-		if ((lf = strchr(buf, '\n'))) *lf = '\0';
-		if (!h++) w = strlen(buf);
-		assert(h <= SZ);
-		assert(w <= SZ);
-		for (c=0; c<w; c++) grid[h-1][c] = buf[c]-'0';
-	}
+	while (scanf(" %100s", grid[h]) == 1)
+		{ h++; assert(h <= SZ); }
+	w = strlen(grid[0]);
 
 	for (r=0; r<h; r++)
 	for (c=0; c<w; c++) {
@@ -51,9 +46,9 @@ main()
 		      (!c || grid[r][c] < grid[r][c-1]) *
 		      (r>=h-1 || grid[r][c] < grid[r+1][c]) *
 		      (c>=w-1 || grid[r][c] < grid[r][c+1]) *
-		      (1 + grid[r][c]);
-		if (!groups[r][c] && grid[r][c] != 9)
-			flood(r, c, ++ngroups);
+		      (1 + grid[r][c]-'0');
+		if (!visited[r][c] && grid[r][c] != '9')
+			flood(r, c, ngroups++);
 	}
 
 	qsort(counts, ngroups, sizeof(*counts), cmp_rint);
