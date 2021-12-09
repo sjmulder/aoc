@@ -1,7 +1,7 @@
 ﻿string[]? parts;
 int h = 0, d = 0, a = 0;
 
-using (var reader = new StreamReader("../../../../../data/02-input.txt"))
+using (var reader = new StreamReader("../../data/02-input.txt"))
     while ((parts = reader.ReadLine()?.Split(' ')) != null)
         switch (parts[0], int.Parse(parts[1]))
         {

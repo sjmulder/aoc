@@ -11,7 +11,7 @@
 // their first row or column was completed (as per above), leaving the unstruck
 // numbers to be summed and multiplied by the last drawn number at that point.
 
-var lines = File.ReadAllLines("../../../../../data/04-input.txt");
+var lines = File.ReadAllLines("../../data/04-input.txt");
 var draws = lines.First().Split(',').Select(int.Parse).ToArray();
 var winners = lines.Skip(1).Where(l => l != string.Empty)
     .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries)

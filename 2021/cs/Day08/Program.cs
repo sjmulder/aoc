@@ -21,7 +21,7 @@
 // Sorting the groups internally by that sum leaves the digits in
 // a known, unique order that can be easily mapped.
 
-var digits = File.ReadLines("../../../../../data/08-input.txt")
+var digits = File.ReadLines("../../data/08-input.txt")
     .Select(line => line.Split('|')
         .Select(side => side
             .Split(' ', StringSplitOptions.RemoveEmptyEntries)

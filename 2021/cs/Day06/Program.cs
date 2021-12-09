@@ -1,4 +1,4 @@
-﻿var input = File.ReadAllText("../../../../../data/06-input.txt").Split(",").Select(int.Parse).ToArray();
+﻿var input = File.ReadAllText("../../data/06-input.txt").Split(",").Select(int.Parse).ToArray();
 var day0 = Enumerable.Range(0, 9).Select(age => input.LongCount(x => x == age)).ToArray();
 
 long Solve(int days) => Enumerable.Range(0, days)

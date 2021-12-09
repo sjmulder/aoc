@@ -6,7 +6,10 @@ CFLAGS+=	-O3
 
 all: ${PROGS}
 
+run: all
+	@./all.sh
+
 clean:
 	rm -f ${PROGS} *.o
 
-.PHONY: all clean
+.PHONY: all run clean

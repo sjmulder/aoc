@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-var nums = File.ReadAllLines("../../../../../data/01-input.txt")
+var nums = File.ReadAllLines("../../data/01-input.txt")
     .Select(int.Parse).ToList();
 
 var inc1 = nums.Zip(nums.Skip(1), (a, b) => a < b).Count(x => x);
