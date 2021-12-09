@@ -1,12 +1,12 @@
 #!/usr/bin/env cbmbasic
 
-10 OPEN 1,1,0,"input"
+10 OPEN 1,1,0,"../data/12-input.txt"
 11 X=0:Y=0:DX=1:DY=0
 
 20 GET#1,C$:N=0
 21 GET#1,D$
 22 IF ASC(D$)=10 THEN GOTO 30
-23 IF ASC(D$)=199 THEN PRINT ABS(X)+ABS(Y):END
+23 IF ASC(D$)=199 THEN PRINT "12 (p1):";ABS(X)+ABS(Y):END
 24 N=N*10+ASC(D$)-48
 25 GOTO 21
 

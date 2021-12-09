@@ -1,9 +1,9 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 
 const fs = require('fs');
 
 const map = new Map();
-const input = fs.readFileSync('input', 'utf-8').split(',');
+const input = fs.readFileSync('../data/15-input.txt', 'utf-8').split(',');
 let part1, cur, prev=0 ;
 
 for (let turn=0; turn < 30000000; turn++) {
