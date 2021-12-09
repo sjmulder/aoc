@@ -12,8 +12,6 @@ clean:
 	rm -rf data/ _built
 
 run:
-	@cbmbasic day01.bas & \
-	 cbmbasic day02.bas & \
-	 wait
+	@./all.sh
 
 .PHONY: all clean run
