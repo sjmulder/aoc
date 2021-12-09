@@ -119,3 +119,4 @@ jobs:
     displayName: Build
     inputs:
       workingDirectory: 2021/cs
+      arguments: -c Release
