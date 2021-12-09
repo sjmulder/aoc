@@ -42,4 +42,4 @@ var digits = File.ReadLines("../../../../../data/08-input.txt")
 
 var p1 = digits.Sum(d => d.Count(c => "1478".Contains(c)));
 var p2 = digits.Sum(int.Parse);
-Console.WriteLine($"{p1} {p2}");
+Console.WriteLine($"08: {p1} {p2}");

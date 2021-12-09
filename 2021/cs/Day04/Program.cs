@@ -23,6 +23,7 @@ var winners = lines.Skip(1).Where(l => l != string.Empty)
 var scores = new[] { winners.First(), winners.Last() }
     .Select(t => t.board.SelectMany(r => r)
         .Where(x => !draws.Take(t.drawIdx + 1).Contains(x))
-        .Sum() * draws[t.drawIdx]);
-foreach (var score in scores)
-    Console.WriteLine(score);
+        .Sum() * draws[t.drawIdx])
+    .ToArray();
+
+Console.WriteLine($"04: {scores[0]} {scores[1]}");

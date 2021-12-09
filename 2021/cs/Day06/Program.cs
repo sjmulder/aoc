@@ -5,4 +5,4 @@ long Solve(int days) => Enumerable.Range(0, days)
    .Aggregate(day0, (a, _) => a[1..7].Concat(new[] { a[7] + a[0], a[8], a[0] }).ToArray())
    .Sum();
 
-Console.WriteLine($"{Solve(80)}, {Solve(256)}");
+Console.WriteLine($"06: {Solve(80)}, {Solve(256)}");

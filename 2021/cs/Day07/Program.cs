@@ -4,4 +4,4 @@ int p1 = a.Sum(x => Math.Abs(a[a.Length/2]-x));
 int p2 = Enumerable.Range((int)a.Average(), 2)
     .Select(pos => a.Sum(x => { int d = Math.Abs(pos-x); return d*(d+1)/2; }))
     .Min();
-Console.WriteLine($"{p1} {p2}");
+Console.WriteLine($"07: {p1} {p2}");

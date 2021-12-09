@@ -19,5 +19,6 @@ int Part2(bool flip)
     return FromBase2(list[0]);
 }
 
-Console.WriteLine(gamma * epsilon);
-Console.WriteLine(Part2(false) * Part2(true));
+var p1 = gamma * epsilon;
+var p2 = Part2(false) * Part2(true);
+Console.WriteLine($"03: {p1} {p2}");

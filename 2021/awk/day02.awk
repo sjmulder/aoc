@@ -2,4 +2,4 @@
 /down/		{ a += $2 }
 /up/		{ a -= $2 }
 /forward/	{ h += $2; d += a*$2; }
-END		{ print h*a, h*d }
+END		{ print "02:", h*a, h*d }

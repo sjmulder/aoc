@@ -11,4 +11,4 @@ using (var reader = new StreamReader("../../../../../data/02-input.txt"))
             default: throw new ApplicationException($"Bad input: {parts[0]}");
         }
 
-Console.WriteLine($"{h * a} {h * d}");
+Console.WriteLine($"02: {h * a} {h * d}");
