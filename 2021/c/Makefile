@@ -3,8 +3,7 @@ PROGS+=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 	day06-orig day07-orig day08-p1
 
 CFLAGS+=	-Wall -Wextra
-#CFLAGS+=	-O3
-CFLAGS+=	-g
+CFLAGS+=	-O3
 
 all: ${PROGS}
 
