@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 static int
 cmp_u64(const void *a, const void *b)
@@ -56,6 +57,6 @@ bad:	while (fgets(buf, sizeof(buf), stdin)) {
 	qsort(scores, nscores, sizeof(*scores), cmp_u64);
 	p2 = scores[nscores/2];
 
-	printf("10: %d %ld\n", p1, p2);
+	printf("10: %d %" PRIu64 "\n", p1, p2);
 	return 0;
 }
