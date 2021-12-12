@@ -3,6 +3,7 @@ solve*
 day*
 !day*/
 !day*.*
+day*.mp4
 .vs/
 bin/
 obj/
