@@ -9,4 +9,5 @@
 ./day09 <../data/09-input.txt &
 ./day10 <../data/10-input.txt &
 ./day11 <../data/11-input.txt &
+./day12 <../data/12-input.txt &
 wait
