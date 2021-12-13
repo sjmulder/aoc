@@ -5,6 +5,9 @@
 
 #define LEN(a) (sizeof(a)/sizeof(*(a)))
 
+#define X 0
+#define Y 1
+
 static int pts[1000][2], npt;
 
 static int
@@ -12,7 +15,7 @@ cmp_pt(const void *va, const void *vb)
 {
 	const int *a=va, *b=vb;
 
-	return a[1]<b[1]? -1 : a[1]>b[1] ? 1 : a[0]-b[0];
+	return a[Y]<b[Y]? -1 : a[Y]>b[Y] ? 1 : a[X]-b[X];
 }
 
 static void
@@ -27,17 +30,6 @@ uniq(void)
 	npt = nleft;
 }
 
-static void
-dump(void)
-{
-	int i;
-
-	for (i=0; i<npt; i++)
-		printf("%d,%d\n", pts[i][0], pts[i][1]);
-
-	printf("  n=%d\n", npt);
-}
-
 int
 main()
 {
@@ -46,26 +38,18 @@ main()
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		assert(npt < (int)sizeof(pts));
-		if (sscanf(buf, "%d,%d", pts[npt], pts[npt]+1) != 2)
+		if (sscanf(buf, "%d,%d", &pts[npt][X], &pts[npt][Y])!=2)
 			break;
 		npt++;
 	}
 
-	//qsort(pts, npt, sizeof(*pts), cmp_pt);
-	//dump();
-
 	while (scanf(" fold along %c=%d", &axis, &n) == 2) {
-		//printf("folding along %c=%d\n", axis, n);
-
-		dim = axis=='y';
-
+		dim = axis=='x' ? X : Y;
 		for (i=0; i<npt; i++)
-			if (pts[i][dim] > n)
-				pts[i][dim] = n - (pts[i][dim]-n);
+			pts[i][dim] = n - abs(n-pts[i][dim]);
 
 		qsort(pts, npt, sizeof(*pts), cmp_pt);
 		uniq();
-		//dump();
 
 		if (!p1)
 			p1 = npt;
@@ -74,17 +58,14 @@ main()
 	printf("13 (p1): %d\n", p1);
 
 	for (i=0; i<npt; i++) {
-		if (xmax < pts[i][0]) xmax = pts[i][0];
-		if (ymax < pts[i][1]) ymax = pts[i][1];
+		if (xmax < pts[i][X]) xmax = pts[i][X];
+		if (ymax < pts[i][Y]) ymax = pts[i][Y];
 	}
 
-	//dump();
-
-	i=0;
-	for (y=0; y<=ymax; y++) {
+	for (i=0, y=0; y<=ymax; y++) {
 		printf("13 (p2): ");
 		for (x=0; x<=xmax; x++)
-			if (i<npt && pts[i][0]==x && pts[i][1]==y)
+			if (i<npt && pts[i][X]==x && pts[i][Y]==y)
 				{ putchar('#'); i++; }
 			else
 				putchar(' ');
