@@ -8,7 +8,7 @@
 #define X 0
 #define Y 1
 
-static int pts[1000][2], npt;
+static int pts[100000][2], npt;
 
 static int
 cmp_pt(const void *va, const void *vb)
