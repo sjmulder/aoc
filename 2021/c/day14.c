@@ -37,7 +37,7 @@ main()
 {
 	static char table[NIDX], line[50];
 	static uint64_t pcounts[2][NIDX];
-	static uint64_t ccounts[NIDX];
+	static uint64_t ccounts[256];
 	int step, i;
 	uint64_t *pcounts_in, *pcounts_out;
 	uint64_t count, p1=0,p2;
