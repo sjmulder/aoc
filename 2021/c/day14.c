@@ -3,29 +3,19 @@
 #include <string.h>
 #include <inttypes.h>
 
+/*
+ * Data is kept as two maps: a count of letters and a count of
+ * pairs. The counts of pairs are 'double buffered', that is to say
+ * one represents the previous step, and one the next, so new pairs
+ * aren't processed again in the same step.
+ *
+ * The maps are represented as flat arrays indexed by IDX(), which
+ * generates a 10-bit index (range 0-1024) from the lower 5 bits
+ * of the two letters, discarding bit 5 (uppercase) and 4 (control).
+ */
+
 #define IDX(c1,c2)	((((int)(c1)&31) <<5) | ((int)(c2)&31))
 #define NIDX		(1<<10)
-
-static void
-dump(uint64_t *pcounts, uint64_t *ccounts)
-{
-	int c1,c2;
-	uint64_t sum=0,count;
-
-	for (c1='A'; c1<='Z'; c1++)
-		if ((count = ccounts[c1])) {
-			sum += count;
-			printf("%c: %"PRIu64"\n", c1, count);
-		}
-
-	printf("sum: %"PRIu64"\n\n", sum);
-
-	for (c1='A'; c1<='Z'; c1++)
-	for (c2='A'; c2<='Z'; c2++)
-		if ((count = pcounts[IDX(c1,c2)]))
-			printf("%c%c (%03x): %"PRIu64"\n", c1,c2,
-			    IDX(c1,c2), count);
-}
 
 static uint64_t
 score(uint64_t *ccounts)
@@ -62,9 +52,6 @@ main()
 	while (scanf(" %c%c -> %c", &c1, &c2, &cnew) == 3)
 		table[IDX(c1, c2)] = cnew;
 
-	printf("  initial\n");
-	dump(pcounts[0], ccounts);
-
 	for (step=0; step<40; step++) {
 		pcounts_in = pcounts[step%2];
 		pcounts_out = pcounts[(step+1)%2];
@@ -82,9 +69,6 @@ main()
 			} else
 				pcounts_out[IDX(c1,c2)] += count;
 		}
-
-		printf("\n  step %d\n", step+1);
-		dump(pcounts_out, ccounts);
 
 		if (step == 9)
 			p1 = score(ccounts);
