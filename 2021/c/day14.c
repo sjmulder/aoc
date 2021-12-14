@@ -9,9 +9,9 @@
  * one represents the previous step, and one the next, so new pairs
  * aren't processed again in the same step.
  *
- * The maps are represented as flat arrays indexed by IDX(), which
+ * Pair maps are represented as flat arrays indexed by IDX(), which
  * generates a 10-bit index (range 0-1024) from the lower 5 bits
- * of the two letters, discarding bit 5 (uppercase) and 4 (control).
+ * of the two letters, discarding bit 6 (case) and 7 (alpha).
  */
 
 #define IDX(c1,c2)	((((int)(c1)&31) <<5) | ((int)(c2)&31))
