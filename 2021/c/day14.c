@@ -8,14 +8,7 @@
  * pairs. The counts of pairs are 'double buffered', that is to say
  * one represents the previous step, and one the next, so new pairs
  * aren't processed again in the same step.
- *
- * Pair maps are represented as flat arrays indexed by IDX(), which
- * generates a 10-bit index (range 0-1024) from the lower 5 bits
- * of the two letters, discarding bit 6 (case) and 7 (alpha).
  */
-
-#define IDX(c1,c2)	((((int)(c1)&31) <<5) | ((int)(c2)&31))
-#define NIDX		(1<<10)
 
 static uint64_t
 score(uint64_t *ccounts)
@@ -23,7 +16,7 @@ score(uint64_t *ccounts)
 	int c;
 	uint64_t nmin=0,nmax=0;
 
-	for (c='A'; c<='Z'; c++) {
+	for (c=0; c<=26; c++) {
 		if (!ccounts[c]) continue;
 		if (!nmin || ccounts[c] < nmin) nmin = ccounts[c];
 		if (!nmax || ccounts[c] > nmax) nmax = ccounts[c];
@@ -35,39 +28,39 @@ score(uint64_t *ccounts)
 int
 main()
 {
-	static char table[NIDX], line[50];
-	static uint64_t pcounts[2][NIDX];
+	static uint8_t rules[26][26], line[50];
+	static uint64_t pcounts[2][26][26];
 	static uint64_t ccounts[256];
-	int step, i;
-	uint64_t *pcounts_in, *pcounts_out;
+	int step, in,out, i;
 	uint64_t count, p1=0,p2;
-	char c1,c2,cnew;
+	uint8_t c1,c2,cnew;
 
 	scanf(" %49s", line);
 	for (i=0; line[i]; i++) {
-		ccounts[(int)line[i]]++;
-		if (i) pcounts[0][IDX(line[i-1], line[i])]++;
+		line[i] -= 'A';
+		ccounts[line[i]]++;
+		if (i) pcounts[0][line[i-1]][line[i]]++;
 	}
 
 	while (scanf(" %c%c -> %c", &c1, &c2, &cnew) == 3)
-		table[IDX(c1, c2)] = cnew;
+		rules[c1-'A'][c2-'A'] = cnew-'A';
 
 	for (step=0; step<40; step++) {
-		pcounts_in = pcounts[step%2];
-		pcounts_out = pcounts[(step+1)%2];
-		memset(pcounts_out, 0, sizeof(*pcounts));
+		in = step%2;
+		out = (step+1)%2;
+		memset(pcounts[out], 0, sizeof(pcounts[out]));
 
-		for (c1='A'; c1<='Z'; c1++)
-		for (c2='A'; c2<='Z'; c2++) {
-			count = pcounts_in[IDX(c1,c2)];
-			cnew = table[IDX(c1,c2)];
+		for (c1=0; c1<26; c1++)
+		for (c2=0; c2<26; c2++) {
+			count = pcounts[in][c1][c2];
+			cnew = rules[c1][c2];
 
 			if (cnew) {
-				ccounts[(int)cnew] += count;
-				pcounts_out[IDX(c1,cnew)] += count;
-				pcounts_out[IDX(cnew,c2)] += count;
+				ccounts[cnew] += count;
+				pcounts[out][c1][cnew] += count;
+				pcounts[out][cnew][c2] += count;
 			} else
-				pcounts_out[IDX(c1,c2)] += count;
+				pcounts[out][c1][c2] += count;
 		}
 
 		if (step == 9)
