@@ -8,17 +8,24 @@
 #define P2MULTI	5
 
 struct pt { int x,y; };
-struct node { int x,y, open, g; };
+struct node { int x,y, open, g,f; };
 
 static int grid[SZ][SZ];
 static int gridw, gridh;
 
 static int
+cmp_node(const void *a, const void *b)
+{
+	return (*(struct node**)b)->f - (*(struct node**)a)->f;
+}
+
+static int
 astar(int startx, int starty, int endx, int endy)
 {
 	static struct node nodes[SZ*P2MULTI][SZ*P2MULTI];
+	static struct node *open[SZ*SZ*P2MULTI*P2MULTI];
 	struct node *cur;
-	int x,y, i, f,fmin, g;
+	int nopen=1, x,y, i, g;
 
 	memset(nodes, 0, sizeof(nodes));
 
@@ -31,22 +38,17 @@ astar(int startx, int starty, int endx, int endy)
 
 	nodes[starty][startx].open = 1;
 	nodes[starty][startx].g = 0;
+	nodes[starty][startx].f = endx-startx + endy-starty;
+	open[0] = &nodes[starty][startx];
 
-	while (1) {
-		cur = NULL;
-		fmin = INT_MAX;
+	while (nopen) {
+		qsort(open, nopen, sizeof(*open), cmp_node);
 
-		for (y=0; y<gridh*P2MULTI; y++)
-		for (x=0; x<gridw*P2MULTI; x++) {
-			if (!nodes[y][x].open) continue;
-			f = nodes[y][x].g + abs(x-endx) + abs(y-endy);
-			if (f < fmin) { fmin = f; cur = &nodes[y][x]; }
-		}
-
-		if (!cur) return -1;
-		if (cur->x == endx && cur->y == endy) return cur->g;
-
+		cur = open[--nopen];
 		cur->open = 0;
+
+		if (cur->x == endx && cur->y == endy)
+			return cur->g;
 
 		for (i=0; i<4; i++) {
 			y = cur->y + (i==0?-1 : i==2? 1 : 0);
@@ -61,10 +63,17 @@ astar(int startx, int starty, int endx, int endy)
 
 			if (g >= nodes[y][x].g) continue;
 
-			nodes[y][x].open = 1;
 			nodes[y][x].g = g;
+			nodes[y][x].f = g + endx-x + endy-y;
+
+			if (!nodes[y][x].open) {
+				nodes[y][x].open = 1;
+				open[nopen++] = &nodes[y][x];
+			}
 		}
 	}
+
+	return -1;
 }
 
 int
