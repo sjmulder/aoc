@@ -47,7 +47,6 @@ main()
 			if (x<w*5-1) sum = MIN(sum, sums[y][x+1]+cost);
 
 			if (sum != sums[y][x]) {
-				//printf("  change in %d,%d\n", x,y);
 				sums[y][x] = sum;
 				dirty = 1;
 			}
