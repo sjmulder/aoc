@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include <assert.h>
 
-#define MIN(a,b)	((a)<(b)?(a):(b))
-#define MAX(a,b)	((a)>(b)?(a):(b))
+#define MIN(a,b) ((a)<(b)?(a):(b))
+#define MAX(a,b) ((a)>(b)?(a):(b))
 
 #define SZ 500
 
@@ -53,25 +52,7 @@ main()
 				dirty = 1;
 			}
 		}
-
-#if 0
-		printf("\n  sums\n");
-		for (y=0; y<h*5; y++) {
-			for (x=0; x<w*5; x++)
-				printf("%3d ", sums[y][x]);
-			putchar('\n');
-		}
-#endif
 	} while (dirty);
-
-#if 0
-	printf("costs\n");
-	for (y=0; y<h; y++) {
-		for (x=0; x<w; x++)
-			printf("%3d ", costs[y][x]);
-		putchar('\n');
-	}
-#endif
 
 	printf("14: %d %d\n", sums[h-1][w-1], sums[h*5-1][w*5-1]);
 	return 0;
