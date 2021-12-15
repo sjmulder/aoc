@@ -5,4 +5,6 @@
 (cd day06 && dotnet run -v m --nologo -c Release --no-build) &
 (cd day07 && dotnet run -v m --nologo -c Release --no-build) &
 (cd day08 && dotnet run -v m --nologo -c Release --no-build) &
+(cd day13 && dotnet run -v m --nologo -c Release --no-build) &
+(cd day14 && dotnet run -v m --nologo -c Release --no-build) &
 wait
