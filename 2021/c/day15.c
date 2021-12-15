@@ -4,54 +4,26 @@
 #include <limits.h>
 #include <assert.h>
 
-#define SZ 100
+#define SZ	100
+#define P2MULTI	5
 
 struct pt { int x,y; };
 struct node { int x,y, open, g; };
-static struct node nodes[SZ*5][SZ*5];
 
 static int grid[SZ][SZ];
 static int gridw, gridh;
 
-static void
-dump_grid(void)
-{
-	int x,y;
-
-	for (y=0; y<gridh*5; y++)  {
-		for (x=0; x<gridw*5; x++)
-			putchar('0' + (
-			    grid[y % gridh][x % gridw] +
-			    x/gridw + y/gridh -1) %9 +1);
-		putchar('\n');
-	}
-}
-
-static void
-dump_nodes(void)
-{
-	int x,y;
-
-	for (y=0; y<gridh; y++)  {
-		for (x=0; x<gridw; x++)
-			if (nodes[y][x].g == INT_MAX)
-				printf(" * ");
-			else
-				printf("%2d ", nodes[y][x].g);
-		putchar('\n');
-	}
-}
-
 static int
 astar(int startx, int starty, int endx, int endy)
 {
+	static struct node nodes[SZ*P2MULTI][SZ*P2MULTI];
 	struct node *cur;
 	int x,y, i, f,fmin, g;
 
 	memset(nodes, 0, sizeof(nodes));
 
-	for (y=0; y<gridh*5; y++)
-	for (x=0; x<gridw*5; x++) {
+	for (y=0; y<gridh*P2MULTI; y++)
+	for (x=0; x<gridw*P2MULTI; x++) {
 		nodes[y][x].x = x;
 		nodes[y][x].y = y;
 		nodes[y][x].g = INT_MAX;
@@ -64,8 +36,8 @@ astar(int startx, int starty, int endx, int endy)
 		cur = NULL;
 		fmin = INT_MAX;
 
-		for (y=0; y<gridh*5; y++)
-		for (x=0; x<gridw*5; x++) {
+		for (y=0; y<gridh*P2MULTI; y++)
+		for (x=0; x<gridw*P2MULTI; x++) {
 			if (!nodes[y][x].open) continue;
 			f = nodes[y][x].g + abs(x-endx) + abs(y-endy);
 			if (f < fmin) { fmin = f; cur = &nodes[y][x]; }
@@ -75,7 +47,6 @@ astar(int startx, int starty, int endx, int endy)
 		if (cur->x == endx && cur->y == endy) return cur->g;
 
 		cur->open = 0;
-		//printf("  at (%d,%d) g=%d\n", cur->y, cur->x, cur->g);
 
 		for (i=0; i<4; i++) {
 			y = cur->y + (i==0?-1 : i==2? 1 : 0);
@@ -92,7 +63,6 @@ astar(int startx, int starty, int endx, int endy)
 
 			nodes[y][x].open = 1;
 			nodes[y][x].g = g;
-			//printf("  opened (%d,%d) g=%d\n", x,y, g);
 		}
 	}
 }
@@ -112,11 +82,8 @@ main()
 		x++;
 	}
 
-	p1 = astar(0,0, gridw  -1, gridh  -1);
-	p2 = astar(0,0, gridw*5-1, gridh*5-1);
-
-	//dump_grid();
-	//dump_nodes();
+	p1 = astar(0,0, gridw-1, gridh-1);
+	p2 = astar(0,0, gridw*P2MULTI-1, gridh*P2MULTI-1);
 
 	printf("14: %d %d\n", p1, p2);
 	return 0;
