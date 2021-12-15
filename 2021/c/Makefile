@@ -1,6 +1,7 @@
 PROGS+=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 	day11 day12 day13 day14 day15 \
-	day06-orig day07-orig day08-p1 day11-short day11-mp4
+	day06-orig day07-orig day08-p1 day11-short day11-mp4 \
+	day15-astar
 
 CFLAGS+=	-Wall -Wextra
 CFLAGS+=	-O3

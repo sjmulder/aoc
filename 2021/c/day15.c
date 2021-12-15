@@ -4,96 +4,75 @@
 #include <limits.h>
 #include <assert.h>
 
-#define SZ	100
-#define P2MULTI	5
+#define MIN(a,b)	((a)<(b)?(a):(b))
+#define MAX(a,b)	((a)>(b)?(a):(b))
 
-struct pt { int x,y; };
-struct node { int x,y, open, g,f; };
-
-static int grid[SZ][SZ];
-static int gridw, gridh;
-
-static int
-cmp_node(const void *a, const void *b)
-{
-	return (*(struct node**)b)->f - (*(struct node**)a)->f;
-}
-
-static int
-astar(int startx, int starty, int endx, int endy)
-{
-	static struct node nodes[SZ*P2MULTI][SZ*P2MULTI];
-	static struct node *open[SZ*SZ*P2MULTI*P2MULTI];
-	struct node *cur;
-	int nopen=1, x,y, i, g;
-
-	memset(nodes, 0, sizeof(nodes));
-
-	for (y=0; y<gridh*P2MULTI; y++)
-	for (x=0; x<gridw*P2MULTI; x++) {
-		nodes[y][x].x = x;
-		nodes[y][x].y = y;
-		nodes[y][x].g = INT_MAX;
-	}
-
-	nodes[starty][startx].open = 1;
-	nodes[starty][startx].g = 0;
-	nodes[starty][startx].f = endx-startx + endy-starty;
-	open[0] = &nodes[starty][startx];
-
-	while (nopen) {
-		qsort(open, nopen, sizeof(*open), cmp_node);
-
-		cur = open[--nopen];
-		cur->open = 0;
-
-		if (cur->x == endx && cur->y == endy)
-			return cur->g;
-
-		for (i=0; i<4; i++) {
-			y = cur->y + (i==0?-1 : i==2? 1 : 0);
-			x = cur->x + (i==1? 1 : i==3?-1 : 0);
-			if (y < 0 || y > endy) continue;
-			if (x < 0 || x > endx) continue;
-			if (x == cur->x && y == cur->y) continue;
-
-			g = cur->g + (
-			     grid[y % gridh][x % gridw] +
-			     x/gridw + y/gridh -1) %9 +1;
-
-			if (g >= nodes[y][x].g) continue;
-
-			nodes[y][x].g = g;
-			nodes[y][x].f = g + endx-x + endy-y;
-
-			if (!nodes[y][x].open) {
-				nodes[y][x].open = 1;
-				open[nopen++] = &nodes[y][x];
-			}
-		}
-	}
-
-	return -1;
-}
+#define SZ 500
 
 int
 main()
 {
-	int x=0,y=0, c, p1,p2;
+	static int costs[SZ][SZ];
+	static int sums[SZ][SZ];
+	int w=0,h=0, x=0,y=0, c, dirty=0, sum,cost;
 
 	while ((c = getchar()) != EOF) {
 		if (c == '\n') { x=0; y++; continue; }
-		assert(x < SZ);
-		assert(y < SZ);
-		grid[y][x] = c-'0';
-		if (y >= gridh) gridh = y+1;
-		if (x >= gridw) gridw = x+1;
+		assert(x*5 < SZ);
+		assert(y*5 < SZ);
+		costs[y][x] = c-'0';
+		w = MAX(w, x+1);
+		h = MAX(h, y+1);
 		x++;
 	}
 
-	p1 = astar(0,0, gridw-1, gridh-1);
-	p2 = astar(0,0, gridw*P2MULTI-1, gridh*P2MULTI-1);
+	for (y=0; y<h*5; y++)
+	for (x=0; x<w*5; x++) {
+		sums[y][x] = INT_MAX -10;
+		costs[y][x] = (costs[y%h][x%w] + x/w + y/h -1) %9 +1;
+	}
 
-	printf("14: %d %d\n", p1, p2);
+	sums[0][0] = 0;
+
+	do {
+		dirty=0;
+
+		for (y=0; y<h*5; y++)
+		for (x=0; x<w*5; x++) {
+			sum = sums[y][x];
+			cost = costs[y][x];
+
+			if (y) sum = MIN(sum, sums[y-1][x]+cost);
+			if (x) sum = MIN(sum, sums[y][x-1]+cost);
+			if (y<h*5-1) sum = MIN(sum, sums[y+1][x]+cost);
+			if (x<w*5-1) sum = MIN(sum, sums[y][x+1]+cost);
+
+			if (sum != sums[y][x]) {
+				//printf("  change in %d,%d\n", x,y);
+				sums[y][x] = sum;
+				dirty = 1;
+			}
+		}
+
+#if 0
+		printf("\n  sums\n");
+		for (y=0; y<h*5; y++) {
+			for (x=0; x<w*5; x++)
+				printf("%3d ", sums[y][x]);
+			putchar('\n');
+		}
+#endif
+	} while (dirty);
+
+#if 0
+	printf("costs\n");
+	for (y=0; y<h; y++) {
+		for (x=0; x<w; x++)
+			printf("%3d ", costs[y][x]);
+		putchar('\n');
+	}
+#endif
+
+	printf("14: %d %d\n", sums[h-1][w-1], sums[h*5-1][w*5-1]);
 	return 0;
 }
