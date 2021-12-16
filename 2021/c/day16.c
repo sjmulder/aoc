@@ -5,177 +5,76 @@
 #include <inttypes.h>
 #include <err.h>
 
-#define MIN(a,b) ((a)<(b)?(a):(b))
-#define MAX(a,b) ((a)>(b)?(a):(b))
+static uint64_t p1, p2;
+static uint64_t bs_pos, bs_buf;
+static int bs_buflen;
 
-#define DUMP 0
-
-struct packet {
-	int ver;
-	int type;
-#define PT_SUM	0
-#define PT_PRD	1
-#define PT_MIN	2
-#define PT_MAX	3
-#define PT_LIT	4
-#define PT_GT	5
-#define PT_LT	6
-#define PT_EQ	7
-	uint64_t val;
-	struct packet *children;
-	struct packet *next;
-};
-
-struct bitstream {
-	FILE *f;
-	uint64_t pos;
-	uint64_t buf;
-	int buflen;
-};
+static uint64_t min(uint64_t a, uint64_t b) { return a<b ? a : b; }
+static uint64_t max(uint64_t a, uint64_t b) { return a>b ? a : b; }
 
 static uint64_t
-read_uint(struct bitstream *bs, int nbits)
+read_bits(int nbits)
 {
 	uint64_t c, ret;
 
-	while (bs->buflen < nbits) {
-		if (bs->buflen + 4 > 64)
-			errx(1, "bit buffer full");
-		if (scanf("%1"PRIx64, &c) != 1)
-			errx(1, "unexpected char or EOF");
-
-		bs->buflen += 4;
-		bs->buf = bs->buf << 4 | c;
+	while (bs_buflen < nbits) {
+		if (bs_buflen + 4 > 64) errx(1, "bit buffer full");
+		if (scanf("%1"PRIx64, &c) != 1) errx(1, "bad char");
+		bs_buflen += 4;
+		bs_buf = bs_buf << 4 | c;
 	}
 
-	ret = bs->buf >> (bs->buflen - nbits);
-	bs->pos += nbits;
-	bs->buflen -= nbits;
-	bs->buf &= ((uint64_t)1 << bs->buflen) -1;
+	ret = bs_buf >> (bs_buflen - nbits);
+	bs_pos += nbits;
+	bs_buflen -= nbits;
+	bs_buf &= ((uint64_t)1 << bs_buflen) -1;
 
 	return ret;
 }
 
-static struct packet *
-read_packet(struct bitstream *bs)
-{
-	struct packet *p, **tailp;
-	uint64_t chunk, length, start;
-	int count, i;
-
-	if (!(p = malloc(sizeof(*p))))
-		err(1, "malloc");
-
-	memset(p, 0, sizeof(*p));
-	p->ver = (int)read_uint(bs, 3);
-	p->type = (int)read_uint(bs, 3);
-
-	if (p->type == PT_LIT) {
-		do {
-			chunk = read_uint(bs, 5);
-			p->val = p->val << 4 | (chunk & 15);
-			p->val |= chunk & 5;
-		} while (chunk >> 4);
-	} else if (read_uint(bs, 1)) {
-		count = (int)read_uint(bs, 11);
-		tailp = &p->children;
-
-		for (i=0; i<count; i++)
-			tailp = &(*tailp = read_packet(bs))->next;
-	} else {
-		length = read_uint(bs, 15);
-		start = bs->pos;
-		tailp = &p->children;
-
-		while (bs->pos < start + length)
-			tailp = &(*tailp = read_packet(bs))->next;
-	}
-
-	return p;
-}
-
-#if DUMP
-static void
-dump(struct packet *p)
-{
-	struct packet *child;
-
-	if (p->type == PT_LIT)
-		{ printf("%"PRIu64, p->val); return; }
-
-	putchar('(');
-
-	switch (p->type) {
-	case PT_SUM: putchar('+'); break;
-	case PT_PRD: putchar('*'); break;
-	case PT_MIN: printf("min"); break;
-	case PT_MAX: printf("max"); break;
-	case PT_GT:  putchar('>'); break;
-	case PT_LT:  putchar('<'); break;
-	case PT_EQ:  putchar('='); break;
-	default: errx(1, "bad type: %d\n", p->type);
-	}
-
-	for (child = p->children; child; child = child->next)
-		{ putchar(' '); dump(child); }
-
-	putchar(')');
-}
-#endif
-
 static uint64_t
-eval(struct packet *p)
+eval_next(void)
 {
-	struct packet *child;
-	uint64_t acc=0;
+	uint64_t type, val=0,chunk, start,bits=0,num=0, i;
 
-	if (p->type == PT_LIT) return p->val;
-	if (!p->children) return 0;
+	p1 += read_bits(3);
+	type = read_bits(3);
 
-	acc = eval(p->children);
+	if (type == 4)
+		do {
+			chunk = read_bits(5);
+			val = val << 4 | (chunk & 15);
+			val |= chunk & 5;
+		} while (chunk >> 4);
+	else if (read_bits(1))
+		num = read_bits(11);
+	else
+		bits = read_bits(15);
 
-	for (child = p->children->next; child; child = child->next)
-		switch (p->type) {
-		case PT_SUM: acc += eval(child); break;
-		case PT_PRD: acc *= eval(child); break;
-		case PT_GT:  acc = acc > eval(child); break;
-		case PT_LT:  acc = acc < eval(child); break;
-		case PT_EQ:  acc = acc == eval(child); break;
-		case PT_MIN: acc = MIN(acc, eval(child)); break;
-		case PT_MAX: acc = MAX(acc, eval(child)); break;
-		default: errx(1, "bad type: %d\n", p->type);
+	if (!num && !bits)
+		return val;
+
+	start = bs_pos;
+	val = eval_next();
+
+	for (i=1; (num && i<num) || (bits && bs_pos < start+bits); i++)
+		switch (type) {
+		case 0: val += eval_next(); break;
+		case 1: val *= eval_next(); break;
+		case 2: val = min(val, eval_next()); break;
+		case 3: val = max(val, eval_next()); break;
+		case 5: val = val > eval_next(); break;
+		case 6: val = val < eval_next(); break;
+		case 7: val = val == eval_next(); break;
 		}
 
-	return acc;
-}
-
-static int
-sum_vers(struct packet *p)
-{
-	int sum=0;
-
-	sum += p->ver;
-	if (p->children) sum += sum_vers(p->children);
-	if (p->next) sum += sum_vers(p->next);
-
-	return sum;
+	return val;
 }
 
 int
 main()
 {
-	struct bitstream bs;
-	struct packet *root;
-
-	memset(&bs, 0, sizeof(bs));
-	bs.f = stdin;
-	root = read_packet(&bs);
-
-#if DUMP
-	dump(root);
-	putchar('\n');
-#endif
-
-	printf("16: %d %"PRIu64"\n", sum_vers(root), eval(root));
+	p2 = eval_next();
+	printf("16: %"PRIu64" %"PRIu64"\n", p1, p2);
 	return 0;
 }
