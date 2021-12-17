@@ -10,6 +10,7 @@ obj/
 Debug/
 Release/
 xcuserdata/
+build/
 cmake-build-*/
 *.o
 *.d
