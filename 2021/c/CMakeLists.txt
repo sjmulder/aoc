@@ -45,3 +45,5 @@ add_executable(day16-orig  compat.c compat.h day16-orig.c)
 if(HAVE_FORK)
     add_executable(day11-mp4 compat.c compat.h day11-mp4.c)
 endif()
+
+target_link_libraries(day17 m)

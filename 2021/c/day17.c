@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 int
 main()
@@ -9,7 +10,7 @@ main()
 
 	p1 = ty0 * (ty0+1) /2;
 
-	for (vx0=1; vx0<=tx1; vx0++)
+	for (vx0=(int)sqrt(tx0)/2; vx0<=tx1; vx0++)
 	for (vy0=ty0; vy0<-ty0; vy0++) {
 		x=y=0; vx=vx0; vy=vy0;
 		while ((x<tx0 || y>ty1) && x<=tx1 && y>=ty0) {
