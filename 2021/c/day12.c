@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include "compat.h"
 
 /*
  * Implemented as a depth-first search using recursion. The route is

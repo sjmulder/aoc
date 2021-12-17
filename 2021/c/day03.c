@@ -42,7 +42,7 @@ main()
 
 	while (scanf(" %16s", buf) == 1) {
 		if (!nbits)
-			nbits = strlen(buf);
+			nbits = (int)strlen(buf);
 		for (i=0; i<nbits; i++)
 			nums[nnums] |= (buf[i]=='1') << (nbits-1-i);
 		if (++nnums >= (int)LEN(nums))

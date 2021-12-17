@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="aoc-2021-c" targetName="day01" />
+      <config projectName="aoc-2021-c" targetName="day11-short" />
+      <config projectName="aoc-2021-c" targetName="day12" />
       <config projectName="aoc-2021-c" targetName="day02" />
-      <config projectName="aoc-2021-c" targetName="day08-p1" />
+      <config projectName="aoc-2021-c" targetName="day13" />
+      <config projectName="aoc-2021-c" targetName="day10" />
       <config projectName="aoc-2021-c" targetName="day07-orig" />
+      <config projectName="aoc-2021-c" targetName="day11" />
       <config projectName="aoc-2021-c" targetName="day05" />
+      <config projectName="aoc-2021-c" targetName="day16" />
       <config projectName="aoc-2021-c" targetName="day06" />
       <config projectName="aoc-2021-c" targetName="day03" />
+      <config projectName="aoc-2021-c" targetName="day14" />
       <config projectName="aoc-2021-c" targetName="day04" />
+      <config projectName="aoc-2021-c" targetName="day15" />
+      <config projectName="aoc-2021-c" targetName="day09" />
       <config projectName="aoc-2021-c" targetName="day07" />
       <config projectName="aoc-2021-c" targetName="day08" />
       <config projectName="aoc-2021-c" targetName="day06-orig" />
+      <config projectName="aoc-2021-c" targetName="day08-p1" />
+      <config projectName="aoc-2021-c" targetName="day16-orig" />
+      <config projectName="aoc-2021-c" targetName="day15-astar" />
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="vs-x86-debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="VS x86" />
+      <configuration PROFILE_NAME="vs-x86-release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="VS x86" />
+      <configuration PROFILE_NAME="vs-x86_64-debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="VS amd64" />
+      <configuration PROFILE_NAME="vs-x86_64-release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="VS amd64" />
+      <configuration PROFILE_NAME="mingw-x86-debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="MinGW i686" />
+      <configuration PROFILE_NAME="mingw-x86-release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="MinGW i686" />
+      <configuration PROFILE_NAME="mingw-x86_64-debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="MinGW x86_64" />
+      <configuration PROFILE_NAME="mingw-x86_64-release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="MinGW x86_64" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59194e54-3259-4273-8463-07fd0857e9aa" name="Changes" comment="" />
+    <list default="true" id="c74ef88e-512b-4261-90fe-38d94e53c7d5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day03.c" beforeDir="false" afterPath="$PROJECT_DIR$/day03.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day04.c" beforeDir="false" afterPath="$PROJECT_DIR$/day04.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day08-p1.c" beforeDir="false" afterPath="$PROJECT_DIR$/day08-p1.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day08.c" beforeDir="false" afterPath="$PROJECT_DIR$/day08.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day09.c" beforeDir="false" afterPath="$PROJECT_DIR$/day09.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day12.c" beforeDir="false" afterPath="$PROJECT_DIR$/day12.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day16-orig.c" beforeDir="false" afterPath="$PROJECT_DIR$/day16-orig.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day16.c" beforeDir="false" afterPath="$PROJECT_DIR$/day16.c" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,9 +61,12 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:vs-x86_64-release" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="t44nv8ca" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -42,14 +76,17 @@
     <option name="majorVersion" value="2021" />
     <option name="minorVersion" value="3" />
   </component>
-  <component name="ProjectId" id="220b9pzlsoyBEUWCbsvSFHlwgF8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="22MyJsRMmQFFZxQrstmv9z7K27L" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
@@ -57,66 +94,125 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../2020/c" />
-    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../2020" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
-  <component name="RunManager" selected="CMake Application.day01">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="day01" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day01" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day01">
+  <component name="RunManager" selected="CMake Application.day15-astar">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day02" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day02" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day02">
+    <configuration name="day01" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day01" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day01">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day03" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day03" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day03">
+    <configuration name="day02" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day02" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day02">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day04" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day04" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day04">
+    <configuration name="day03" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day03" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day03">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day05" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day05" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day05">
+    <configuration name="day04" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day04" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day04">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day06-orig" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day06-orig" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day06-orig">
+    <configuration name="day05" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day05" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day05">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day06" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day06" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day06">
+    <configuration name="day06-orig" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day06-orig" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day06-orig">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day07-orig" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day07-orig" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day07-orig">
+    <configuration name="day06" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day06" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day06">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day07" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day07" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day07">
+    <configuration name="day07-orig" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day07-orig" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day07-orig">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day08-p1" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day08-p1" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day08-p1">
+    <configuration name="day07" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day07" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day07">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="day08" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day08" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day08">
+    <configuration name="day08-p1" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day08-p1" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day08-p1">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day08" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day08" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day08">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day09" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day09" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day09">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day10" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day10" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day10">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day11-short" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day11-short" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day11-short">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day11" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day11" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day11">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day12" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day12" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day12">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day13" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day13" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day13">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day14" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day14" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day14">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day15-astar" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day15-astar" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day15-astar">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day15" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day15" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day15">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day16-orig" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day16-orig" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day16-orig">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="day16" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="aoc-2021-c" TARGET_NAME="day16" CONFIG_NAME="vs-x86-debug" RUN_TARGET_PROJECT_NAME="aoc-2021-c" RUN_TARGET_NAME="day16">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -133,25 +229,35 @@
       <item itemvalue="CMake Application.day07-orig" />
       <item itemvalue="CMake Application.day08" />
       <item itemvalue="CMake Application.day08-p1" />
+      <item itemvalue="CMake Application.day09" />
+      <item itemvalue="CMake Application.day10" />
+      <item itemvalue="CMake Application.day11" />
+      <item itemvalue="CMake Application.day11-short" />
+      <item itemvalue="CMake Application.day12" />
+      <item itemvalue="CMake Application.day13" />
+      <item itemvalue="CMake Application.day14" />
+      <item itemvalue="CMake Application.day15" />
+      <item itemvalue="CMake Application.day15-astar" />
+      <item itemvalue="CMake Application.day16" />
+      <item itemvalue="CMake Application.day16-orig" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="59194e54-3259-4273-8463-07fd0857e9aa" name="Changes" comment="" />
-      <created>1638977303019</created>
+      <changelist id="c74ef88e-512b-4261-90fe-38d94e53c7d5" name="Changes" comment="" />
+      <created>1639661683363</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1638977303019</updated>
-      <workItem from="1638977304149" duration="490000" />
+      <updated>1639661683363</updated>
+      <workItem from="1639661685237" duration="1429000" />
+      <workItem from="1639664726376" duration="5056000" />
+      <workItem from="1639674172724" duration="1410000" />
+      <workItem from="1639719708373" duration="2000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>

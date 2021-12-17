@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <err.h>
+#include "compat.h"
 
 /*
  * Approach: instead of implementing a generic solver, sort the input
@@ -49,7 +49,7 @@ cmp_char(const void *p1, const void *p2)
 static int
 cmp_len(const void *p1, const void *p2)
 {
-	return strlen(*(char**)p1) - strlen(*(char**)p2);
+	return (int)(strlen(*(char**)p1) - strlen(*(char**)p2));
 }
 
 static int

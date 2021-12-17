@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "compat.h"
 
 int
 main()
@@ -13,7 +14,7 @@ main()
 		while ((word = strsep(&rest, " ")) && *word != '|')
 			;
 		while ((word = strsep(&rest, " "))) {
-			len = strlen(word);
+			len = (int)strlen(word);
 			p1 += len != 5 && len != 6;
 		}
 	}

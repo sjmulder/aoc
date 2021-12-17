@@ -1,0 +1,46 @@
+project(aoc-2021-c)
+cmake_minimum_required(VERSION 3.18)
+
+include(CheckSymbolExists)
+
+check_symbol_exists(err "err.h" HAVE_ERR)
+check_symbol_exists(strsep "string.h" HAVE_STRSEP)
+check_symbol_exists(fork "unistd.h" HAVE_FORK)
+
+add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+
+if(NOT HAVE_ERR)
+    add_compile_definitions(NO_ERR=1)
+endif()
+
+if(NOT HAVE_STRSEP)
+    add_compile_definitions(NO_STRSEP=1)
+endif()
+
+add_executable(day01 compat.c compat.h day01.c)
+add_executable(day02 compat.c compat.h day02.c)
+add_executable(day03 compat.c compat.h day03.c)
+add_executable(day04 compat.c compat.h day04.c)
+add_executable(day05 compat.c compat.h day05.c)
+add_executable(day06 compat.c compat.h day06.c)
+add_executable(day07 compat.c compat.h day07.c)
+add_executable(day08 compat.c compat.h day08.c)
+add_executable(day09 compat.c compat.h day09.c)
+add_executable(day10 compat.c compat.h day10.c)
+add_executable(day11 compat.c compat.h day11.c)
+add_executable(day12 compat.c compat.h day12.c)
+add_executable(day13 compat.c compat.h day13.c)
+add_executable(day14 compat.c compat.h day14.c)
+add_executable(day15 compat.c compat.h day15.c)
+add_executable(day16 compat.c compat.h day16.c)
+
+add_executable(day06-orig  compat.c compat.h day06-orig.c)
+add_executable(day07-orig  compat.c compat.h day07-orig.c)
+add_executable(day08-p1    compat.c compat.h day08-p1.c)
+add_executable(day11-short compat.c compat.h day11-short.c)
+add_executable(day15-astar compat.c compat.h day15-astar.c)
+add_executable(day16-orig  compat.c compat.h day16-orig.c)
+
+if(HAVE_FORK)
+    add_executable(day11-mp4 compat.c compat.h day11-mp4.c)
+endif()

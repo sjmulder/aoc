@@ -38,7 +38,7 @@ main()
 
 	while (scanf(" %100s", grid[h]) == 1)
 		{ h++; assert(h <= SZ); }
-	w = strlen(grid[0]);
+	w = (int)strlen(grid[0]);
 
 	for (r=0; r<h; r++)
 	for (c=0; c<w; c++) {

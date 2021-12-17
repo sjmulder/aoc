@@ -3,7 +3,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
-#include <err.h>
+#include "compat.h"
+
+#undef min
+#undef max
 
 static uint64_t p1, p2;
 static uint64_t bs_pos, bs_buf;
