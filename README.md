@@ -11,7 +11,7 @@ Advent of Code
                 12345678901234567
     C           *****************
     C#          **** ***    **
-    C64 BASIC   **
+    C64 BASIC   **              *
     AWK          *
     Excel       **
 
