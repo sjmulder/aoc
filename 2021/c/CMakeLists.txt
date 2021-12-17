@@ -33,6 +33,7 @@ add_executable(day13 compat.c compat.h day13.c)
 add_executable(day14 compat.c compat.h day14.c)
 add_executable(day15 compat.c compat.h day15.c)
 add_executable(day16 compat.c compat.h day16.c)
+add_executable(day17 compat.c compat.h day17.c)
 
 add_executable(day06-orig  compat.c compat.h day06-orig.c)
 add_executable(day07-orig  compat.c compat.h day07-orig.c)
