@@ -11,6 +11,10 @@ main()
 	p1 = b * (b+1) /2;
 
 	for (vx0 = (int)sqrt(l); vx0 <= r; vx0++) {
+		for (x=0, vx=vx0; x<l && vx; x+=vx, vx--)
+			;
+		if (x<l || x>r)
+			continue;
 		for (vy0=b; vy0<-b; vy0++) {
 			x=y=0; vx=vx0; vy=vy0;
 			while ((x<l || y>t) && x<=r && y>=b) {
