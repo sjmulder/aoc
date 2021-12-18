@@ -49,42 +49,60 @@ split(void)
 static int
 score(void)
 {
-	int i;
+	int i, any=1;
 
-	while (nf>1)
-		for (i=0; i<nf-1; i++) {
+	while (nf>1 && any)
+		for (i=0, any=0; i<nf-1; i++) {
 			if (fs[i].d != fs[i+1].d) continue;
 			fs[i].n = 3*fs[i].n + 2*fs[i+1].n;
 			fs[i].d--;
-			nf--;
+			nf--; any=1;
 			memmove(fs+i+1, fs+i+2, (nf-i-1)*sizeof(*fs));
 		}
 
-	return fs[0].n;
+	return nf==1 ? fs[0].n : 0;
+}
+
+static void
+add_str(const char *s)
+{
+	int i,d;
+
+	for (i=0; i<nf; i++)
+		fs[i].d++;
+	for (i=0, d=nf>1; s[i]; i++)
+		if (s[i] == '[') d++; else
+		if (s[i] == ']') d--; else
+		if (s[i] >= '0' && s[i] <= '9') {
+			fs[nf].n = s[i]-'0';
+			fs[nf].d = d;
+			if (++nf >= LEN(fs)) errx(1, "overflow");
+		}
+	while (explode() || split()) ;
 }
 
 int
 main()
 {
-	static char buf[100];
-	int i,d=0, p1=0;
+	static char ls[101][100];
+	int nl=0, i,j,sc, p1=0,p2=0;
 
-	while (fgets(buf, sizeof(buf), stdin)) {
-		for (i=0; i<nf; i++)
-			fs[i].d++;
-		for (i=0, d=nf>1; buf[i]; i++)
-			if (buf[i] == '[') d++; else
-			if (buf[i] == ']') d--; else
-			if (buf[i] >= '0' && buf[i] <= '9') {
-				fs[nf].n = buf[i]-'0';
-				fs[nf].d = d;
-				if (++nf>=LEN(fs)) errx(1, "overflow");
-			}
-		while (explode() || split()) ;
+	while (fgets(ls[nl], sizeof(ls[nl]), stdin)) {
+		add_str(ls[nl]);
+		if (++nl >= LEN(ls)) errx(1, "lines overflow");
 	}
 
 	p1 = score();
 
-	printf("18: %d\n", p1);
+	for (i=0; i<nl; i++)
+	for (j=0; j<nl; j++) {
+		if (i==j) continue;
+		nf = 0;
+		add_str(ls[i]);
+		add_str(ls[j]);
+		if ((sc=score())>p2) p2 = sc;
+	}
+
+	printf("18: %d %d\n", p1, p2);
 	return 0;
 }
