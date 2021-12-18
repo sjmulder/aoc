@@ -2,32 +2,12 @@
 #include <string.h>
 #include <err.h>
 
+#define LEN(a) ((int)((sizeof(a)/sizeof(*(a)))))
+
 struct fish { int d,n; }; /* depth, count */
 
-#define SZ 1000
-
-static struct fish fs[SZ];
+static struct fish fs[1000];
 static int nf;
-
-static void
-dump(void)
-{
-	int i;
-
-	for (i=0; i<nf; i++) printf("%x", fs[i].d); putchar('\n');
-	for (i=0; i<nf; i++) printf("%x", fs[i].n); putchar('\n');
-	putchar('\n');
-}
-
-static void
-dump_wide(void)
-{
-	int i;
-
-	for (i=0; i<nf; i++) printf("%5d", fs[i].d); putchar('\n');
-	for (i=0; i<nf; i++) printf("%5d", fs[i].n); putchar('\n');
-	putchar('\n');
-}
 
 static int
 explode(void)
@@ -55,7 +35,7 @@ split(void)
 
 	for (i=0; i<nf; i++)
 		if (fs[i].n > 9) {
-			if (++nf > SZ) errx(1, "overflow");
+			if (++nf > LEN(fs)) errx(1, "overflow");
 			memmove(fs+i+1, fs+i, (nf-i-1)*sizeof(*fs));
 			fs[i].d   = ++fs[i+1].d;
 			fs[i].n   = fs[i+1].n/2;
@@ -66,22 +46,10 @@ split(void)
 	return 0;
 }
 
-static void
-reduce(void)
-{
-	while (1) {
-		if (explode()) { printf(" explode:\n"); dump(); } else
-		if (split()) { printf(" split:\n"); dump(); } else
-			break;
-	}
-}
-
-static void
+static int
 score(void)
 {
 	int i;
-
-	dump_wide();
 
 	while (nf>1)
 		for (i=0; i<nf-1; i++) {
@@ -90,34 +58,33 @@ score(void)
 			fs[i].d--;
 			nf--;
 			memmove(fs+i+1, fs+i+2, (nf-i-1)*sizeof(*fs));
-			dump_wide();
 		}
 
+	return fs[0].n;
 }
 
 int
 main()
 {
 	static char buf[100];
-	int i,d=0;
+	int i,d=0, p1=0;
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		for (i=0; i<nf; i++)
 			fs[i].d++;
-		d = nf>1;
-		for (i=0; buf[i]; i++)
+		for (i=0, d=nf>1; buf[i]; i++)
 			if (buf[i] == '[') d++; else
 			if (buf[i] == ']') d--; else
 			if (buf[i] >= '0' && buf[i] <= '9') {
 				fs[nf].n = buf[i]-'0';
 				fs[nf].d = d;
-				if (++nf >= SZ) errx(1, "overflow");
+				if (++nf>=LEN(fs)) errx(1, "overflow");
 			}
-		dump();
-		reduce();
+		while (explode() || split()) ;
 	}
 
-	dump();
-	score();
+	p1 = score();
+
+	printf("18: %d\n", p1);
 	return 0;
 }
