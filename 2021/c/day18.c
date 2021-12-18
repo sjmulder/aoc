@@ -4,7 +4,7 @@
 
 #define LEN(a) ((int)((sizeof(a)/sizeof(*(a)))))
 
-struct fish { int d,n; }; /* depth, count */
+struct fish { int d,n; }; /* depth, value */
 
 static struct fish fs[1000];
 static int nf;
