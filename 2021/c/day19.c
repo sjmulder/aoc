@@ -118,9 +118,8 @@ read_input(void)
 static int
 test_alignment(scanner *s, scanner *base, const matrix *perm, vec pos)
 {
-	int nmatch=0;
-	int b0i, b1i;
-	vec b0, b1;
+	int b0i,b1i, nmatch=0;
+	vec b0,b1;
 
 	for (b0i=0; b0i < base->nb; b0i++) {
 		for (b1i=0; b1i < s->nb; b1i++) {
@@ -131,14 +130,17 @@ test_alignment(scanner *s, scanner *base, const matrix *perm, vec pos)
 			b1 = add_vv(b1, pos);
 
 			if (cmp_v(b0, b1) == 0) {
-				nmatch++;
-				goto next;
+				if (++nmatch >= 12)
+					return 1;
+				break;
 			}
 		}
-	next: ;
+
+		if (b0i - nmatch > base->nb - 12)
+			return 0;
 	}
 
-	return nmatch >= 12;
+	return 0;
 }
 
 static int
