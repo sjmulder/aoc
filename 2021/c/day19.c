@@ -50,7 +50,7 @@ typedef struct scanner {
 	int nb;
 } scanner;
 
-static scanner ss[32];
+static scanner ss[33];
 static int ns;
 
 static void
@@ -109,25 +109,47 @@ align_scanners(void)
 			off = sub_vv(*al0, mul_vm(*al1, perm));
 			nmatch = 0;
 
-			for (b0 = s0->bs+1; b0 < s0->bs + s0->nb; b0++)
-			for (b1 = s->bs+1;  b1 < s->bs  + s->nb;  b1++)
-				nmatch += 0 == cmp_v(*b0,
-				    add_vv(off, mul_vm(*b1, perm)));
+			printf(" al0=%d,%d,%d al1=%d,%d,%d\n",
+			    al0->x, al0->y, al0->z,
+			    al1->x, al1->y, al1->z);
+
+			printf(" perm=%d,%d,%d;%d,%d,%d;%d,%d,%d "
+			    "off=%d,%d,%d\n",
+			    perm->a.x, perm->a.y, perm->a.z,
+			    perm->b.x, perm->b.y, perm->b.z,
+			    perm->c.x, perm->c.y, perm->c.z,
+			    off.x, off.y, off.z);
+
+			for (b0 = s0->bs; b0 < s0->bs + s0->nb; b0++)
+			for (b1 = s->bs;  b1 < s->bs  + s->nb;  b1++) {
+				if (cmp_v(*b0, add_vv(off, mul_vm(*b1, perm))) == 0) {
+					printf("  b0=%d,%d,%d b1=%d,%d,%d MATCH\n",
+					    b0->x, b0->y, b0->z,
+					    b1->x, b1->y, b1->z);
+					nmatch++;
+					break;
+				}
+				printf("  b0=%d,%d,%d b1=%d,%d,%d\n",
+				    b0->x, b0->y, b0->z,
+				    b1->x, b1->y, b1->z);
+			}
 
 			printf("s=%ld perm=%ld al0=%ld al1=%ld "
 			    "nmatch=%d\n", s-ss, perm-perms, al0-s0->bs,
 			    al1-s->bs, nmatch);
 			
 			if (nmatch >= 12)
-				goto match;
+				goto aligned;
 			//if (nmatch < MIN(s0->nb, s->nb) - 12)
 			//	goto nomatch;
 		}
 
-		warnx(1, "no match for scanner %ld\n", ss-s);
+		printf("no match for scanner %ld\n", s-ss);
 		continue;
 
-	match:
+	aligned:
+		printf("HAVE match for scanner %ld\n", s-ss);
+
 		/* transform scanner into scanner 0's coords */
 		for (b = s->bs+1; b < s->bs + s->nb; b++)
 			*b = add_vv(off, mul_vm(*b, perm));
@@ -142,7 +164,7 @@ main()
 	read_input();
 	//dump();
 	align_scanners();
-	dump();
+	//dump();
 
 	return 0;
 }
@@ -150,9 +172,14 @@ main()
 static int
 cmp_v(vec a, vec b)
 {
-	return
+	int ret =
 	    a.x < b.x ? -1 : a.x > b.x ? 1 :
 	    a.y < b.y ? -1 : a.y > b.y ? 1 : a.z - b.z;
+	
+	//printf("  cmp(%d,%d,%d , %d,%d,%d) = %d\n",
+	//    a.x,a.y,a.z, b.x,b.y,b.z, ret);
+	
+	return ret;
 }
 
 static vec
