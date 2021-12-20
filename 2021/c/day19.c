@@ -61,14 +61,9 @@ static int ns, nb;
 static int
 cmp_v(vec a, vec b)
 {
-	int ret =
+	return
 	    a.x < b.x ? -1 : a.x > b.x ? 1 :
 	    a.y < b.y ? -1 : a.y > b.y ? 1 : a.z - b.z;
-
-	//printf(" cmp_v(%d,%d, %d,%d) = %d\n",
-	//    a.x,a.y, b.x,b.y, ret);
-
-	return ret;
 }
 
 static vec
@@ -146,10 +141,6 @@ test_alignment(scanner *s, scanner *base, const matrix *perm, vec pos)
 	next: ;
 	}
 
-	//printf(" test_alignment(%ld, %ld, %ld, %d,%d,%d) = %d\n",
-	//    s - ss, base - ss, perm - perms, pos.x,pos.y,pos.z,
-	//    nmatch);
-
 	return nmatch >= 12;
 }
 
@@ -170,10 +161,10 @@ try_align(scanner *s, scanner *base)
 		pos = sub_vv(base->bs[b0i], pos);
 
 		if (test_alignment(s, base, perm, pos)) {
-			printf("match %ld <- %ld perm=%ld "
-			    "pos=%d,%d,%d\n",
-			    base-ss, s-ss, perm-perms,
-			    pos.x,pos.y,pos.z);
+			//printf("match %ld <- %ld perm=%ld "
+			//    "pos=%d,%d,%d\n",
+			//    base-ss, s-ss, perm-perms,
+			//    pos.x,pos.y,pos.z);
 			s->base = base;
 			s->perm = perm;
 			s->pos = pos;
@@ -181,7 +172,6 @@ try_align(scanner *s, scanner *base)
 		}
 	}
 
-	//printf("NO match\n");
 	return 0;
 }
 
@@ -226,16 +216,9 @@ collect(void)
 			if (cmp_v(pos, bs[i]) == 0)
 				break;
 
-		if (i==nb) {
-			//printf("%d,%d,%d (was: %d,%d,%d in %d)\n",
-			//    pos.x,pos.y,pos.z,
-			//    s->bs[bi].x, s->bs[bi].y, s->bs[bi].z,
-			//    si);
+		if (i==nb)
 			bs[nb++] = pos;
-		}
 	}
-
-	//printf("%d\n", nb);
 }
 
 static int
@@ -248,45 +231,17 @@ max_dist(void)
 		s0 = ss+i;
 		s0->abs_pos = s0->pos;
 
-		printf("%d at\n", i);
-
 		for (s = s0->base; s && s->base; s = s->base) {
-			printf("  %d,%d,%d\n",
-			    s0->abs_pos.x,
-			    s0->abs_pos.y,
-			    s0->abs_pos.z);
 			s0->abs_pos = mul_vm(s0->abs_pos, s->perm);
-			printf("  %d,%d,%d + %d,%d,%d\n",
-			    s0->abs_pos.x,
-			    s0->abs_pos.y,
-			    s0->abs_pos.z,
-			    s->pos.x,
-			    s->pos.y,
-			    s->pos.z);
 			s0->abs_pos = add_vv(s0->abs_pos, s->pos);
 		}
-
-		printf("  %d,%d,%d\n",
-		    s0->abs_pos.x,
-		    s0->abs_pos.y,
-		    s0->abs_pos.z);
-}
+	}
 
 	for (i=0; i<ns-1; i++)
 	for (j=i+1; j<ns; j++) {
 		dist = abs(ss[i].abs_pos.x - ss[j].abs_pos.x) +
 		       abs(ss[i].abs_pos.y - ss[j].abs_pos.y) +
 		       abs(ss[i].abs_pos.z - ss[j].abs_pos.z);
-		printf("|%d,%d,%d - %d,%d,%d| = |%d,%d,%d| = %d\n",
-		    ss[i].abs_pos.x,
-		    ss[i].abs_pos.y,
-		    ss[i].abs_pos.z,
-		    ss[j].abs_pos.x,
-		    ss[j].abs_pos.y,
-		    ss[j].abs_pos.z,
-		    abs(ss[i].abs_pos.x - ss[j].abs_pos.x),
-		    abs(ss[i].abs_pos.y - ss[j].abs_pos.y),
-		    abs(ss[i].abs_pos.z - ss[j].abs_pos.z), dist);
 		if (dist > best)
 			best = dist;
 	}
@@ -294,55 +249,13 @@ max_dist(void)
 	return best;
 }
 
-static void
-dump(void)
-{
-	int s,b;
-
-	for (s=0; s<ns; s++) {
-		printf("--- scanner %d ---\n", s);
-		printf("  base=%ld perm=%ld pos=%d,%d\n",
-		    ss[s].base ? ss[s].base-ss : -1,
-		    ss[s].perm ? ss[s].perm-perms : -1,
-		    ss[s].pos.x, ss[s].pos.y);
-		for (b=0; b<ss[s].nb; b++)
-			printf("%d,%d,%d\n",
-			    ss[s].bs[b].x,
-			    ss[s].bs[b].y,
-			    ss[s].bs[b].z);
-		putchar('\n');
-	}
-}
-
 int
 main()
 {
-	//vec origin={0,0,0};
-	//vec pos={68,-1246,-43};
-	//vec pos0={}, pos1={-100,-200,-300};
-
 	read_input();
-
-	//test_alignment(ss+1, ss, perms, pos1);
-	//test_alignment(ss+1, ss, perms, pos0);
-	//test_alignment(ss+2, ss, perms, pos1);
-	//test_alignment(ss+3, ss, perms+8, pos0);
-	//test_alignment(ss+4, ss, perms+8, pos1);
-
-	//try_align(ss+1, ss);
-	//try_align(ss+2, ss);
-	//try_align(ss+3, ss);
-	//try_align(ss+4, ss);
-	//try_align(ss+5, ss);
-
-	//try_align(ss+1, ss);
-	//try_align(ss+4, ss+1);
-
 	align_all();
 	collect();
 
 	printf("19: %d %d\n", nb, max_dist());
-
 	return 0;
 }
-
