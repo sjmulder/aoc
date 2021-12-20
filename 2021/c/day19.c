@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #define LEN(a)		((int)(sizeof(a)/sizeof(*(a))))
@@ -49,10 +50,12 @@ struct scanner {
 	scanner *base;		/* aligned to this scanner */
 	const matrix *perm;	/* ..with rotation..*/
 	vec pos;		/* ..and pos (in that frame) */
+
+	vec abs_pos;		/* filled by max_pos() */
 };
 
 static scanner ss[33];
-static vec bs[33*32];		/* beacons - after collect() */
+static vec bs[33*32];		/* beacons - filled by collect() */
 static int ns, nb;
 
 static int
@@ -215,6 +218,7 @@ collect(void)
 		while (s->base) {
 			pos = mul_vm(pos, s->perm);
 			pos = add_vv(pos, s->pos);
+
 			s = s->base;
 		}
 
@@ -232,6 +236,62 @@ collect(void)
 	}
 
 	//printf("%d\n", nb);
+}
+
+static int
+max_dist(void)
+{
+	scanner *s0, *s;
+	int i,j, dist, best=0;
+
+	for (i=0; i<ns; i++) {
+		s0 = ss+i;
+		s0->abs_pos = s0->pos;
+
+		printf("%d at\n", i);
+
+		for (s = s0->base; s && s->base; s = s->base) {
+			printf("  %d,%d,%d\n",
+			    s0->abs_pos.x,
+			    s0->abs_pos.y,
+			    s0->abs_pos.z);
+			s0->abs_pos = mul_vm(s0->abs_pos, s->perm);
+			printf("  %d,%d,%d + %d,%d,%d\n",
+			    s0->abs_pos.x,
+			    s0->abs_pos.y,
+			    s0->abs_pos.z,
+			    s->pos.x,
+			    s->pos.y,
+			    s->pos.z);
+			s0->abs_pos = add_vv(s0->abs_pos, s->pos);
+		}
+
+		printf("  %d,%d,%d\n",
+		    s0->abs_pos.x,
+		    s0->abs_pos.y,
+		    s0->abs_pos.z);
+}
+
+	for (i=0; i<ns-1; i++)
+	for (j=i+1; j<ns; j++) {
+		dist = abs(ss[i].abs_pos.x - ss[j].abs_pos.x) +
+		       abs(ss[i].abs_pos.y - ss[j].abs_pos.y) +
+		       abs(ss[i].abs_pos.z - ss[j].abs_pos.z);
+		printf("|%d,%d,%d - %d,%d,%d| = |%d,%d,%d| = %d\n",
+		    ss[i].abs_pos.x,
+		    ss[i].abs_pos.y,
+		    ss[i].abs_pos.z,
+		    ss[j].abs_pos.x,
+		    ss[j].abs_pos.y,
+		    ss[j].abs_pos.z,
+		    abs(ss[i].abs_pos.x - ss[j].abs_pos.x),
+		    abs(ss[i].abs_pos.y - ss[j].abs_pos.y),
+		    abs(ss[i].abs_pos.z - ss[j].abs_pos.z), dist);
+		if (dist > best)
+			best = dist;
+	}
+
+	return best;
 }
 
 static void
@@ -280,6 +340,8 @@ main()
 
 	align_all();
 	collect();
+
+	printf("19: %d %d\n", nb, max_dist());
 
 	return 0;
 }
