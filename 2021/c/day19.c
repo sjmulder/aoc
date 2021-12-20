@@ -50,13 +50,10 @@ struct scanner {
 	scanner *base;		/* aligned to this scanner */
 	const matrix *perm;	/* ..with rotation..*/
 	vec pos;		/* ..and pos (in that frame) */
-
-	vec abs_pos;		/* filled by max_pos() */
 };
 
 static scanner ss[33];
-static vec bs[33*32];		/* beacons - filled by collect() */
-static int ns, nb;
+static int ns;
 
 static int
 cmp_v(vec a, vec b)
@@ -193,10 +190,11 @@ align_all(void)
 		}
 }
 
-static void
-collect(void)
+static int
+count_beacons(void)
 {
-	int si, bi, i;
+	static vec bs[LEN(ss)*LEN(ss->bs)];
+	int count=0, si,bi,i;
 	scanner *s;
 	vec pos;
 
@@ -212,36 +210,39 @@ collect(void)
 			s = s->base;
 		}
 
-		for (i=0; i<nb; i++)
+		for (i=0; i<count; i++)
 			if (cmp_v(pos, bs[i]) == 0)
 				break;
 
-		if (i==nb)
-			bs[nb++] = pos;
+		if (i==count)
+			bs[count++] = pos;
 	}
+
+	return count;
 }
 
 static int
 max_dist(void)
 {
+	static vec pos[LEN(ss)];
 	scanner *s0, *s;
 	int i,j, dist, best=0;
 
 	for (i=0; i<ns; i++) {
 		s0 = ss+i;
-		s0->abs_pos = s0->pos;
+		pos[i] = s0->pos;
 
 		for (s = s0->base; s && s->base; s = s->base) {
-			s0->abs_pos = mul_vm(s0->abs_pos, s->perm);
-			s0->abs_pos = add_vv(s0->abs_pos, s->pos);
+			pos[i] = mul_vm(pos[i], s->perm);
+			pos[i] = add_vv(pos[i], s->pos);
 		}
 	}
 
 	for (i=0; i<ns-1; i++)
 	for (j=i+1; j<ns; j++) {
-		dist = abs(ss[i].abs_pos.x - ss[j].abs_pos.x) +
-		       abs(ss[i].abs_pos.y - ss[j].abs_pos.y) +
-		       abs(ss[i].abs_pos.z - ss[j].abs_pos.z);
+		dist = abs(pos[i].x - pos[j].x) +
+		       abs(pos[i].y - pos[j].y) +
+		       abs(pos[i].z - pos[j].z);
 		if (dist > best)
 			best = dist;
 	}
@@ -254,8 +255,7 @@ main()
 {
 	read_input();
 	align_all();
-	collect();
 
-	printf("19: %d %d\n", nb, max_dist());
+	printf("19: %d %d\n", count_beacons(), max_dist());
 	return 0;
 }
