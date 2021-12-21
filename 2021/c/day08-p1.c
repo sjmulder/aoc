@@ -20,4 +20,5 @@ main()
 	}
 
 	printf("08: %d\n", p1);
+	return 0;
 }

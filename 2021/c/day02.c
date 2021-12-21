@@ -16,4 +16,5 @@ main()
 		}
 
 	printf("02: %d %d\n", h*a, h*d);
+	return 0;
 }

@@ -24,4 +24,5 @@ main()
 	}
 
 	printf("07: %d %d\n", p1, p2);
+	return 0;
 }

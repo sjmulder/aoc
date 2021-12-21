@@ -17,4 +17,5 @@ main()
 	}
 
 	printf("01: %d %d\n", ninc1, ninc3);
+	return 0;
 }
