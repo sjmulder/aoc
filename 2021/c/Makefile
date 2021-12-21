@@ -15,6 +15,7 @@ run: all
 	@./all.sh
 
 clean:
-	rm -rf ${PROGS} *.o *.dSYM
+	rm -f ${PROGS} *.o
+	rm -rfv *.dSYM
 
 .PHONY: all run clean
