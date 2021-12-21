@@ -1,7 +1,9 @@
 #if defined(_MSC_VER)
-#define noreturn __declspec(noreturn)
+# define noreturn __declspec(noreturn)
+#elif defined(__GNUC__)
+# define noreturn __attribute__((noreturn))
 #else
-#include <stdnoreturn.h>
+# include <stdnoreturn.h>
 #endif
 
 #ifdef NO_STRSEP
