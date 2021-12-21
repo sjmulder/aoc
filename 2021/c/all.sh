@@ -18,4 +18,5 @@
 ./day18 <../data/18-input.txt &
 ./day19 <../data/19-input.txt &
 ./day20 <../data/20-input.txt &
+./day21 <../data/21-input.txt &
 wait
