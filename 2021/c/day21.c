@@ -56,7 +56,7 @@ solve_p1(struct state st)
 static struct p2
 solve_p2(struct state s)
 {
-	static struct p2 cache[10][20][10][20];
+	static struct p2 cache[10][21][10][21];
 	struct p2 res={}, *ent;
 
 	ent = &cache[s.pos0][s.score0][s.pos1][s.score1];
