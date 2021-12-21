@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <inttypes.h>
 
 #define MIN(a,b) ((a)<(b)?(a):(b))
@@ -21,8 +22,9 @@ struct p2 { uint64_t wins0, wins1; char set; };
 static struct state
 apply_throw(struct state st0, int throw)
 {
-	struct state st={};
+	struct state st;
 
+	memset(&st, 0, sizeof(st));
 	st.pos0 = st0.pos1;
 	st.pos1 = (st0.pos0 + throw) % 10;
 	st.score0 = st0.score1;
@@ -57,9 +59,10 @@ static struct p2
 solve_p2(struct state s)
 {
 	static struct p2 cache[10][21][10][21];
-	struct p2 res={}, *ent;
+	struct p2 res, *ent;
 
 	ent = &cache[s.pos0][s.score0][s.pos1][s.score1];
+	memset(&res, 0, sizeof(res));
 
 	if (s.score1 >= 21) {
 		res.wins1 = 1;
@@ -83,9 +86,11 @@ solve_p2(struct state s)
 int
 main(void)
 {
-	struct state st={};
+	struct state st;
 	int p1;
 	struct p2 p2;
+
+	memset(&st, 0, sizeof(st));
 
 	scanf(" Player 1 starting position: %d"
 	      " Player 2 starting position: %d", &st.pos0, &st.pos1);
