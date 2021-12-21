@@ -5,62 +5,75 @@
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
-struct state { int pos[2], sc[2]; };
-struct p2 { uint64_t wins[2]; char set; };
+/*
+ * To halve the required cache size, 'state' does not include a 'current
+ * player' field, instead that aspect is encoded in the order - pos0
+ * score0 are the current player, pos1 and score1 the other.
+ *
+ * apply_throw() and add_res() resp. apply and reverse the flip.
+ *
+ * Credits to /u/4HbQ for the insight.
+ */
+
+struct state { int pos0,score0, pos1,score1; };
+struct p2 { uint64_t wins0, wins1; char set; };
 
 static struct state
-apply_throw(struct state st, int p, int throw)
+apply_throw(struct state st0, int throw)
 {
-	st.pos[p] = (st.pos[p] + throw) % 10;
-	st.sc[p] += st.pos[p]+1;
+	struct state st={};
+
+	st.pos0 = st0.pos1;
+	st.pos1 = (st0.pos0 + throw) % 10;
+	st.score0 = st0.score1;
+	st.score1 = st0.score0 + st.pos1+1;
+
 	return st;
 }
 
 static void
-res_add(struct p2 *res, struct p2 other, int count)
+add_res(struct p2 *acc, struct p2 res, int count)
 {
-	res->wins[0] += other.wins[0] * count;
-	res->wins[1] += other.wins[1] * count;
+	acc->wins0 += res.wins1 * count;
+	acc->wins1 += res.wins0 * count;
 }
 
 static int
 solve_p1(struct state st)
 {
-	int nthrows=0, i,p, throw;
+	int nthrows=0, throw, i;
 
-	for (;;)
-	for (p=0; p<2; p++) {
+	while (st.score1 < 1000) {
 		for (throw=0, i=0; i<3; i++)
 			throw += nthrows++ % 100 +1;
 
-		st = apply_throw(st, p, throw);
-
-		if (st.sc[p] >= 1000)
-			return MIN(st.sc[0], st.sc[1]) * nthrows;
+		st = apply_throw(st, throw);
 	}
+
+	return MIN(st.score0, st.score1) * nthrows;
 }
 
 static struct p2
-solve_p2(struct state s, int p)
+solve_p2(struct state s)
 {
-	static struct p2 cache[10][20][10][20][2];
+	static struct p2 cache[10][20][10][20];
 	struct p2 res={}, *ent;
 
-	ent = &cache[s.pos[0]][s.sc[0]][s.pos[1]][s.sc[1]][p];
+	ent = &cache[s.pos0][s.score0][s.pos1][s.score1];
 
-	if (s.sc[!p] >= 21) {
-		res.wins[!p] = 1;
+	if (s.score1 >= 21) {
+		res.wins1 = 1;
 		return res;
 	} else if (ent->set) {
 		return *ent;
 	} else {
-		res_add(&res, solve_p2(apply_throw(s,p, 3), !p), 1);
-		res_add(&res, solve_p2(apply_throw(s,p, 4), !p), 3);
-		res_add(&res, solve_p2(apply_throw(s,p, 5), !p), 6);
-		res_add(&res, solve_p2(apply_throw(s,p, 6), !p), 7);
-		res_add(&res, solve_p2(apply_throw(s,p, 7), !p), 6);
-		res_add(&res, solve_p2(apply_throw(s,p, 8), !p), 3);
-		res_add(&res, solve_p2(apply_throw(s,p, 9), !p), 1);
+		add_res(&res, solve_p2(apply_throw(s, 3)), 1);
+		add_res(&res, solve_p2(apply_throw(s, 4)), 3);
+		add_res(&res, solve_p2(apply_throw(s, 5)), 6);
+		add_res(&res, solve_p2(apply_throw(s, 6)), 7);
+		add_res(&res, solve_p2(apply_throw(s, 7)), 6);
+		add_res(&res, solve_p2(apply_throw(s, 8)), 3);
+		add_res(&res, solve_p2(apply_throw(s, 9)), 1);
 
 		res.set = 1;
 		return *ent = res;
@@ -75,14 +88,14 @@ main(void)
 	struct p2 p2;
 
 	scanf(" Player 1 starting position: %d"
-	      " Player 2 starting position: %d", st.pos, st.pos+1);
+	      " Player 2 starting position: %d", &st.pos0, &st.pos1);
 	
-	st.pos[0]--; /* 0 indexed */
-	st.pos[1]--;
+	st.pos0--; /* 0 indexed */
+	st.pos1--;
 	
 	p1 = solve_p1(st);
-	p2 = solve_p2(st, 0);
+	p2 = solve_p2(st);
 
-	printf("21: %d %"PRIu64"\n", p1, MAX(p2.wins[0], p2.wins[1]));
+	printf("21: %d %"PRIu64"\n", p1, MAX(p2.wins0, p2.wins1));
 	return 0;
 }
