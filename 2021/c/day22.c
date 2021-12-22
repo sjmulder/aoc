@@ -65,16 +65,24 @@ test_contains(void)
 }
 
 static int
-cube_intersects(const cube *a, const cube *b)
+cube_intersect(const cube *a, const cube *b, cube *out)
 {
-	return
-	    (a->x0 <= b->x0 ? a->x1 >= b->x0 : a->x0 <= b->x1) &&
-	    (a->y0 <= b->y0 ? a->y1 >= b->y0 : a->y0 <= b->y1) &&
-	    (a->z0 <= b->z0 ? a->z1 >= b->z0 : a->z0 <= b->z1);
+	if (!(a->x0 <= b->x0 ? a->x1 >= b->x0 : a->x0 <= b->x1) ||
+	    !(a->y0 <= b->y0 ? a->y1 >= b->y0 : a->y0 <= b->y1) ||
+	    !(a->z0 <= b->z0 ? a->z1 >= b->z0 : a->z0 <= b->z1))
+		return 0;
+
+	if (out) {
+		out->x0 = MAX(a->x0, b->x0); out->x1 = MIN(a->x1, b->x1);
+		out->y0 = MAX(a->y0, b->y0); out->y1 = MIN(a->y1, b->y1);
+		out->z0 = MAX(a->z0, b->z0); out->z1 = MIN(a->z1, b->z1);
+	}
+
+	return 1;
 }
 
 static void
-test_intersects(void)
+test_intersect(void)
 {
 	static const cube out = {0,0,0, 2,2,2};
 	static const cube ab  = {1,1,1, 1,1,1}; /* a,b intersection */
@@ -82,60 +90,47 @@ test_intersects(void)
 	static const cube b   = {1,1,1, 2,2,2};
 	static const cube c   = {0,0,2, 0,0,2};
 
-	assert( cube_intersects(&out, &out));
-	assert( cube_intersects(&out, &ab));
-	assert( cube_intersects(&out, &a));
-	assert( cube_intersects(&out, &b));
-	assert( cube_intersects(&out, &c));
+	assert( cube_intersect(&out, &out, NULL));
+	assert( cube_intersect(&out, &ab,  NULL));
+	assert( cube_intersect(&out, &a,   NULL));
+	assert( cube_intersect(&out, &b,   NULL));
+	assert( cube_intersect(&out, &c,   NULL));
 
-	assert( cube_intersects(&ab, &out));
-	assert( cube_intersects(&ab, &ab));
-	assert( cube_intersects(&ab, &a));
-	assert( cube_intersects(&ab, &b));
-	assert(!cube_intersects(&ab, &c));
+	assert( cube_intersect(&ab, &out, NULL));
+	assert( cube_intersect(&ab, &ab,  NULL));
+	assert( cube_intersect(&ab, &a,   NULL));
+	assert( cube_intersect(&ab, &b,   NULL));
+	assert(!cube_intersect(&ab, &c,   NULL));
 
-	assert( cube_intersects(&a, &out));
-	assert( cube_intersects(&a, &ab));
-	assert( cube_intersects(&a, &a));
-	assert( cube_intersects(&a, &b));
-	assert(!cube_intersects(&a, &c));
+	assert( cube_intersect(&a, &out, NULL));
+	assert( cube_intersect(&a, &ab,  NULL));
+	assert( cube_intersect(&a, &a,   NULL));
+	assert( cube_intersect(&a, &b,   NULL));
+	assert(!cube_intersect(&a, &c,   NULL));
 
-	assert( cube_intersects(&b, &out));
-	assert( cube_intersects(&b, &ab));
-	assert( cube_intersects(&b, &a));
-	assert( cube_intersects(&b, &b));
-	assert(!cube_intersects(&b, &c));
+	assert( cube_intersect(&b, &out, NULL));
+	assert( cube_intersect(&b, &ab,  NULL));
+	assert( cube_intersect(&b, &a,   NULL));
+	assert( cube_intersect(&b, &b,   NULL));
+	assert(!cube_intersect(&b, &c,   NULL));
 
-	assert( cube_intersects(&c, &out));
-	assert(!cube_intersects(&c, &ab));
-	assert(!cube_intersects(&c, &a));
-	assert(!cube_intersects(&c, &b));
-	assert( cube_intersects(&c, &c));
+	assert( cube_intersect(&c, &out, NULL));
+	assert(!cube_intersect(&c, &ab,  NULL));
+	assert(!cube_intersect(&c, &a,   NULL));
+	assert(!cube_intersect(&c, &b,   NULL));
+	assert( cube_intersect(&c, &c,   NULL));
 }
 
-#define OP_ADD 1
-#define OP_SUB 2
-#define OP_INT 3
-
 static int
-cube_combine(const cube *a, const cube *b, int op, cube out[27])
+cube_subtract(const cube *a, const cube *b, cube out[27])
 {
-	int in_a, in_b, n=0, x,y,z;
+	int n=0, x,y,z;
 	int xs[4] = {a->x0, a->x1+1, b->x0, b->x1+1};
 	int ys[4] = {a->y0, a->y1+1, b->y0, b->y1+1};
 	int zs[4] = {a->z0, a->z1+1, b->z0, b->z1+1};
 
-	if (op==OP_ADD && cube_contains(a, b)) { *out=*a; return 1; }
-	if (op==OP_ADD && cube_contains(b, a)) { *out=*b; return 1; }
-	if (op==OP_ADD && !cube_intersects(a, b))
-		{ out[0] = *a; out[1] = *b; return 2; }
-
-	if (op==OP_SUB && cube_contains(b, a)) return 0;
-	if (op==OP_SUB && !cube_intersects(a, b)) { *out=*a; return 1; }
-
-	if (op==OP_INT && !cube_intersects(a, b)) return 0;
-	if (op==OP_INT && cube_contains(a, b)) { *out=*b; return 1; }
-	if (op==OP_INT && cube_contains(b, a)) { *out=*a; return 1; }
+	if (cube_contains(b, a)) return 0;
+	if (!cube_intersect(a, b, NULL)) { *out=*a; return 1; }
 
 	qsort(xs, 4, sizeof(*xs), cmp_int);
 	qsort(ys, 4, sizeof(*ys), cmp_int);
@@ -148,25 +143,18 @@ cube_combine(const cube *a, const cube *b, int op, cube out[27])
 		out[n].y0 = ys[y]; out[n].y1 = ys[y+1]-1;
 		out[n].z0 = zs[z]; out[n].z1 = zs[z+1]-1;
 
-		if (out[n].x0 > out[n].x1) continue;
-		if (out[n].y0 > out[n].y1) continue;
-		if (out[n].z0 > out[n].z1) continue;
-
-		in_a = cube_contains(a, out+n);
-		in_b = cube_contains(b, out+n);
-
-		switch (op) {
-		case OP_ADD: n += in_a ||  in_b; break;
-		case OP_SUB: n += in_a && !in_b; break;
-		case OP_INT: n += in_a && !in_b; break;
-		}
+		n += out[n].x0 <= out[n].x1 &&
+		     out[n].y0 <= out[n].y1 &&
+		     out[n].z0 <= out[n].z1 &&
+		     cube_contains(a, out+n) &&
+		    !cube_contains(b, out+n);
 	}
 
 	return n;
 }
 
 static void
-test_combine(void)
+test_subtract(void)
 {
 	static const cube out = {0,0,0, 2,2,2};
 	static const cube ab  = {1,1,1, 1,1,1}; /* a,b intersection */
@@ -176,95 +164,35 @@ test_combine(void)
 
 	static cube buf[27];
 
-	assert(cube_combine(&out, &out, OP_ADD, buf) == 1);
-	assert(cube_combine(&out, &ab,  OP_ADD, buf) == 1);
-	assert(cube_combine(&out, &a,   OP_ADD, buf) == 1);
-	assert(cube_combine(&out, &b,   OP_ADD, buf) == 1);
-	assert(cube_combine(&out, &c,   OP_ADD, buf) == 1);
+	assert(cube_subtract(&out, &out, buf) == 0);
+	assert(cube_subtract(&out, &ab,  buf) == 26);
+	assert(cube_subtract(&out, &a,   buf) == 7);
+	assert(cube_subtract(&out, &b,   buf) == 7);
+	assert(cube_subtract(&out, &c,   buf) == 7);
 
-	assert(cube_combine(&ab, &out, OP_ADD, buf) == 1);
-	assert(cube_combine(&ab, &ab,  OP_ADD, buf) == 1);
-	assert(cube_combine(&ab, &a,   OP_ADD, buf) == 1);
-	assert(cube_combine(&ab, &b,   OP_ADD, buf) == 1);
-	assert(cube_combine(&ab, &c,   OP_ADD, buf) == 2);
+	assert(cube_subtract(&ab, &out, buf) == 0);
+	assert(cube_subtract(&ab, &ab,  buf) == 0);
+	assert(cube_subtract(&ab, &a,   buf) == 0);
+	assert(cube_subtract(&ab, &b,   buf) == 0);
+	assert(cube_subtract(&ab, &c,   buf) == 1);
 
-	assert(cube_combine(&a, &out, OP_ADD, buf) == 1);
-	assert(cube_combine(&a, &ab,  OP_ADD, buf) == 1);
-	assert(cube_combine(&a, &a,   OP_ADD, buf) == 1);
-	assert(cube_combine(&a, &b,   OP_ADD, buf) == 15);
-	assert(cube_combine(&a, &c,   OP_ADD, buf) == 2);
+	assert(cube_subtract(&a, &out, buf) == 0);
+	assert(cube_subtract(&a, &ab,  buf) == 7);
+	assert(cube_subtract(&a, &a,   buf) == 0);
+	assert(cube_subtract(&a, &b,   buf) == 7);
+	assert(cube_subtract(&a, &c,   buf) == 1);
 
-	assert(cube_combine(&b, &out, OP_ADD, buf) == 1);
-	assert(cube_combine(&b, &ab,  OP_ADD, buf) == 1);
-	assert(cube_combine(&b, &a,   OP_ADD, buf) == 15);
-	assert(cube_combine(&b, &b,   OP_ADD, buf) == 1);
-	assert(cube_combine(&b, &c,   OP_ADD, buf) == 2);
+	assert(cube_subtract(&b, &out, buf) == 0);
+	assert(cube_subtract(&b, &ab,  buf) == 7);
+	assert(cube_subtract(&b, &a,   buf) == 7);
+	assert(cube_subtract(&b, &b,   buf) == 0);
+	assert(cube_subtract(&b, &c,   buf) == 1);
 
-	assert(cube_combine(&c, &out, OP_ADD, buf) == 1);
-	assert(cube_combine(&c, &ab,  OP_ADD, buf) == 2);
-	assert(cube_combine(&c, &a,   OP_ADD, buf) == 2);
-	assert(cube_combine(&c, &b,   OP_ADD, buf) == 2);
-	assert(cube_combine(&c, &c,   OP_ADD, buf) == 1);
-
-	assert(cube_combine(&out, &out, OP_SUB, buf) == 0);
-	assert(cube_combine(&out, &ab,  OP_SUB, buf) == 26);
-	assert(cube_combine(&out, &a,   OP_SUB, buf) == 7);
-	assert(cube_combine(&out, &b,   OP_SUB, buf) == 7);
-	assert(cube_combine(&out, &c,   OP_SUB, buf) == 7);
-
-	assert(cube_combine(&ab, &out, OP_SUB, buf) == 0);
-	assert(cube_combine(&ab, &ab,  OP_SUB, buf) == 0);
-	assert(cube_combine(&ab, &a,   OP_SUB, buf) == 0);
-	assert(cube_combine(&ab, &b,   OP_SUB, buf) == 0);
-	assert(cube_combine(&ab, &c,   OP_SUB, buf) == 1);
-
-	assert(cube_combine(&a, &out, OP_SUB, buf) == 0);
-	assert(cube_combine(&a, &ab,  OP_SUB, buf) == 7);
-	assert(cube_combine(&a, &a,   OP_SUB, buf) == 0);
-	assert(cube_combine(&a, &b,   OP_SUB, buf) == 7);
-	assert(cube_combine(&a, &c,   OP_SUB, buf) == 1);
-
-	assert(cube_combine(&b, &out, OP_SUB, buf) == 0);
-	assert(cube_combine(&b, &ab,  OP_SUB, buf) == 7);
-	assert(cube_combine(&b, &a,   OP_SUB, buf) == 7);
-	assert(cube_combine(&b, &b,   OP_SUB, buf) == 0);
-	assert(cube_combine(&b, &c,   OP_SUB, buf) == 1);
-
-	assert(cube_combine(&c, &out, OP_SUB, buf) == 0);
-	assert(cube_combine(&c, &ab,  OP_SUB, buf) == 1);
-	assert(cube_combine(&c, &a,   OP_SUB, buf) == 1);
-	assert(cube_combine(&c, &b,   OP_SUB, buf) == 1);
-	assert(cube_combine(&c, &c,   OP_SUB, buf) == 0);
-
-	assert( cube_combine(&out, &out, OP_INT, buf));
-	assert( cube_combine(&out, &ab,  OP_INT, buf));
-	assert( cube_combine(&out, &a,   OP_INT, buf));
-	assert( cube_combine(&out, &b,   OP_INT, buf));
-	assert( cube_combine(&out, &c,   OP_INT, buf));
-
-	assert( cube_combine(&ab, &out, OP_INT, buf));
-	assert( cube_combine(&ab, &ab,  OP_INT, buf));
-	assert( cube_combine(&ab, &a,   OP_INT, buf));
-	assert( cube_combine(&ab, &b,   OP_INT, buf));
-	assert(!cube_combine(&ab, &c,   OP_INT, buf));
-
-	assert( cube_combine(&a, &out, OP_INT, buf));
-	assert( cube_combine(&a, &ab,  OP_INT, buf));
-	assert( cube_combine(&a, &a,   OP_INT, buf));
-	assert( cube_combine(&a, &b,   OP_INT, buf));
-	assert(!cube_combine(&a, &c,   OP_INT, buf));
-
-	assert( cube_combine(&b, &out, OP_INT, buf));
-	assert( cube_combine(&b, &ab,  OP_INT, buf));
-	assert( cube_combine(&b, &a,   OP_INT, buf));
-	assert( cube_combine(&b, &b,   OP_INT, buf));
-	assert(!cube_combine(&b, &c,   OP_INT, buf));
-
-	assert( cube_combine(&c, &out, OP_INT, buf));
-	assert(!cube_combine(&c, &ab,  OP_INT, buf));
-	assert(!cube_combine(&c, &a,   OP_INT, buf));
-	assert(!cube_combine(&c, &b,   OP_INT, buf));
-	assert( cube_combine(&c, &c,   OP_INT, buf));
+	assert(cube_subtract(&c, &out, buf) == 0);
+	assert(cube_subtract(&c, &ab,  buf) == 1);
+	assert(cube_subtract(&c, &a,   buf) == 1);
+	assert(cube_subtract(&c, &b,   buf) == 1);
+	assert(cube_subtract(&c, &c,   buf) == 0);
 }
 
 #define SZ 10240
@@ -281,8 +209,8 @@ main(int argc, char **argv)
 
 	if (argc > 1 && !strcmp(argv[1], "-t")) {
 		test_contains();
-		test_intersects();
-		test_combine();
+		test_intersect();
+		test_subtract();
 		printf("22: tests ok\n");
 		return 0;
 	}
@@ -300,31 +228,23 @@ main(int argc, char **argv)
 
 		for (i=0; i < ncubes[!cur]; i++) {
 			assert(ncubes[cur] + 3*3*3 <= SZ);
-			ncubes[cur] += cube_combine(
-			    &cubes[!cur][i], &step, OP_SUB,
+			ncubes[cur] += cube_subtract(
+			    &cubes[!cur][i], &step,
 			    &cubes[cur][ncubes[cur]]);
 		}
 	}
 
-	for (i=0; i < ncubes[cur]; i++)
+	for (i=0; i < ncubes[cur]; i++) {
 		p2 += (uint64_t)(cubes[cur][i].x1+1 - cubes[cur][i].x0) *
 		      (uint64_t)(cubes[cur][i].y1+1 - cubes[cur][i].y0) *
 		      (uint64_t)(cubes[cur][i].z1+1 - cubes[cur][i].z0);
 
-	cur = !cur;
-	ncubes[cur] = 0;
-
-	for (i=0; i < ncubes[!cur]; i++) {
-		assert(ncubes[cur] + 3*3*3 <= SZ);
-		ncubes[cur] += cube_combine(
-		    &cubes[!cur][i], &p1box, OP_INT,
-		    &cubes[cur][ncubes[cur]]);
+		if (cube_intersect(&cubes[cur][i], &p1box,
+		    &cubes[cur][i]))
+			p1 += (cubes[cur][i].x1+1 - cubes[cur][i].x0) *
+			      (cubes[cur][i].y1+1 - cubes[cur][i].y0) *
+			      (cubes[cur][i].z1+1 - cubes[cur][i].z0);
 	}
-
-	for (i=0; i < ncubes[cur]; i++)
-		p1 += (cubes[cur][i].x1+1 - cubes[cur][i].x0) *
-		      (cubes[cur][i].y1+1 - cubes[cur][i].y0) *
-		      (cubes[cur][i].z1+1 - cubes[cur][i].z0);
 
 	printf("22: %"PRIu64" %"PRIu64"\n", p1, p2);
 	return 0;
