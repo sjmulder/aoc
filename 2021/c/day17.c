@@ -10,7 +10,7 @@ main()
 
 	p1 = b * (b+1) /2;
 
-	for (vx0 = (int)sqrt(l); vx0 <= r; vx0++) {
+	for (vx0 = (int)sqrt(l*2); vx0 <= r; vx0++) {
 		for (x=0, vx=vx0; x<l && vx; x+=vx, vx--)
 			;
 		if (x<l || x>r)
