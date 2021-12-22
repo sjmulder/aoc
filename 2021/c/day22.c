@@ -10,12 +10,6 @@
 typedef struct cube { int x0,y0,z0, x1,y1,z1; } cube;
 
 static int
-cmp_int(const void *a, const void *b)
-{
-	return *(int*)a - *(int*)b;
-}
-
-static int
 contains(const cube *out, const cube *in)
 {
 	return
@@ -67,9 +61,9 @@ test_contains(void)
 static int
 intersect(const cube *a, const cube *b, cube *out)
 {
-	if (!(a->x0 <= b->x0 ? a->x1 >= b->x0 : a->x0 <= b->x1) ||
-	    !(a->y0 <= b->y0 ? a->y1 >= b->y0 : a->y0 <= b->y1) ||
-	    !(a->z0 <= b->z0 ? a->z1 >= b->z0 : a->z0 <= b->z1))
+	if ((a->x0 <= b->x0 ? a->x1 < b->x0 : a->x0 > b->x1) ||
+	    (a->y0 <= b->y0 ? a->y1 < b->y0 : a->y0 > b->y1) ||
+	    (a->z0 <= b->z0 ? a->z1 < b->z0 : a->z0 > b->z1))
 		return 0;
 
 	if (out) {
@@ -122,32 +116,59 @@ test_intersect(void)
 }
 
 static int
-subtract(const cube *a, const cube *b, cube out[27])
+subtract(const cube *a, const cube *b, cube out[6])
 {
-	int n=0, x,y,z;
-	int xs[4] = {a->x0, a->x1+1, b->x0, b->x1+1};
-	int ys[4] = {a->y0, a->y1+1, b->y0, b->y1+1};
-	int zs[4] = {a->z0, a->z1+1, b->z0, b->z1+1};
+	int n=0;
 
 	if (contains(b, a)) return 0;
 	if (!intersect(a, b, NULL)) { *out=*a; return 1; }
 
-	qsort(xs, 4, sizeof(*xs), cmp_int);
-	qsort(ys, 4, sizeof(*ys), cmp_int);
-	qsort(zs, 4, sizeof(*zs), cmp_int);
+	if (a->z0 < b->z0) {
+		out[n] = *a;
+		out[n].z1 = b->z0 -1;
+		n++;
+	}
 
-	for (x=0; x<3; x++)
-	for (y=0; y<3; y++)
-	for (z=0; z<3; z++) {
-		out[n].x0 = xs[x]; out[n].x1 = xs[x+1]-1;
-		out[n].y0 = ys[y]; out[n].y1 = ys[y+1]-1;
-		out[n].z0 = zs[z]; out[n].z1 = zs[z+1]-1;
+	if (a->z1 > b->z1) {
+		out[n] = *a;
+		out[n].z0 = b->z1 +1;
+		n++;
+	}
 
-		n += out[n].x0 <= out[n].x1 &&
-		     out[n].y0 <= out[n].y1 &&
-		     out[n].z0 <= out[n].z1 &&
-		     contains(a, out+n) &&
-		    !contains(b, out+n);
+	if (a->y0 < b->y0) {
+		out[n] = *a;
+		out[n].z0 = MAX(a->z0, b->z0);
+		out[n].z1 = MIN(a->z1, b->z1);
+		out[n].y1 = b->y0 -1;
+		n++;
+	}
+
+	if (a->y1 > b->y1) {
+		out[n] = *a;
+		out[n].z0 = MAX(a->z0, b->z0);
+		out[n].z1 = MIN(a->z1, b->z1);
+		out[n].y0 = b->y1 +1;
+		n++;
+	}
+
+	if (a->x0 < b->x0) {
+		out[n] = *a;
+		out[n].z0 = MAX(a->z0, b->z0);
+		out[n].y0 = MAX(a->y0, b->y0);
+		out[n].z1 = MIN(a->z1, b->z1);
+		out[n].y1 = MIN(a->y1, b->y1);
+		out[n].x1 = b->x0 -1;
+		n++;
+	}
+
+	if (a->x1 > b->x1) {
+		out[n] = *a;
+		out[n].z0 = MAX(a->z0, b->z0);
+		out[n].y0 = MAX(a->y0, b->y0);
+		out[n].z1 = MIN(a->z1, b->z1);
+		out[n].y1 = MIN(a->y1, b->y1);
+		out[n].x0 = b->x1 +1;
+		n++;
 	}
 
 	return n;
@@ -165,10 +186,10 @@ test_subtract(void)
 	static cube buf[27];
 
 	assert(subtract(&out, &out, buf) == 0);
-	assert(subtract(&out, &ab,  buf) == 26);
-	assert(subtract(&out, &a,   buf) == 7);
-	assert(subtract(&out, &b,   buf) == 7);
-	assert(subtract(&out, &c,   buf) == 7);
+	assert(subtract(&out, &ab,  buf) == 6);
+	assert(subtract(&out, &a,   buf) == 3);
+	assert(subtract(&out, &b,   buf) == 3);
+	assert(subtract(&out, &c,   buf) == 3);
 
 	assert(subtract(&ab, &out, buf) == 0);
 	assert(subtract(&ab, &ab,  buf) == 0);
@@ -177,14 +198,14 @@ test_subtract(void)
 	assert(subtract(&ab, &c,   buf) == 1);
 
 	assert(subtract(&a, &out, buf) == 0);
-	assert(subtract(&a, &ab,  buf) == 7);
+	assert(subtract(&a, &ab,  buf) == 3);
 	assert(subtract(&a, &a,   buf) == 0);
-	assert(subtract(&a, &b,   buf) == 7);
+	assert(subtract(&a, &b,   buf) == 3);
 	assert(subtract(&a, &c,   buf) == 1);
 
 	assert(subtract(&b, &out, buf) == 0);
-	assert(subtract(&b, &ab,  buf) == 7);
-	assert(subtract(&b, &a,   buf) == 7);
+	assert(subtract(&b, &ab,  buf) == 3);
+	assert(subtract(&b, &a,   buf) == 3);
 	assert(subtract(&b, &b,   buf) == 0);
 	assert(subtract(&b, &c,   buf) == 1);
 
@@ -195,7 +216,7 @@ test_subtract(void)
 	assert(subtract(&c, &c,   buf) == 0);
 }
 
-#define SZ 10240
+#define SZ 4069
 
 int
 main(int argc, char **argv)
@@ -227,7 +248,7 @@ main(int argc, char **argv)
 			num[cur] = 0;
 
 		for (i=0; i < num[!cur]; i++) {
-			assert(num[cur] + 3*3*3 <= SZ);
+			assert(num[cur] +6 <= SZ);
 			num[cur] += subtract(&cubes[!cur][i], &step,
 			    &cubes[cur][num[cur]]);
 		}
