@@ -4,6 +4,64 @@
 #include <inttypes.h>
 #include <assert.h>
 
+/*
+ * Initially I thought I needed 3 cuboid operation: addition,
+ * subtraction and intersection, and came up with a generic cuboid
+ * masking function.
+ *
+ * Essentially, it solves the problem of masking (subtraction/addition)
+ * yielding non-cuboid shapes by cutting up the bounding cuboid along
+ * each of the two cuboid's edges. E.g. in this 1D example:
+ *
+ *   ┌──┐
+ *   └──┘
+ *     ┌──┐
+ *     └──┘
+ *   | || |  cut along each edge
+ *   ┌─┬┬─┐
+ *   └─┴┴─┘
+ *
+ * Each resulting cuboid will either be wholly inside or outside each of
+ * the two inputs and can then easily be filtered by the desired masking
+ * operation. Downside is that it generates far more cuboids then are
+ * needed (up to 3*3*3=27 in 3D), e.g. consider a 2D subtraction that
+ * punches a hole:
+ *
+ *   ┌┬──┬┐
+ *   ├┼──┼┤
+ *   ││  ││
+ *   ├┼──┼┤
+ *   └┴──┴┘
+ *
+ * *However* I later realised that with my solution I didn't need to do
+ * addition (unions) and that this is way overkill for intersection. So
+ * I rewrote it as a not fancy, not generic handwritten subtract() which
+ * only yields up to 6 cuboids in a fixed pattern. A 2D version of that
+ * pattern looks like this:
+ *
+ *   ┌────┐
+ *   ├┬──┬┤
+ *   ││xx││
+ *   ├┴──┴┤
+ *   └────┘
+ *
+ * As for the accumulation and double counting problem: I settled on the
+ * following pseudocode:
+ *
+ *   for every instruction
+ *     for every cuboid 'c' in list
+ *       subtract the new cuboid from 'c'
+ *     if 'add'
+ *       append the new cuboid
+ *
+ * In other terms: punch a 'new cuboid'-shaped hole, then append the new
+ * cuboid.
+ *
+ * To prevent having to shift large arrays to accommodate for split
+ * cuboids (or having to deal with linked lists and their perf.) I'm
+ * using a 'double buffer' for the set of cuboids.
+ */
+
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
