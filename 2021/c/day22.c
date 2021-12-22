@@ -4,8 +4,8 @@
 #include <inttypes.h>
 #include <assert.h>
 
-#define MIN(a,b) ((a)<(b):(a):(b))
-#define MAX(a,b) ((a)>(b):(a):(b))
+#define MIN(a,b) ((a)<(b)?(a):(b))
+#define MAX(a,b) ((a)>(b)?(a):(b))
 
 typedef struct cube { int x0,y0,z0, x1,y1,z1; } cube;
 
