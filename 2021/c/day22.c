@@ -120,7 +120,10 @@ test_intersects(void)
 static int
 cube_combine(const cube *a, const cube *b, int op, cube out[27])
 {
-	int x,y,z, n=0, in_a,in_b;
+	int in_a, in_b, n=0, x,y,z;
+	int xs[4] = {a->x0, a->x1+1, b->x0, b->x1+1};
+	int ys[4] = {a->y0, a->y1+1, b->y0, b->y1+1};
+	int zs[4] = {a->z0, a->z1+1, b->z0, b->z1+1};
 
 	if (op==OP_ADD && cube_contains(a, b)) { *out=*a; return 1; }
 	if (op==OP_ADD && cube_contains(b, a)) { *out=*b; return 1; }
@@ -134,17 +137,9 @@ cube_combine(const cube *a, const cube *b, int op, cube out[27])
 	if (op==OP_INT && cube_contains(a, b)) { *out=*b; return 1; }
 	if (op==OP_INT && cube_contains(b, a)) { *out=*a; return 1; }
 
-	int xs[4] = {a->x0, a->x1+1, b->x0, b->x1+1};
-	int ys[4] = {a->y0, a->y1+1, b->y0, b->y1+1};
-	int zs[4] = {a->z0, a->z1+1, b->z0, b->z1+1};
-
 	qsort(xs, 4, sizeof(*xs), cmp_int);
 	qsort(ys, 4, sizeof(*ys), cmp_int);
 	qsort(zs, 4, sizeof(*zs), cmp_int);
-
-	//printf(" xs=%2d %2d %2d %2d\n", xs[0], xs[1], xs[2], xs[3]);
-	//printf(" ys=%2d %2d %2d %2d\n", ys[0], ys[1], ys[2], ys[3]);
-	//printf(" zs=%2d %2d %2d %2d\n", zs[0], zs[1], zs[2], zs[3]);
 
 	for (x=0; x<3; x++)
 	for (y=0; y<3; y++)
@@ -153,25 +148,12 @@ cube_combine(const cube *a, const cube *b, int op, cube out[27])
 		out[n].y0 = ys[y]; out[n].y1 = ys[y+1]-1;
 		out[n].z0 = zs[z]; out[n].z1 = zs[z+1]-1;
 
-		//printf(" %d,%d,%d: %2d,%2d,%2d  %2d,%2d,%2d  (%d)", x,y,z,
-		//    out[n].x0, out[n].y0, out[n].z0,
-		//    out[n].x1, out[n].y1, out[n].z1,
-		//    (out[n].x1+1 - out[n].x0) *
-		//    (out[n].y1+1 - out[n].y0) *
-		//    (out[n].x1+1 - out[n].x0));
-
 		if (out[n].x0 > out[n].x1) continue;
 		if (out[n].y0 > out[n].y1) continue;
 		if (out[n].z0 > out[n].z1) continue;
 
-		//if (out[n].x0 > out[n].x1) { printf(" !x\n"); continue; }
-		//if (out[n].y0 > out[n].y1) { printf(" !y\n"); continue; }
-		//if (out[n].z0 > out[n].z1) { printf(" !z\n"); continue; }
-
 		in_a = cube_contains(a, out+n);
 		in_b = cube_contains(b, out+n);
-
-		//printf(" in_a=%d in_b=%d\n", in_a, in_b);
 
 		switch (op) {
 		case OP_ADD: n += in_a ||  in_b; break;
@@ -180,7 +162,6 @@ cube_combine(const cube *a, const cube *b, int op, cube out[27])
 		}
 	}
 
-	//printf("%d\n", n);
 	return n;
 }
 
@@ -293,9 +274,9 @@ main(int argc, char **argv)
 {
 	static const cube p1box = {-50,-50,-50, 50,50,50};
 	static cube cubes[2][SZ];
-	int ncubes[2]={}, cur=0, i,x,y,z;
-	uint64_t p1=0,p2=0, n;
-	cube step, *c;
+	int ncubes[2]={}, cur=0, i;
+	uint64_t p1=0,p2=0;
+	cube step;
 	char instr[4];
 
 	if (argc > 1 && !strcmp(argv[1], "-t")) {
@@ -323,24 +304,6 @@ main(int argc, char **argv)
 			    &cubes[!cur][i], &step, OP_SUB,
 			    &cubes[cur][ncubes[cur]]);
 		}
-
-		//printf("step\n");
-		for (n=0, i=0; i < ncubes[cur]; i++) {
-			//printf(" cube %d\n", i);
-
-			n += (cubes[cur][i].x1+1 - cubes[cur][i].x0) *
-			     (cubes[cur][i].y1+1 - cubes[cur][i].y0) *
-			     (cubes[cur][i].z1+1 - cubes[cur][i].z0);
-
-			//for (x = cubes[cur][i].x0; x <= cubes[cur][i].x1; x++)
-			//for (y = cubes[cur][i].y0; y <= cubes[cur][i].y1; y++)
-			//for (z = cubes[cur][i].z0; z <= cubes[cur][i].z1; z++) {
-				n++;
-				//printf("  %2d,%2d,%2d\n", x,y,z);
-			//}
-		}
-
-		printf("   %d cubes, %"PRIu64" cells\n", ncubes[cur], n);
 	}
 
 	for (i=0; i < ncubes[cur]; i++)
