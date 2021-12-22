@@ -18,46 +18,6 @@ contains(const cube *out, const cube *in)
 	     out->z0 <= in->z0 && in->z1 <= out->z1;
 }
 
-static void
-test_contains(void)
-{
-	static const cube out = {0,0,0, 2,2,2};
-	static const cube ab  = {1,1,1, 1,1,1}; /* a,b intersection */
-	static const cube a   = {0,0,0, 1,1,1};
-	static const cube b   = {1,1,1, 2,2,2};
-	static const cube c   = {0,0,2, 0,0,2};
-
-	assert( contains(&out, &out));
-	assert( contains(&out, &ab));
-	assert( contains(&out, &a));
-	assert( contains(&out, &b));
-	assert( contains(&out, &c));
-
-	assert(!contains(&ab, &out));
-	assert( contains(&ab, &ab));
-	assert(!contains(&ab, &a));
-	assert(!contains(&ab, &b));
-	assert(!contains(&ab, &c));
-
-	assert(!contains(&a, &out));
-	assert( contains(&a, &ab));
-	assert( contains(&a, &a));
-	assert(!contains(&a, &b));
-	assert(!contains(&a, &c));
-
-	assert(!contains(&b, &out));
-	assert( contains(&b, &ab));
-	assert(!contains(&b, &a));
-	assert( contains(&b, &b));
-	assert(!contains(&b, &c));
-
-	assert(!contains(&c, &out));
-	assert(!contains(&c, &ab));
-	assert(!contains(&c, &a));
-	assert(!contains(&c, &b));
-	assert( contains(&c, &c));
-}
-
 static int
 intersect(const cube *a, const cube *b, cube *out)
 {
@@ -73,46 +33,6 @@ intersect(const cube *a, const cube *b, cube *out)
 	}
 
 	return 1;
-}
-
-static void
-test_intersect(void)
-{
-	static const cube out = {0,0,0, 2,2,2};
-	static const cube ab  = {1,1,1, 1,1,1}; /* a,b intersection */
-	static const cube a   = {0,0,0, 1,1,1};
-	static const cube b   = {1,1,1, 2,2,2};
-	static const cube c   = {0,0,2, 0,0,2};
-
-	assert( intersect(&out, &out, NULL));
-	assert( intersect(&out, &ab,  NULL));
-	assert( intersect(&out, &a,   NULL));
-	assert( intersect(&out, &b,   NULL));
-	assert( intersect(&out, &c,   NULL));
-
-	assert( intersect(&ab, &out, NULL));
-	assert( intersect(&ab, &ab,  NULL));
-	assert( intersect(&ab, &a,   NULL));
-	assert( intersect(&ab, &b,   NULL));
-	assert(!intersect(&ab, &c,   NULL));
-
-	assert( intersect(&a, &out, NULL));
-	assert( intersect(&a, &ab,  NULL));
-	assert( intersect(&a, &a,   NULL));
-	assert( intersect(&a, &b,   NULL));
-	assert(!intersect(&a, &c,   NULL));
-
-	assert( intersect(&b, &out, NULL));
-	assert( intersect(&b, &ab,  NULL));
-	assert( intersect(&b, &a,   NULL));
-	assert( intersect(&b, &b,   NULL));
-	assert(!intersect(&b, &c,   NULL));
-
-	assert( intersect(&c, &out, NULL));
-	assert(!intersect(&c, &ab,  NULL));
-	assert(!intersect(&c, &a,   NULL));
-	assert(!intersect(&c, &b,   NULL));
-	assert( intersect(&c, &c,   NULL));
 }
 
 static int
@@ -174,52 +94,10 @@ subtract(const cube *a, const cube *b, cube out[6])
 	return n;
 }
 
-static void
-test_subtract(void)
-{
-	static const cube out = {0,0,0, 2,2,2};
-	static const cube ab  = {1,1,1, 1,1,1}; /* a,b intersection */
-	static const cube a   = {0,0,0, 1,1,1};
-	static const cube b   = {1,1,1, 2,2,2};
-	static const cube c   = {0,0,2, 0,0,2};
-
-	static cube buf[27];
-
-	assert(subtract(&out, &out, buf) == 0);
-	assert(subtract(&out, &ab,  buf) == 6);
-	assert(subtract(&out, &a,   buf) == 3);
-	assert(subtract(&out, &b,   buf) == 3);
-	assert(subtract(&out, &c,   buf) == 3);
-
-	assert(subtract(&ab, &out, buf) == 0);
-	assert(subtract(&ab, &ab,  buf) == 0);
-	assert(subtract(&ab, &a,   buf) == 0);
-	assert(subtract(&ab, &b,   buf) == 0);
-	assert(subtract(&ab, &c,   buf) == 1);
-
-	assert(subtract(&a, &out, buf) == 0);
-	assert(subtract(&a, &ab,  buf) == 3);
-	assert(subtract(&a, &a,   buf) == 0);
-	assert(subtract(&a, &b,   buf) == 3);
-	assert(subtract(&a, &c,   buf) == 1);
-
-	assert(subtract(&b, &out, buf) == 0);
-	assert(subtract(&b, &ab,  buf) == 3);
-	assert(subtract(&b, &a,   buf) == 3);
-	assert(subtract(&b, &b,   buf) == 0);
-	assert(subtract(&b, &c,   buf) == 1);
-
-	assert(subtract(&c, &out, buf) == 0);
-	assert(subtract(&c, &ab,  buf) == 1);
-	assert(subtract(&c, &a,   buf) == 1);
-	assert(subtract(&c, &b,   buf) == 1);
-	assert(subtract(&c, &c,   buf) == 0);
-}
-
 #define SZ 4069
 
 int
-main(int argc, char **argv)
+main()
 {
 	static const cube p1box = {-50,-50,-50, 50,50,50};
 	static cube cubes[2][SZ];
@@ -227,14 +105,6 @@ main(int argc, char **argv)
 	uint64_t p1=0,p2=0;
 	cube step;
 	char instr[4];
-
-	if (argc > 1 && !strcmp(argv[1], "-t")) {
-		test_contains();
-		test_intersect();
-		test_subtract();
-		printf("22: tests ok\n");
-		return 0;
-	}
 
 	while (scanf(" %3s x=%d..%d,y=%d..%d,z=%d..%d", instr,
 	    &step.x0, &step.x1, &step.y0, &step.y1, &step.z0, &step.z1)
