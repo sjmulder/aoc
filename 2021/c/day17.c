@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <math.h>
 
+/*
+ * Given my terrible mathematical insights I was quite proud to have
+ * figured out that, for part 1:
+ *
+ *  - the probe will always return to y=0 at which point the downward
+ *    velocity exactly matches the initial upward velocity,
+ *  - from y=0, the target can only be hit if the velocity is less than
+ *    the distance to the bottom edge of the target,
+ *  - hence the maximum initial upward velocity is the depth of the
+ *    target bottom edge.
+ *
+ * This also sets some reasonable limits for a brute force search for
+ * part 2 but I was frustrated not to find a more elegant solution for
+ * that.
+ */
+
 int
 main()
 {
