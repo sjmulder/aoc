@@ -20,4 +20,5 @@
 ./day20 <../data/20-input.txt &
 ./day21 <../data/21-input.txt &
 ./day22 <../data/22-input.txt &
+./day23 <../data/23-input.txt &
 wait
