@@ -59,14 +59,10 @@ check_win(struct state s)
 static int
 check_route(struct state s, int room, int hall)
 {
-	int roomx, hallx, i;
+	int i;
 
-	/* fudge coordinates so that rooms are *inbetween* halls */
-	roomx = room*2 +3;
-	hallx = hall*2;
-
-	for (i = MIN(roomx, hallx)+1; i < MAX(roomx, hallx); i++)
-		if (!(i%2) && s.halls[i/2])
+	for (i = MIN(room+2, hall+1); i < MAX(room+2, hall); i++)
+		if (s.halls[i])
 			return 0;
 
 	return 1;
