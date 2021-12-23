@@ -8,8 +8,8 @@
 
 /*
  *  01 2 3 4 5 67   halls[i]
- *    0 1 2 3 4     rooms[i][1]
  *    0 1 2 3 4     rooms[i][0]
+ *    0 1 2 3 4     rooms[i][1]
  */
 
 struct state {
@@ -57,8 +57,8 @@ move_out(struct state s, int room, int hall)
 	int slot, cost;
 	char c;
 
-	slot = !!s.rooms[room][1];
-	cost = dists[room][hall] + !slot;
+	slot = !s.rooms[room][0];
+	cost = dists[room][hall] + slot;
 
 	for (c='A'; c < s.rooms[room][slot]; c++)
 		cost *= 10;
@@ -76,8 +76,8 @@ move_in(struct state s, int room, int hall)
 	int slot, cost;
 	char c;
 
-	slot = !!s.rooms[room][0];
-	cost = dists[room][hall] + !slot;
+	slot = !s.rooms[room][1];
+	cost = dists[room][hall] + slot;
 
 	for (c='A'; c < s.halls[hall]; c++)
 		cost *= 10;
@@ -116,7 +116,7 @@ solve(struct state s)
 		 /* room full */
 		if (s.rooms[i][0] && s.rooms[i][1]) continue;
 		 /* someone waiting to get out */
-		if (s.rooms[i][0] && s.rooms[i][0] != 'A'+i) continue;
+		if (s.rooms[i][1] && s.rooms[i][1] != 'A'+i) continue;
 		 /* someone in the way */
 		if (!check_route(s,i,j)) continue;
 
@@ -135,8 +135,8 @@ solve(struct state s)
 		 /* hall occupied */
 		if (s.halls[j]) continue;
 		 /* already the right room */
-		if (s.rooms[i][0] == 'A'+i && (!s.rooms[i][1] ||
-		    s.rooms[i][1] == 'A'+i)) continue;
+		if (s.rooms[i][1] == 'A'+i && (!s.rooms[i][0] ||
+		    s.rooms[i][0] == 'A'+i)) continue;
 		 /* someone in the way */
 		if (!check_route(s,i,j)) continue;
 
@@ -157,10 +157,10 @@ main()
 	int n, p1;
 
 	n = scanf(" %*s %*s ###%c#%c#%c#%c### #%c#%c#%c#%c",
-	    &s.rooms[0][1], &s.rooms[1][1],
-	    &s.rooms[2][1], &s.rooms[3][1],
 	    &s.rooms[0][0], &s.rooms[1][0],
-	    &s.rooms[2][0], &s.rooms[3][0]);
+	    &s.rooms[2][0], &s.rooms[3][0],
+	    &s.rooms[0][1], &s.rooms[1][1],
+	    &s.rooms[2][1], &s.rooms[3][1]);
 	assert(n == 8);
 
 	p1 = solve(s);
