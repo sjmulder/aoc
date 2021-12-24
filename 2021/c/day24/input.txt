@@ -1,0 +1,1 @@
+../../data/24-input.txt
