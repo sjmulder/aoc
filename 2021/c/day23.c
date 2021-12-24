@@ -105,20 +105,12 @@ move_in(struct state s, int room, int hall, int slot)
 static int
 solve(struct state s, int reset)
 {
-	static char spaces[100];
-	static int depth=0, best=INT_MAX;
+	static int best=INT_MAX;
 	int i,j,k;	/* room, hallway, slot */
 
-	if (reset)
-		best = INT_MAX;
-
-	if (!spaces[0])
-		memset(spaces, ' ', sizeof(spaces));
-
-	if (s.score >= best)
-		return best;
-	if (check_win(s))
-		return s.score;
+	if (reset) best = INT_MAX;
+	if (s.score >= best) return best;
+	if (check_win(s)) return s.score;
 
 	/* hall -> room */
 	for (i=0; i<4; i++)
@@ -136,10 +128,7 @@ solve(struct state s, int reset)
 			continue;
 
 		for (k=s.nslots-1; s.rooms[i][k]; k--) ;
-
-		depth++;
 		best = solve(move_in(s,i,j,k), 0);
-		depth--;
 	}
 
 	/* room -> hall */
@@ -155,10 +144,7 @@ solve(struct state s, int reset)
 		if (!check_route(s,i,j)) continue;
 
 		for (k=0; !s.rooms[i][k]; k++) ;
-
-		depth++;
 		best = solve(move_out(s,i,j,k), 0);
-		depth--;
 	}
 
 	return best;
