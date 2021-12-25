@@ -21,4 +21,6 @@
 ./day21 <../data/21-input.txt &
 ./day22 <../data/22-input.txt &
 ./day23 <../data/23-input.txt &
+echo '24: not implemented'
+./day25 <../data/25-input.txt &
 wait
