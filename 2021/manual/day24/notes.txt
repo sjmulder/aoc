@@ -1,0 +1,82 @@
+w = input
+x = x * 0
+x = x + z
+x = x % 26
+z = z / VAR_0	1 of 26
+x = x + VAR_1	
+x = x == w
+x = x != 0
+y = y * 0
+y = y + 25
+y = y * x
+y = y + 1
+z = z * y
+y = y * 0
+y = y + w
+y = y + VAR_2
+y = y * x
+z = z + y
+
+w = input
+x = (0 + z) % 26
+z = z / VAR_0		1 of 26
+x = (x + VAR_1) != w
+y = (25 * x) + 1
+z = z * y
+y = (w + VAR_2) * x
+z = z + y
+
+w = input
+x = (z % 26 + VAR_1) != w
+y = 25 * x + 1
+z = z / VAR_0 * y
+y = (w + VAR_2) * x
+z = z + y
+
+
+
+x = (z % 26 + VAR_1) != input
+z = z / VAR_0 * (25 * x + 1) + (input + VAR_2) * x
+
+
+x = (z % 26 + VAR_1) != input
+z = z/VAR_0 * (x * 25 + 1) + x * (input + VAR_2)
+
+x = (z % 26 - 11) != input
+z = z/26 * (x * 25 + 1) + x * (input + 15)
+
+
+x = (z % 26 + 12) != input	z = z    * (25 * x + 1) + (input + 6)  * x
+x = (z % 26 + 10) != input	z = z    * (25 * x + 1) + (input + 6)  * x
+x = (z % 26 + 13) != input	z = z    * (25 * x + 1) + (input + 3)  * x
+x = (z % 26 - 11) != input	z = z/26 * (25 * x + 1) + (input + 11) * x
+x = (z % 26 + 13) != input	z = z    * (25 * x + 1) + (input + 9)  * x
+x = (z % 26 - 1)  != input	z = z/26 * (25 * x + 1) + (input + 3)  * x
+x = (z % 26 + 10) != input	z = z    * (25 * x + 1) + (input + 13) * x
+x = (z % 26 + 11) != input	z = z    * (25 * x + 1) + (input + 6)  * x
+x = (z % 26 + 0)  != input	z = z/26 * (25 * x + 1) + (input + 16) * x
+x = (z % 26 + 10) != input	z = z    * (25 * x + 1) + (input + 10) * x
+x = (z % 26 - 15) != input	z = z/26 * (25 * x + 1) + (input + 12) * x
+x = (z % 26 - 16) != input	z = z/26 * (25 * x + 1) + (input + 10) * x
+x = (z % 26 - 7)  != input	z = z/26 * (25 * x + 1) + (input + 11) * x
+x = (z % 26 - 11) != input	z = z/26 * (25 * x + 1) + (input + 15) * x
+
+
+z = [0 1]
+z = [16..24]
+z = [16..24] + 26
+
+
+z[12] = z[11]/26				als (z[11] % 26 - 7) == input
+z[12] = z[11]/26 * 26 + (input + 11)	als (z[11] % 26 - 7) != input
+
+z[12] = z[11]/26 * 26 + [12..20]
+
+z[13]=0 als	input + 11 == z[12]		dus 12 <= z[12] <= 20
+	
+
+
+z1 = z/26 * (25 * ((z % 26 - 11) != input) + 1) + (input + 15) * ((z % 26 - 11) != input)
+
+
+
