@@ -14,6 +14,6 @@ BEGIN {
 
 END {
 	print("")
-	print("\treturn w;")
+	print("\treturn z;")
 	print("}")
 }
