@@ -1,7 +1,9 @@
 BEGIN {
-	print("int")
+	print("#include <stdint.h>")
+	print("")
+	print("int64_t")
 	print("monad(int input[14]) {")
-	print("\tint w=0,x=0,z=0,y=0, i=0;")
+	print("\tint64_t w=0,x=0,z=0,y=0, i=0;")
 	print("")
 }
 

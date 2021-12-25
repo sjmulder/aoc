@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <err.h>
 
-int monad(int input[14]);
+int64_t monad(int input[14]);
 
 static void
 solve(int job)
