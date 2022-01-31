@@ -15,6 +15,7 @@ Advent of Code
     AWK          *                     .
     Excel       **                     .
     manually	                      **
+    armv6 asm   **
 
 **2020**
 

@@ -1,4 +1,4 @@
-PROGS=	day01
+PROGS=	day01 day02
 
 all: ${PROGS}
 
