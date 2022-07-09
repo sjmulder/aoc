@@ -9,7 +9,7 @@ echo '06:' $(./day06-p1 <../data/06-input.txt) \
            $(./day06-p2 <../data/06-input.txt) &
 echo '07:' $(./wiresim a <../data/07-input.txt) \
            $(./wiresim a <../data/07-input-p2.txt) &
-echo '08: not implemented'
+./day08    <../data/08-input.txt &
 echo '09: not implemented'
 echo '10:' $(./day10 1113222113 40) \
            $(./day10 1113222113 50) &
