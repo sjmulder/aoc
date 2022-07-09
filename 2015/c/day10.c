@@ -37,6 +37,5 @@ main(int argc, char **argv)
 		d[di] = '\0';
 	}
 
-	/* puts(s); */
 	printf("%d\n", strlen(d));
 }

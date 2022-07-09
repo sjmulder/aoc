@@ -51,5 +51,5 @@ main()
 			spoon[i] = spoon[i-1];
 	}
 
-	printf("%d %d\n", best, best500);
+	printf("15: %d %d\n", best, best500);
 }

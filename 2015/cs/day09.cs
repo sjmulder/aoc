@@ -36,7 +36,9 @@ static class Program
 			costs[(fields[2], fields[0])] = int.Parse(fields[4]);
 		}
 
-		Console.WriteLine(Recur(0, null, nodes, xs => xs.Min()));
-		Console.WriteLine(Recur(0, null, nodes, xs => xs.Max()));
+
+		Console.WriteLine("19: {0} {1}",
+			Recur(0, null, nodes, xs => xs.Min()),
+			Recur(0, null, nodes, xs => xs.Max()));
 	}
 }

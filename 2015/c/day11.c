@@ -23,12 +23,16 @@ main(int argc, char **argv)
 			npr += (i==2 && s[i-1]==s[i])
 			    || (i>=3 && s[i-1]==s[i] && s[i-2]!=s[i-1]);
 		}
-		if (inc && npr>=2 && i==len)
-			{ puts(s); return 0; }
+		if (inc && npr>=2 && i==len) {
+			printf("11: %s\n", s);
+			return 0;
+		}
 		for (i=len-1; i>=0 && s[i]=='z'; i--)
 			;
-		if (i == -1)
-			{ puts("no solution"); return 0; }
+		if (i == -1) {
+			puts("11: no solution");
+			return 0;
+		}
 		memset(&s[i+1], 'a', len-i-1);
 		s[i]++;
 	}

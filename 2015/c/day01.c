@@ -5,5 +5,5 @@ int main() {
 	for (i=1; (c = getchar()) != EOF; i++)
 		if ((p1 += c=='(' ? 1 : c==')' ? -1 : 0) == -1 && !p2)
 			p2=i;
-	printf("%d %d\n", p1, p2);
+	printf("01: %d %d\n", p1, p2);
 }

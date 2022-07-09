@@ -101,9 +101,14 @@ solve(void)
 int
 main()
 {
+	int p1, p2;
+
 	parse();
 	if (VERBOSE) dump();
 
-	printf("%d\n", solve()); nnam++;
-	printf("%d\n", solve());
+	p1 = solve(); nnam++;
+	p2 = solve(); 
+
+	printf("13: %d %d\n", p1, p2);
+	return 0;
 }

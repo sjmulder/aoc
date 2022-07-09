@@ -39,5 +39,5 @@ main(int argc, char **argv)
 			maxpts = d[i].pts;
 	}
 
-	printf("%d %d\n", maxdist, maxpts);
+	printf("14: %d %d\n", maxdist, maxpts);
 }

@@ -24,5 +24,5 @@ main(int argc, char **argv) {
 			p2 = i;
 	}
 
-	printf("%d %d\n", p1, p2);
+	printf("04: %d %d\n", p1, p2);
 }
