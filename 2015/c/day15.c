@@ -1,55 +1,66 @@
 #include <stdio.h>
+#include <limits.h>
 #include <err.h>
 
-#define CAP	5
-#define NPROP	4	/* excl cal */
-#define NSPOON	100
+#define MAX_INGS	10
+#define NUM_ATTRS	5
+#define NUM_SPOONS	100
+
+static const char fmt[] =
+//"%*s capacity %d, durability %d, flavor %d, texture %d, calories %d";
+"%*s capacity %d, durability %d, flavor %d, texture %d, calories %d";
+
+static int attrs[MAX_INGS][NUM_ATTRS];
+static int counts[MAX_INGS];
+static int nings;
+static int p1=INT_MIN, p2=INT_MIN;
+
+static void
+recur(int nleft, int ing)
+{
+	int totals[NUM_ATTRS] = {};
+	int score=1, i,j;
+
+	if (ing == nings-1) {
+		counts[ing] = nleft;
+
+		//for (i=0; i < nings; i++)
+		//	printf(" %d", counts[i]);
+		//printf("\n");
+
+		for (i=0; i<nings; i++)
+		for (j=0; j<NUM_ATTRS; j++) /* excl. cals */
+			totals[j] += attrs[i][j] * counts[i];
+
+		for (i=0; i<NUM_ATTRS-1; i++)
+			score *= totals[i] < 0 ? 0 : totals[i];
+
+		if (score > p1)
+			p1 = score;
+		if (score > p2 && totals[NUM_ATTRS-1] == 500)
+			p2 = score;
+	} else {
+		for (i=0; i <= nleft; i++) {
+			counts[ing] = i;
+			recur(nleft-i, ing+1);
+		}
+	}
+}
 
 int
 main()
 {
-	static int props[CAP][NPROP], cals[CAP], spoon[CAP+1];
-	int i,j, len=0, best=0,best500=0, cal,prod,sum,amount;
+	while (scanf(fmt,
+	    &attrs[nings][0],
+	    &attrs[nings][1],
+	    &attrs[nings][2],
+	    &attrs[nings][3],
+	    &attrs[nings][4]) == 5)
+		if (++nings >= MAX_INGS)
+			errx(1, "ingredients overflow");
 
-	while (scanf("%*s capacity %d, durability %d, flavor %d, "
-	    "texture %d, calories %d", &props[len][0], &props[len][1],
-	    &props[len][2], &props[len][3], &cals[len]) == NPROP+1)
-		if (++len >= CAP)
-			errx(1, "props overflow");
+	recur(NUM_SPOONS, 0);
 
-	spoon[len] = 100;
-
-	while (spoon[0] != NSPOON) {
-		cal=0; prod=1;
-
-		for (i=0; i<NPROP; i++) {
-			sum = 0;
-			for (j=0; j<len; j++) {
-				amount = spoon[j+1] - spoon[j];
-				sum += amount * props[j][i];
-			}
-			prod *= sum<0 ? 0 : sum;
-			printf("%d ", sum);
-		}
-
-		for (i=0; i<len; i++) {
-			amount = spoon[i+1] - spoon[i];
-			cal += amount * cals[i];
-			printf(" %d", amount);
-		}
-
-		printf("  %d (%d)\n", prod, cal);
-
-		if (prod > best)
-			best = prod;
-		if (cal == 500 && prod > best500)
-			best500 = prod;
-
-		for (i=len-1; i>=0 && ++spoon[i] == NSPOON+1; i--)
-			;
-		for (i++; i<len; i++)
-			spoon[i] = spoon[i-1];
-	}
-
-	printf("15: %d %d\n", best, best500);
+	printf("15: %d %d\n", p1, p2);
+	return 0;
 }

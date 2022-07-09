@@ -19,5 +19,5 @@ echo '12:' $(./day12-p1 <../data/12-input.txt) \
            $(./day12-p2 <../data/12-input.txt) &
 ./day13    <../data/13-input.txt &
 ./day14    <../data/14-input.txt &
-echo '15: unfinished'
+./day15    <../data/15-input.txt &
 wait
