@@ -22,4 +22,5 @@ echo '12:' $(./day12-p1 <../data/12-input.txt) \
 ./day15    <../data/15-input.txt &
 ./day16    <../data/16-input.txt &
 ./day17    <../data/17-input.txt &
+./day18    <../data/18-input.txt &
 wait
