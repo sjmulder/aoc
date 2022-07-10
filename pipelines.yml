@@ -9,7 +9,7 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: sudo apt install -y dos2unix
+  - script: sudo apt install -y bmake dos2unix
     displayName: Install packages
   - script: |
       set -e
@@ -17,9 +17,9 @@ jobs:
       make -j -C cbmbasic-master
       sudo cp cbmbasic-master/cbmbasic /usr/local/bin/
     displayName: Install cbmbasic
-  - script: make -j
+  - script: bmake -j4
     displayName: Build
-  - script: make -j run
+  - script: bmake -j4 run
     displayName: Run
 
 - job: macos
@@ -31,9 +31,11 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: make -j nobasic
+  - script: brew install bmake
+    displayName: Install packages
+  - script: bmake -j4 nobasic
     displayName: Build
-  - script: make -j run-nobasic
+  - script: bmake -j4 run-nobasic
     displayName: Run
 
 - job: vs_x86
