@@ -37,5 +37,5 @@ main(int argc, char **argv)
 		d[di] = '\0';
 	}
 
-	printf("%d\n", strlen(d));
+	printf("%zu\n", strlen(d));
 }
