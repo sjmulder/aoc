@@ -7,16 +7,6 @@
 static char grid[SZ][SZ], grid_orig[SZ][SZ];
 
 static void
-dump(void)
-{
-	int y;
-
-	for (y=1; y<SZ-1; y++)
-		printf("%.100s\n", grid[y]+1);
-	printf("\n");
-}
-
-static void
 step(int is_p2)
 {
 	int x,y, dx,dy;
