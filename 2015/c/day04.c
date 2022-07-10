@@ -1,7 +1,16 @@
 #include <stdio.h>
 #include <string.h>
-#include <openssl/md5.h>
 #include <err.h>
+
+#ifdef __APPLE__
+# include <CommonCrypto/CommonCrypto.h>
+# define MD5_Init	CC_MD5_Init
+# define MD5_Update	CC_MD5_Update
+# define MD5_Final	CC_MD5_Final
+# define MD5_CTX	CC_MD5_CTX
+#else
+# include <openssl/md5.h>
+#endif
 
 int
 main(int argc, char **argv) {
