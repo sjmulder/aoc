@@ -38,36 +38,6 @@ static int dists[4][7] = {
 	{9,8,6,4,2,2,3}
 };
 
-static void
-dump(struct state s)
-{
-	int i;
-
-	printf("%c%c.%c.%c.%c.%c%c",
-	    s.halls[0] ? s.halls[0] : '.',
-	    s.halls[1] ? s.halls[1] : '.',
-	    s.halls[2] ? s.halls[2] : '.',
-	    s.halls[3] ? s.halls[3] : '.',
-	    s.halls[4] ? s.halls[4] : '.',
-	    s.halls[5] ? s.halls[5] : '.',
-	    s.halls[6] ? s.halls[6] : '.');
-
-	for (i=0; i<s.nslots; i++)
-		printf("\n  %c %c %c %c",
-		    s.rooms[0][i] ? s.rooms[0][i] : '.',
-		    s.rooms[1][i] ? s.rooms[1][i] : '.',
-		    s.rooms[2][i] ? s.rooms[2][i] : '.',
-		    s.rooms[3][i] ? s.rooms[3][i] : '.');
-
-	printf("  %d\n\n", s.score);
-}
-
-static int
-cmp_score_desc(const void *a, const void *b)
-{
-	return ((struct state*)b)->score - ((struct state*)a)->score;
-}
-
 /* checks if OCCUPIED slots of room are correct */
 static int
 check_room(struct state s, int room)
@@ -249,7 +219,7 @@ int
 main()
 {
 	struct state s={};
-	int n,i, p1=0,p2=0;
+	int n, p1=0,p2=0;
 
 	n = scanf(" %*s %*s ###%c#%c#%c#%c### #%c#%c#%c#%c",
 	    &s.rooms[0][0], &s.rooms[1][0],
