@@ -1,8 +1,8 @@
-﻿using day01;
-
-var top = File.ReadLines("../../data/01-input.txt")
-    .GroupBySeparator(string.IsNullOrWhiteSpace)
-    .Select(group => group.Select(int.Parse).Sum())
+﻿var top = File.ReadAllText("../../data/01-input.txt")
+    .Replace("\r\n", "\n")
+    .TrimEnd('\n')
+    .Split("\n\n")
+    .Select(s => s.Split("\n").Select(int.Parse).Sum())
     .OrderByDescending(x => x)
     .Take(3)
     .ToList();
