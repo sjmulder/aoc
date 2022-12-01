@@ -15,7 +15,7 @@ Advent of Code
     C64 BASIC   **              *
     AWK          *                     .
     Excel       **                     .
-    manually	                      **
+    manually                          **
     armv6 asm   **
 
 **2020**
