@@ -1,6 +1,6 @@
 $1	{ sum += $1 }
 NF==0	{ groupEnd(); }
-END	{ groupEnd(); print(top1, top_sum) }
+END	{ groupEnd(); print("01:", top1, top_sum) }
 
 function groupEnd() {
 	if (top1 < sum)

@@ -25,7 +25,7 @@ main()
 		}
 	} while (line);
 
-	printf("%d %d\n", top[0], top[0]+top[1]+top[2]);
+	printf("01: %d %d\n", top[0], top[0]+top[1]+top[2]);
 
 	return 0;
 }
