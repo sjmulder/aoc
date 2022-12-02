@@ -1,6 +1,7 @@
 PROGS+=	day01 day02 day03
 
 CXXFLAGS+=	-Wall -Wextra
+CXXFLAGS+=	-std=c++14
 CXXFLAGS+=	-O3
 
 all: ${PROGS}

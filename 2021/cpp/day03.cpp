@@ -3,7 +3,7 @@
 
 template<typename T>
 static constexpr T
-from_binary(std::string s)
+from_binary(std::string_view s)
 {
 	T acc = 0;
 
