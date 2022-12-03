@@ -13,7 +13,9 @@ value(unsigned char c)
 int
 main()
 {
-	unsigned char line[64], seen[UCHAR_MAX+1], notseen[UCHAR_MAX+1];
+	unsigned char line[64];
+	unsigned char seen[UCHAR_MAX+1];	/* chars seen for elf */
+	unsigned char notseen[UCHAR_MAX+1];	/* not seen for group */
 	int p1=0, p2=0,  gpi=0;
 	size_t len, i;
 
@@ -22,6 +24,8 @@ main()
 	while (fgets((char *)line, sizeof(line), stdin)) {
 		for (len=0; line[len] >= 32; len++)
 			;
+
+		/* update seen[], check for dupes (p1) */
 		memset(seen, 0, sizeof(seen));
 		for (i=0; i < len/2; i++)
 			seen[line[i]] = 1;
@@ -35,9 +39,11 @@ main()
 		for (; i < len; i++)
 			seen[line[i]] = 1;
 
+		/* update notseen[] for the group */
 		for (i=0; i < LEN(seen); i++)
 			notseen[i] = notseen[i] || !seen[i];
 
+		/* test and reset notseen[] at end of group (p2) */
 		if (++gpi == 3) {
 			for (i=0; i < LEN(notseen); i++)
 				if (((i>='a' && i<='z') ||
