@@ -1,4 +1,4 @@
-PROGS+=	day01 day02
+PROGS+=	day01 day02 day03
 
 CFLAGS+=	-Wall -Wextra
 CFLAGS+=	-O3
