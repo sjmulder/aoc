@@ -1,0 +1,138 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <assert.h>
+
+#define UNUSED	__attribute__((unused))
+#define LEN(a)	(sizeof(a)/sizeof(*(a)))
+
+struct state {
+	char stacks[10][100];
+	int heights[10];
+	int nstacks;
+};
+
+static UNUSED void
+dump(struct state *s)
+{
+	int i,j, any;
+
+	printf(" nstacks=%d\n", s->nstacks);
+	printf(" heights=");
+	for (i=0; i < s->nstacks; i++)
+		printf("%d ", s->heights[i]);
+	printf("\n");
+
+	for (i=0; i < (int)LEN(*s->stacks); i++) {
+		any = 0;
+		for (j=0; j < (int)LEN(s->stacks); j++) {
+			if (i < s->heights[j]) {
+				any = 1;
+				printf("%c ", s->stacks[j][i]);
+			} else
+				printf("  ");
+		}
+		printf("\n");
+		if (!any)
+			break;
+	}
+}
+
+static void
+read_input(struct state *s)
+{
+	char buf[64], tmp;
+	int len, pos, i,j,k;
+
+	while (fgets(buf, sizeof(buf), stdin)) {
+		len = strlen(buf);
+		for (pos = 1; pos < len; pos += 4) {
+			i = pos/4;
+			assert(i < (int)LEN(s->stacks));
+			assert(s->heights[i]+1 < (int)LEN(*s->stacks));
+			if (i >= s->nstacks)
+				s->nstacks = i+1;
+			if (isdigit(buf[pos]))
+				break;
+			if (isspace(buf[pos]))
+				continue;
+			s->stacks[i][s->heights[i]++] = buf[pos];
+		}
+		if (pos < len && isdigit(buf[pos]))
+			break;
+	}
+
+	/* stacks are upside down, flip them */
+	for (i=0; i < s->nstacks; i++)
+	for (j=0; j < s->heights[i]/2; j++) {
+		k = s->heights[i]-1-j;
+		tmp = s->stacks[i][j];
+		s->stacks[i][j] = s->stacks[i][k];
+		s->stacks[i][k] = tmp;
+	}
+}
+
+static void
+move_p1(struct state *s, int from, int to, int count)
+{
+	int i;
+
+	assert(from >= 0 && from < s->nstacks);
+	assert(to >= 0 && to < s->nstacks);
+	assert(count <= s->heights[from]);
+	assert(s->heights[to] + count < (int)LEN(*s->stacks));
+
+	for (i=0; i<count; i++) 
+		s->stacks[to][s->heights[to]++] =
+		    s->stacks[from][--s->heights[from]];
+}
+
+static void
+move_p2(struct state *s, int from, int to, int count)
+{
+	assert(from >= 0 && from < s->nstacks);
+	assert(to >= 0 && to < s->nstacks);
+	assert(count <= s->heights[from]);
+	assert(s->heights[to] + count < (int)LEN(*s->stacks));
+
+	memmove(
+	    &s->stacks[to][s->heights[to]],
+	    &s->stacks[from][s->heights[from]-count],
+	    count * sizeof(**s->stacks));
+
+	s->heights[from] -= count;
+	s->heights[to] += count;
+}
+
+static void
+print_top(struct state *s)
+{
+	int i;
+
+	for (i=0; i < s->nstacks; i++)
+		if (s->heights[i])
+			printf("%c", s->stacks[i][s->heights[i]-1]);
+}
+
+int
+main()
+{
+	static struct state p1, p2;
+	int count, from, to;
+
+	read_input(&p1);
+	memcpy(&p2, &p1, sizeof(p2));
+
+	while (scanf(" move %d from %d to %d", &count, &from, &to)==3) {
+		move_p1(&p1, from-1, to-1, count);
+		move_p2(&p2, from-1, to-1, count);
+	}
+
+	printf("05: ");
+	print_top(&p1);
+	printf(" ");
+	print_top(&p2);
+	printf("\n");
+
+	return 0;
+}
