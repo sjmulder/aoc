@@ -3,9 +3,6 @@
 #include <ctype.h>
 #include <assert.h>
 
-#define UNUSED	__attribute__((unused))
-#define LEN(a)	(sizeof(a)/sizeof(*(a)))
-
 #define NSTACKS	10
 #define MAXH	99
 
@@ -13,31 +10,6 @@ struct state {
 	char stacks[NSTACKS][MAXH+1];
 	int heights[NSTACKS];
 };
-
-static UNUSED void
-dump(struct state *s)
-{
-	int i,j, any;
-
-	printf(" heights=");
-	for (i=0; i < NSTACKS; i++)
-		printf("%d ", s->heights[i]);
-	printf("\n");
-
-	for (i=0; i <= MAXH; i++) {
-		any = 0;
-		for (j=0; j < NSTACKS; j++) {
-			if (i < s->heights[j]) {
-				any = 1;
-				printf("%c ", s->stacks[j][i]);
-			} else
-				printf("  ");
-		}
-		printf("\n");
-		if (!any)
-			break;
-	}
-}
 
 static void
 read_input(struct state *s)
