@@ -51,10 +51,8 @@ read_input(struct state *s)
 			i = pos/4;
 			assert(i < NSTACKS);
 			assert(s->heights[i]+1 <= MAXH);
-			if (isdigit(buf[pos]))
-				break;
-			if (isspace(buf[pos]))
-				continue;
+			if (isdigit(buf[pos])) break;
+			if (isspace(buf[pos])) continue;
 			s->stacks[i][s->heights[i]++] = buf[pos];
 		}
 		if (pos < len && isdigit(buf[pos]))
@@ -76,8 +74,6 @@ move_p1(struct state *s, int from, int to, int count)
 {
 	int i;
 
-	assert(from >= 0 && from < NSTACKS);
-	assert(to >= 0 && to < NSTACKS);
 	assert(count <= s->heights[from]);
 	assert(s->heights[to] + count <= MAXH);
 
@@ -89,8 +85,6 @@ move_p1(struct state *s, int from, int to, int count)
 static void
 move_p2(struct state *s, int from, int to, int count)
 {
-	assert(from >= 0 && from < NSTACKS);
-	assert(to >= 0 && to < NSTACKS);
 	assert(count <= s->heights[from]);
 	assert(s->heights[to] + count <= MAXH);
 
@@ -123,15 +117,14 @@ main()
 	memcpy(&p2, &p1, sizeof(p2));
 
 	while (scanf(" move %d from %d to %d", &count, &from, &to)==3) {
+		assert(from >= 1 && from <= NSTACKS);
+		assert(to >= 1 && to <= NSTACKS);
 		move_p1(&p1, from-1, to-1, count);
 		move_p2(&p2, from-1, to-1, count);
 	}
 
-	printf("05: ");
-	print_top(&p1);
-	printf(" ");
-	print_top(&p2);
-	printf("\n");
+	printf("05: "); print_top(&p1);
+	printf(" ");    print_top(&p2); printf("\n");
 
 	return 0;
 }
