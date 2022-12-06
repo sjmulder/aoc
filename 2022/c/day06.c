@@ -1,36 +1,57 @@
 #include <stdio.h>
 
-static int
-step(char *ring, int sz, int pos, char c)
+/*
+ * We keep a ring buffer of the last N characters (4 for part 1,
+ * 14 for part 2). To avoid O(n!) time complexity for the
+ * duplicate check, we track the counts-per-char and use that to
+ * track the number of duplicates.
+ */
+struct state {
+	char *ring;	/* pointer to a ring buffer */
+	char counts[64];/* char%64->count map (ok for letters) *?
+	int sz, pos;
+	int ndupes;	/* number of duplicate chars */
+	int ans;	/* the solution */
+};
+
+static void
+step(struct state *s, char c)
 {
-	int i,j;
+	int i;
+	char old_c;
 
-	ring[pos%sz] = c;
+	i = s->pos % s->sz;
 
-	if (pos<sz)
-		return 0;
+	/* remove old character, decrement ndupes if needed */
+	if ((old_c = s->ring[i]))
+		s->ndupes -= --s->counts[old_c % 64] == 1;
 
-	for (i=0; i<sz-1; i++)
-	for (j=i+1; j<sz; j++)
-		if (ring[i] == ring[j])
-			return 0;
+	/* add the new character */
+	s->ring[i] = c;
+	s->ndupes += ++s->counts[c%64] == 2;
 
-	return pos+1;
+	/* if no dupes, we have our answer */
+	if (s->pos >= s->sz && !s->ndupes)
+		s->ans = s->pos+1;
+
+	s->pos++;
 }
 
 int
 main()
 {
-	static char ring1[4];
-	static char ring2[14];
-	int p1=0, p2=0, pos=0, c;
+	static char buf1[4], buf2[14];
+	static struct state p1, p2;
+	int c;
 
-	while ((!p1 || !p2) && (c = getchar()) != EOF) {
-		if (!p1) p1 = step(ring1, 4, pos, c);
-		if (!p2) p2 = step(ring2, 14, pos, c);
-		pos++;
+	p1.ring = buf1; p1.sz = 4;
+	p2.ring = buf2; p2.sz = 14;
+
+	while ((!p1.ans || !p2.ans) && (c = getchar()) != EOF) {
+		if (!p1.ans) step(&p1, (char)c);
+		if (!p2.ans) step(&p2, (char)c);
 	}
 
-	printf("06: %d %d\n", p1, p2);
+	printf("06: %d %d\n", p1.ans, p2.ans);
 	return 0;
 }
