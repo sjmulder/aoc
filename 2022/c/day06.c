@@ -8,7 +8,7 @@
  */
 struct state {
 	char *ring;	/* pointer to a ring buffer */
-	char counts[64];/* char%64->count map (ok for letters) *?
+	char counts[64];/* char%64->count map (ok for letters) */
 	int sz, pos;
 	int ndupes;	/* number of duplicate chars */
 	int ans;	/* the solution */
