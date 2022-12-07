@@ -7,9 +7,8 @@
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
 struct node {
-	int flags;
-#define NODE_DIR	1
 	char name[64];
+	int is_dir;
 	int size;
 	int size_total;
 	struct node *parent;
@@ -72,7 +71,7 @@ traverse(char *path, int flags)
 			cwd = cwd->parent;
 		} else if (strcmp(name, ".") != 0) {
 			cwd = get_child(name, flags);
-			cwd->flags = NODE_DIR;
+			cwd->is_dir = 1;
 		}
 	}
 }
@@ -110,8 +109,7 @@ read_input(void)
 
 			node = get_child(fields[1], CHILD_CREATE);
 			node->size = atoi(fields[0]);
-			node->flags = !strcmp(fields[0], "dir")
-			    ? NODE_DIR : 0;
+			node->is_dir = !strcmp(fields[0], "dir");
 		}
 	}
 }
@@ -122,7 +120,7 @@ update_totals(struct node *node)
 {
 	struct node *child;
 
-	if (node->flags & NODE_DIR) {
+	if (node->is_dir) {
 		node->size_total = 0;
 		for (child = node->children; child; child = child->next) {
 			update_totals(child);
@@ -141,7 +139,7 @@ main()
 	size_t i;
 
 	root = &nodes[nnodes++];
-	root->flags = NODE_DIR;
+	root->is_dir = 1;
 	snprintf(root->name, sizeof(root->name), "ROOT");
 	cwd = root;
 
@@ -153,7 +151,7 @@ main()
 	p2_target = 30000000 - 70000000 + root->size_total;
 
 	for (i=0; i<nnodes; i++) {
-		if (!(nodes[i].flags & NODE_DIR))
+		if (!nodes[i].is_dir)
 			continue;
 		if (nodes[i].size_total <= 100000)
 			p1 += nodes[i].size_total;
