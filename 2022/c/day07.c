@@ -4,7 +4,6 @@
 #include <limits.h>
 #include <assert.h>
 
-#define UNUSED	__attribute__((unused))
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
 struct node {
@@ -20,25 +19,6 @@ struct node {
 
 static struct node nodes[512], *cwd;
 static size_t nnodes;
-
-static UNUSED void
-dump(struct node *node, int depth)
-{
-	int i=0;
-	struct node *child;
-
-	if (node->flags & NODE_DIR)
-		printf("     dir ");
-	else
-		printf("%8d ", node->size);
-	
-	for (i=0; i<depth; i++)
-		printf("| ");
-	printf("%s\n", node->name);
-
-	for (child = node->children; child; child = child->next)
-		dump(child, depth+1);
-}
 
 static int
 split_fields(char *s, char **fields, int sz)
