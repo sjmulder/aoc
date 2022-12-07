@@ -6,6 +6,16 @@
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
+/*
+ * This version of the solution assumes things about the input, e.g.:
+ *  - Every command not 'ls' is 'cd'>
+ *  - 'cd' takes no path, just a name.
+ *  - Files and sirectories are listed exactly once.
+ *  - Directories are listed before entering them.
+ *
+ * The original solution without these assumptions is day07-orig.c
+ */
+
 struct node {
 	char name[64];
 	int size, is_dir;

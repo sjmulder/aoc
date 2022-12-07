@@ -7,6 +7,12 @@
 #define UNUSED	__attribute__((unused))
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
+/*
+ * This is my original solution. It does not make the assumptions
+ * day07.c makes and it supports paths for 'cd', including e.g.
+ * 'cd /foo/../bar/baz'
+ */
+
 struct node {
 	int flags;
 #define NODE_DIR	1
