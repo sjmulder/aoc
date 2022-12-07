@@ -81,24 +81,20 @@ traverse(char *path, int flags)
 {
 	char *name;
 
-	if (!path || !path[0])
-		return;
+	while (path && path[0]) {
+		name = strsep(&path, "/");
 
-	name = strsep(&path, "/");
-
-	if (!strcmp(name, "")) {
-		cwd = &nodes[0];
-		path = path+1;
-	} else if (!strcmp(name, ".")) {
-	} else if (!strcmp(name, "..")) {
-		assert(cwd->parent);
-		cwd = cwd->parent;
-	} else {
-		cwd = get_child(name, flags);
-		cwd->flags = NODE_DIR;
+		if (!strcmp(name, "")) {
+			cwd = &nodes[0];
+			path = path+1;
+		} else if (!strcmp(name, "..")) {
+			assert(cwd->parent);
+			cwd = cwd->parent;
+		} else if (strcmp(name, ".") != 0) {
+			cwd = get_child(name, flags);
+			cwd->flags = NODE_DIR;
+		}
 	}
-
-	traverse(path, flags);
 }
 
 static void
