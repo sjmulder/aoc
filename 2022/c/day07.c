@@ -55,17 +55,6 @@ get_child(char *name)
 }
 
 static void
-traverse(char *path)
-{
-	if (!strcmp(path, "/"))
-		cwd = &nodes[0];
-	else if (!strcmp(path, ".."))
-		cwd = cwd->parent;
-	else
-		cwd = get_child(path);
-}
-
-static void
 read_input(void)
 {
 	char buf[64], *fields[4], *lf;
@@ -87,7 +76,13 @@ read_input(void)
 			
 			if (!strcmp(fields[1], "cd")) {
 				assert(nfields == 3);
-				traverse(fields[2]);
+
+				if (!strcmp(fields[2], "/"))
+					cwd = &nodes[0];
+				else if (!strcmp(fields[2], ".."))
+					cwd = cwd->parent;
+				else
+					cwd = get_child(fields[2]);
 			} else if (!strcmp(fields[1], "ls")) {
 				assert(nfields == 2);
 			} else {
