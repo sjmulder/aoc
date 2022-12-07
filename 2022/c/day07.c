@@ -8,7 +8,7 @@
 
 /*
  * This version of the solution assumes things about the input, e.g.:
- *  - Every command not 'ls' is 'cd'.
+ *  - Every command not 'cd' is 'ls'.
  *  - 'cd' takes no path, just a name.
  *  - Files and directories are listed exactly once.
  *  - Directories are listed before entering them.
