@@ -19,17 +19,6 @@ struct node {
 static struct node nodes[512], *cwd;
 static size_t nnodes;
 
-static int
-split_fields(char *s, char **fields, int sz)
-{
-	int num=0;
-
-	while (num < sz && (fields[num] = strsep(&s, " ")))
-		num++;
-	
-	return num;
-}
-
 /* creates if not not exists */
 static struct node *
 get_child(char *name)
@@ -57,9 +46,9 @@ get_child(char *name)
 static void
 read_input(void)
 {
-	char buf[64], *fields[4], *lf;
+	char buf[64], *s, *fields[4], *lf;
 	struct node *node;
-	int nfields;
+	size_t nf=0;
 	
 	assert(nnodes);
 	assert(cwd);
@@ -67,15 +56,16 @@ read_input(void)
 	while (fgets(buf, sizeof(buf), stdin)) {
 		if ((lf = strchr(buf, '\n')))
 			*lf = '\0';
-
-		nfields = split_fields(buf, fields, 4);
-		assert(nfields > 0);
+		for (nf=0, s=buf;
+		     nf < LEN(fields) && (fields[nf] = strsep(&s, " "));
+		     nf++) ;
+		assert(nf > 0);
 
 		if (!strcmp(fields[0], "$")) {
-			assert(nfields >= 2);
+			assert(nf >= 2);
 			
 			if (!strcmp(fields[1], "cd")) {
-				assert(nfields == 3);
+				assert(nf == 3);
 
 				if (!strcmp(fields[2], "/"))
 					cwd = &nodes[0];
@@ -84,12 +74,12 @@ read_input(void)
 				else
 					cwd = get_child(fields[2]);
 			} else if (!strcmp(fields[1], "ls")) {
-				assert(nfields == 2);
+				assert(nf == 2);
 			} else {
 				assert(!"bad command");
 			}
 		} else {
-			assert(nfields == 2);
+			assert(nf == 2);
 
 			node = get_child(fields[1]);
 			node->size = atoi(fields[0]);
