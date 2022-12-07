@@ -15,18 +15,18 @@ struct node {
 	struct node *next;
 };
 
-static struct node nodes[512], *cwd;
-static size_t nnodes;
-
-static void
-read_input(void)
+int
+main()
 {
-	char buf[64], *s, *fields[4], *lf;
-	struct node *node, *n;
-	size_t nf=0;
-	
-	assert(nnodes);
-	assert(cwd);
+	static struct node nodes[512];
+	struct node *cwd, *node, *n;
+	char buf[64], *fields[4], *s, *lf;
+	size_t nnodes=1, nf=0, i;
+	int p1=0, p2=INT_MAX, p2_target;
+
+	nodes[0].is_dir = 1;
+	snprintf(nodes[0].name, sizeof(nodes[0].name), "ROOT");
+	cwd = &nodes[0];
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		if ((lf = strchr(buf, '\n')))
@@ -64,25 +64,8 @@ read_input(void)
 			assert(cwd);
 		}
 	}
-}
 
-int
-main()
-{
-	struct node *root;
-	int p1=0, p2=INT_MAX, p2_target;
-	size_t i;
-
-	root = &nodes[nnodes++];
-	root->is_dir = 1;
-	snprintf(root->name, sizeof(root->name), "ROOT");
-	cwd = root;
-
-	read_input();
-
-	//dump(&nodes[0], 0);
-
-	p2_target = 30000000 - 70000000 + root->size;
+	p2_target = 30000000 - 70000000 + nodes[0].size;
 
 	for (i=0; i<nnodes; i++) {
 		if (!nodes[i].is_dir)
