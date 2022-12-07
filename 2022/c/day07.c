@@ -10,7 +10,6 @@ struct node {
 	char name[64];
 	int is_dir;
 	int size;
-	int size_total;
 	struct node *parent;
 	struct node *children;
 	struct node *next;
@@ -23,7 +22,7 @@ static void
 read_input(void)
 {
 	char buf[64], *s, *fields[4], *lf;
-	struct node *node;
+	struct node *node, *n;
 	size_t nf=0;
 	
 	assert(nnodes);
@@ -49,6 +48,9 @@ read_input(void)
 			    fields[1]);
 
 			cwd->children = node;
+
+			for (n = node->parent; n; n = n->parent)
+				n->size += node->size;
 		} else if (!strcmp(fields[1], "cd")) {
 			if (!strcmp(fields[2], "/"))
 				cwd = &nodes[0];
@@ -61,23 +63,6 @@ read_input(void)
 			}
 			assert(cwd);
 		}
-	}
-}
-
-
-static void
-update_totals(struct node *node)
-{
-	struct node *child;
-
-	if (node->is_dir) {
-		node->size_total = 0;
-		for (child = node->children; child; child = child->next) {
-			update_totals(child);
-			node->size_total += child->size_total;
-		}
-	} else {
-		node->size_total = node->size;
 	}
 }
 
@@ -94,20 +79,19 @@ main()
 	cwd = root;
 
 	read_input();
-	update_totals(root);
 
 	//dump(&nodes[0], 0);
 
-	p2_target = 30000000 - 70000000 + root->size_total;
+	p2_target = 30000000 - 70000000 + root->size;
 
 	for (i=0; i<nnodes; i++) {
 		if (!nodes[i].is_dir)
 			continue;
-		if (nodes[i].size_total <= 100000)
-			p1 += nodes[i].size_total;
-		if (nodes[i].size_total > p2_target &&
-		    nodes[i].size_total <= p2)
-			p2 = nodes[i].size_total;
+		if (nodes[i].size <= 100000)
+			p1 += nodes[i].size;
+		if (nodes[i].size > p2_target &&
+		    nodes[i].size <= p2)
+			p2 = nodes[i].size;
 	}
 
 	printf("07: %d %d\n", p1, p2);
