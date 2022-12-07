@@ -57,22 +57,12 @@ get_child(char *name)
 static void
 traverse(char *path)
 {
-	char *name;
-
-	while (path && path[0]) {
-		name = strsep(&path, "/");
-
-		if (!strcmp(name, "")) {
-			cwd = &nodes[0];
-			path = path+1;
-		} else if (!strcmp(name, "..")) {
-			assert(cwd->parent);
-			cwd = cwd->parent;
-		} else if (strcmp(name, ".") != 0) {
-			cwd = get_child(name);
-			cwd->is_dir = 1;
-		}
-	}
+	if (!strcmp(path, "/"))
+		cwd = &nodes[0];
+	else if (!strcmp(path, ".."))
+		cwd = cwd->parent;
+	else
+		cwd = get_child(path);
 }
 
 static void
