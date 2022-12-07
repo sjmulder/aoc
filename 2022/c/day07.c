@@ -57,13 +57,12 @@ read_input(void)
 
 			node = &nodes[nnodes++];
 			node->parent = cwd;
+			node->next = cwd->children;
 			node->size = atoi(fields[0]);
 			node->is_dir = !strcmp(fields[0], "dir");
 			snprintf(node->name, sizeof(node->name), "%s",
 			    fields[1]);
 
-			node->parent = cwd;
-			node->next = cwd->children;
 			cwd->children = node;
 		} else if (!strcmp(fields[1], "cd")) {
 			cwd =
