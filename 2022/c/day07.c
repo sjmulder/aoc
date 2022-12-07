@@ -30,11 +30,10 @@ split_fields(char *s, char **fields, int sz)
 	return num;
 }
 
+/* creates if not not exists */
 static struct node *
-get_child(char *name, int flags)
+get_child(char *name)
 {
-#define CHILD_CREATE	1
-
 	struct node **nodep, *node;
 
 	assert(cwd);
@@ -44,7 +43,7 @@ get_child(char *name, int flags)
 	while (*nodep && strcmp(name, (*nodep)->name))
 		nodep = &(*nodep)->next;
 	
-	if (!*nodep && (flags & CHILD_CREATE)) {
+	if (!*nodep) {
 		assert(nnodes+1 < sizeof(nodes));
 		node = &nodes[nnodes++];
 		node->parent = cwd;
@@ -56,7 +55,7 @@ get_child(char *name, int flags)
 }
 
 static void
-traverse(char *path, int flags)
+traverse(char *path)
 {
 	char *name;
 
@@ -70,7 +69,7 @@ traverse(char *path, int flags)
 			assert(cwd->parent);
 			cwd = cwd->parent;
 		} else if (strcmp(name, ".") != 0) {
-			cwd = get_child(name, flags);
+			cwd = get_child(name);
 			cwd->is_dir = 1;
 		}
 	}
@@ -98,7 +97,7 @@ read_input(void)
 			
 			if (!strcmp(fields[1], "cd")) {
 				assert(nfields == 3);
-				traverse(fields[2], CHILD_CREATE);
+				traverse(fields[2]);
 			} else if (!strcmp(fields[1], "ls")) {
 				assert(nfields == 2);
 			} else {
@@ -107,7 +106,7 @@ read_input(void)
 		} else {
 			assert(nfields == 2);
 
-			node = get_child(fields[1], CHILD_CREATE);
+			node = get_child(fields[1]);
 			node->size = atoi(fields[0]);
 			node->is_dir = !strcmp(fields[0], "dir");
 		}
