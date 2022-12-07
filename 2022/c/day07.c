@@ -23,24 +23,15 @@ static size_t nnodes;
 static struct node *
 get_child(char *name)
 {
-	struct node **nodep, *node;
+	struct node *node;
 
 	assert(cwd);
 
-	nodep = &cwd->children;
-
-	while (*nodep && strcmp(name, (*nodep)->name))
-		nodep = &(*nodep)->next;
+	for (node = cwd->children;
+	     node && strcmp(name, node->name);
+	     node = node->next) ;
 	
-	if (!*nodep) {
-		assert(nnodes+1 < sizeof(nodes));
-		node = &nodes[nnodes++];
-		node->parent = cwd;
-		snprintf(node->name, sizeof(node->name), "%s", name);
-		*nodep = node;
-	}
-	
-	return *nodep;
+	return node;
 }
 
 static void
@@ -62,9 +53,18 @@ read_input(void)
 
 		if (strcmp(fields[0], "$") != 0) {
 			assert(nf == 2);
-			node = get_child(fields[1]);
+			assert(nnodes+1 < sizeof(nodes));
+
+			node = &nodes[nnodes++];
+			node->parent = cwd;
 			node->size = atoi(fields[0]);
 			node->is_dir = !strcmp(fields[0], "dir");
+			snprintf(node->name, sizeof(node->name), "%s",
+			    fields[1]);
+
+			node->parent = cwd;
+			node->next = cwd->children;
+			cwd->children = node;
 		} else if (!strcmp(fields[1], "cd")) {
 			cwd =
 			    !strcmp(fields[2], "/") ? &nodes[0] :
