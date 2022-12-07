@@ -178,7 +178,7 @@ main()
 		if (nodes[i].size_total <= 100000)
 			p1 += nodes[i].size_total;
 		if (nodes[i].size_total > p2_target &&
-		    nodes[i].size_total < p2)
+		    nodes[i].size_total <= p2)
 			p2 = nodes[i].size_total;
 	}
 
