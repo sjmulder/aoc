@@ -59,31 +59,17 @@ read_input(void)
 		for (nf=0, s=buf;
 		     nf < LEN(fields) && (fields[nf] = strsep(&s, " "));
 		     nf++) ;
-		assert(nf > 0);
 
-		if (!strcmp(fields[0], "$")) {
-			assert(nf >= 2);
-			
-			if (!strcmp(fields[1], "cd")) {
-				assert(nf == 3);
-
-				if (!strcmp(fields[2], "/"))
-					cwd = &nodes[0];
-				else if (!strcmp(fields[2], ".."))
-					cwd = cwd->parent;
-				else
-					cwd = get_child(fields[2]);
-			} else if (!strcmp(fields[1], "ls")) {
-				assert(nf == 2);
-			} else {
-				assert(!"bad command");
-			}
-		} else {
+		if (strcmp(fields[0], "$") != 0) {
 			assert(nf == 2);
-
 			node = get_child(fields[1]);
 			node->size = atoi(fields[0]);
 			node->is_dir = !strcmp(fields[0], "dir");
+		} else if (!strcmp(fields[1], "cd")) {
+			cwd =
+			    !strcmp(fields[2], "/") ? &nodes[0] :
+			    !strcmp(fields[2], "..") ? cwd->parent :
+			    get_child(fields[2]);
 		}
 	}
 }
