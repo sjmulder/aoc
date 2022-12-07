@@ -8,24 +8,22 @@
 
 struct node {
 	char name[64];
-	int is_dir;
-	int size;
-	struct node *parent;
-	struct node *children;
-	struct node *next;
+	int size, is_dir;
+	struct node *parent, *children, *next;
 };
 
 int
 main()
 {
 	static struct node nodes[512];
+	static char buf[64];
+
 	struct node *cwd, *node, *n;
-	char buf[64], *fields[4], *s, *lf;
+	char *fields[4], *s, *lf;
 	size_t nnodes=1, nf=0, i;
 	int p1=0, p2=INT_MAX, p2_target;
 
 	nodes[0].is_dir = 1;
-	snprintf(nodes[0].name, sizeof(nodes[0].name), "ROOT");
 	cwd = &nodes[0];
 
 	while (fgets(buf, sizeof(buf), stdin)) {
@@ -72,8 +70,7 @@ main()
 			continue;
 		if (nodes[i].size <= 100000)
 			p1 += nodes[i].size;
-		if (nodes[i].size > p2_target &&
-		    nodes[i].size <= p2)
+		if (nodes[i].size > p2_target && nodes[i].size <= p2)
 			p2 = nodes[i].size;
 	}
 
