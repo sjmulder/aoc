@@ -70,6 +70,7 @@ read_input(void)
 			    !strcmp(fields[2], "/") ? &nodes[0] :
 			    !strcmp(fields[2], "..") ? cwd->parent :
 			    get_child(fields[2]);
+			assert(cwd);
 		}
 	}
 }
