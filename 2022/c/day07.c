@@ -19,21 +19,6 @@ struct node {
 static struct node nodes[512], *cwd;
 static size_t nnodes;
 
-/* creates if not not exists */
-static struct node *
-get_child(char *name)
-{
-	struct node *node;
-
-	assert(cwd);
-
-	for (node = cwd->children;
-	     node && strcmp(name, node->name);
-	     node = node->next) ;
-	
-	return node;
-}
-
 static void
 read_input(void)
 {
@@ -65,10 +50,15 @@ read_input(void)
 
 			cwd->children = node;
 		} else if (!strcmp(fields[1], "cd")) {
-			cwd =
-			    !strcmp(fields[2], "/") ? &nodes[0] :
-			    !strcmp(fields[2], "..") ? cwd->parent :
-			    get_child(fields[2]);
+			if (!strcmp(fields[2], "/"))
+				cwd = &nodes[0];
+			else if (!strcmp(fields[2], ".."))
+				cwd = cwd->parent;
+			else {
+				for (cwd = cwd->children;
+				     cwd && strcmp(fields[2], cwd->name);
+				     cwd = cwd->next) ;
+			}
 			assert(cwd);
 		}
 	}
