@@ -3,7 +3,7 @@
 
 #define SZ 128
 
-static char heights[100][100];
+static char heights[SZ][SZ];
 static int w,h;
 
 static int

@@ -3,8 +3,8 @@
 
 #define SZ 128
 
-static char heights[100][100];
-static char visibility[100][100];
+static char heights[SZ][SZ];
+static char visibility[SZ][SZ];
 static int w,h, nvisible=0;
 
 static void
