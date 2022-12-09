@@ -4,7 +4,7 @@
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
-static inline int
+static int
 value(unsigned char c)
 {
 	return c%32 + !(c >>5 &1)*26;

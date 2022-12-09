@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-static inline int sign(int x) { return x>0 ? 1 : x<0 ? -1 : 0; }
+static int sign(int x) { return x>0 ? 1 : x<0 ? -1 : 0; }
 
 int
 main(int argc, char **argv)
