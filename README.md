@@ -12,6 +12,7 @@ Advent of Code
     C           *********
     C#          ***
     AWK         ** *
+    Rust	*
 
 **2021**
 

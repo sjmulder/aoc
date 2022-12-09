@@ -11,6 +11,8 @@ Debug/
 Release/
 xcuserdata/
 build/
+debug/
+target/
 cmake-build-*/
 *.o
 *.d
