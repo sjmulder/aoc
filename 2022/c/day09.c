@@ -27,10 +27,11 @@ main()
 			dx = x[i-1] - x[i];
 			dy = y[i-1] - y[i];
 
-			if (abs(dx) > 1 || abs(dy) > 1) {
-				x[i] += sign(dx);
-				y[i] += sign(dy);
-			}
+			if (abs(dx) <= 1 && abs(dy) <= 1)
+				break; /* rest of rope doesn't move */
+
+			x[i] += sign(dx);
+			y[i] += sign(dy);
 		}
 
 		if (!(visited[y[1]][x[1]] & 1))
