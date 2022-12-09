@@ -1,10 +1,14 @@
 #include <stdio.h>
+#include <string.h>
 
 int
-main()
+main(int argc, char **argv)
 {
 	char buf[64], *line;
 	int cals, sum=0, top[3]={};
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	do {
 		line = fgets(buf, sizeof(buf), stdin);

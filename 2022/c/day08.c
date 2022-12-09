@@ -22,11 +22,14 @@ dist_ray(int x0, int y0, int dx, int dy, int *oob)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	int x,y, len;
 	int max_scenic=0, scenic;
 	int nvisible=0, oob;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	for (; fgets(heights[h], SZ, stdin); h++) {
 		for (len=0;

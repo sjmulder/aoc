@@ -5,12 +5,14 @@
 static inline int sign(int x) { return x>0 ? 1 : x<0 ? -1 : 0; }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static char visited[512][512];
 	char dir;
 	int x[10],y[10], p1=0,p2=0, dx,dy, steps, i;
 
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 	for (i=0; i<10; i++)
 		x[i] = y[i] = 256;
 

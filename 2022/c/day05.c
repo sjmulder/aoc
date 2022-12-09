@@ -80,10 +80,13 @@ print_top(struct state *s)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static struct state p1, p2;
 	int count, from, to;
+	
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	read_input(&p1);
 	memcpy(&p2, &p1, sizeof(p2));

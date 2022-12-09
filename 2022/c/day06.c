@@ -38,11 +38,14 @@ step(struct state *s, char c)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static char buf1[4], buf2[14];
 	static struct state p1, p2;
 	int c;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	p1.ring = buf1; p1.sz = 4;
 	p2.ring = buf2; p2.sz = 14;

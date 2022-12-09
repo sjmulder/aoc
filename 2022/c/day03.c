@@ -11,13 +11,16 @@ value(unsigned char c)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	unsigned char line[64];
 	unsigned char seen[UCHAR_MAX+1];	/* chars seen for elf */
 	unsigned char notseen[UCHAR_MAX+1];	/* not seen for group */
 	int p1=0, p2=0,  gpi=0;
 	size_t len, i;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	memset(notseen, 0, sizeof(notseen));
 
