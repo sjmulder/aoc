@@ -1,0 +1,9 @@
+@Release\day01.exe ..\..\data\01-input.txt
+@Release\day02.exe ..\..\data\02-input.txt
+@Release\day03.exe ..\..\data\03-input.txt
+@Release\day04.exe ..\..\data\04-input.txt
+@Release\day05.exe ..\..\data\05-input.txt
+@Release\day06.exe ..\..\data\06-input.txt
+@Release\day07.exe ..\..\data\07-input.txt
+@Release\day08.exe ..\..\data\08-input.txt
+@Release\day09.exe ..\..\data\09-input.txt
