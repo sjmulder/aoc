@@ -13,7 +13,10 @@ main(int argc, char **argv)
 		freopen(argv[1], "r", stdin);
 
 	for (clock = 0; clock < 6*40; clock++, op_time--) {
-		if ((clock - 20) % 40 == 0)
+		y = clock / 40;
+		x = clock % 40;
+
+		if (x == 20)
 			p1 += clock * reg_x;
 
 		if (op_time <= 0) {
@@ -29,8 +32,6 @@ main(int argc, char **argv)
 			}
 		}
 
-		y = clock / 40;
-		x = clock % 40;
 		img[y][x] = abs(x - reg_x) <= 1 ? '#' : ' ';
 	}
 
