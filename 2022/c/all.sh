@@ -7,4 +7,5 @@
 ./day07 <../data/07-input.txt &
 ./day08 <../data/08-input.txt &
 ./day09 <../data/09-input.txt &
+./day10 <../data/10-input.txt &
 wait
