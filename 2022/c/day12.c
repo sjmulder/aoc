@@ -58,14 +58,11 @@ main()
 
 	dist[ey][ex] = 0;
 
-	//dump();
-
 	do {
 		nchange  = step( 1,0);
 		nchange += step(-1,0);
 		nchange += step(0, 1);
 		nchange += step(0,-1);
-		//dump();
 	} while (nchange);
 
 	for (y=0; y<h; y++)
