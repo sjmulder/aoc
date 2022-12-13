@@ -41,7 +41,7 @@ static int
 compare_lists(char *a, char *b)
 {
 	struct tok a_tok, b_tok;
-	char buf[16];
+	char buf[256];
 
 	a_tok = parse_tok(a, &a);
 	b_tok = parse_tok(b, &b);
@@ -52,23 +52,12 @@ compare_lists(char *a, char *b)
 		return compare_lists(a, b);
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_INT)
 		return sgn(a_tok.val - b_tok.val);
-
-	/*
-	 * This hack doesn't actually work in the general case:
-	 * if the list is a single number equal to the integer,
-	 * parsing would continue past the constructed string.
-	 *
-	 * However, this situation doesn't oocur in my input.
-	 *
-	 * A proper fix would be to format a string "%d]%s"
-	 * with the integer and the remainder of the string.
-	 */
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_LIST_BEGIN) {
-		snprintf(buf, sizeof(buf), "%d]", a_tok.val);
+		snprintf(buf, sizeof(buf), "%d]%s", a_tok.val, a);
 		return compare_lists(buf, b);
 	}
 	if (a_tok.type == TOK_LIST_BEGIN && b_tok.type == TOK_INT) {
-		snprintf(buf, sizeof(buf), "%d]", b_tok.val);
+		snprintf(buf, sizeof(buf), "%d]%s", b_tok.val, b);
 		return compare_lists(a, buf);
 	}
 
