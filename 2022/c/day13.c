@@ -43,13 +43,14 @@ compare_lists(char *a, char *b)
 	struct tok a_tok, b_tok;
 	char buf[256];
 
+tail_recurse:
 	a_tok = parse_tok(a, &a);
 	b_tok = parse_tok(b, &b);
 
 	if (a_tok.type == TOK_EOF)
 		return -1;
 	if (a_tok.type == b_tok.type && a_tok.val  == b_tok.val)
-		return compare_lists(a, b);
+		goto tail_recurse;
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_INT)
 		return sgn(a_tok.val - b_tok.val);
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_LIST_BEGIN) {
