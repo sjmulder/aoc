@@ -52,6 +52,17 @@ compare_lists(char *a, char *b)
 		return compare_lists(a, b);
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_INT)
 		return sgn(a_tok.val - b_tok.val);
+
+	/*
+	 * This hack doesn't actually work in the general case:
+	 * if the list is a single number equal to the integer,
+	 * parsing would continue past the constructed string.
+	 *
+	 * However, this situation doesn't oocur in my input.
+	 *
+	 * A proper fix would be to format a string "%d]%s"
+	 * with the integer and the remainder of the string.
+	 */
 	if (a_tok.type == TOK_INT && b_tok.type == TOK_LIST_BEGIN) {
 		snprintf(buf, sizeof(buf), "%d]", a_tok.val);
 		return compare_lists(buf, b);
