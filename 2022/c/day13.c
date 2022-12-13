@@ -68,7 +68,7 @@ int
 main()
 {
 	static char line1[256], line2[256];
-	int p1=0, dec1=0, dec2=0, i;
+	int p1=0, dec1=1, dec2=2, i;
 
 	for (i=0; ; i++) {
 		if (!(fgets(line1, sizeof(line1), stdin))) break;
@@ -85,6 +85,6 @@ main()
 		fgets(line1, sizeof(line1), stdin);
 	}
 
-	printf("13: %d %d\n", p1, (dec1+1) * (dec2+2));
+	printf("13: %d %d\n", p1, dec1 * dec2);
 	return 0;
 }
