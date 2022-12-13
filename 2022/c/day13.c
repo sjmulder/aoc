@@ -85,9 +85,6 @@ main()
 		fgets(line1, sizeof(line1), stdin);
 	}
 
-	printf("13: %d %d\n", p1,
-	    (dec1 + (dec1>dec2) +1) *
-	    (dec2 + (dec2>dec1) +1));
-
+	printf("13: %d %d\n", p1, (dec1+1) * (dec2+2));
 	return 0;
 }
