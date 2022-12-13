@@ -9,6 +9,8 @@
 enum { TOK_INT, TOK_LIST_BEGIN, TOK_LIST_END, TOK_EOF };
 struct tok { int type, val; };
 
+static int sgn(int x) { return x<0 ? -1 : x>0 ? 1 : 0; }
+
 static struct tok
 parse_tok(char *s, char **endp)
 {
@@ -44,56 +46,22 @@ compare_lists(char *a, char *b)
 	a_tok = parse_tok(a, &a);
 	b_tok = parse_tok(b, &b);
 
-	switch (a_tok.type) {
-	case TOK_INT:
-		switch (b_tok.type) {
-		case TOK_INT:
-			if (a_tok.val < b_tok.val) return -1;
-			if (a_tok.val > b_tok.val) return  1;
-			return compare_lists(a, b);
-		case TOK_LIST_BEGIN:
-			snprintf(buf, sizeof(buf), "%d]", a_tok.val);
-			return compare_lists(buf, b);
-		case TOK_LIST_END:
-		case TOK_EOF:
-		default:
-			return 1;
-		}
-	case TOK_LIST_BEGIN:
-		switch (b_tok.type) {
-		case TOK_INT:
-			snprintf(buf, sizeof(buf), "%d]", b_tok.val);
-			return compare_lists(a, buf);
-		case TOK_LIST_BEGIN:
-			return compare_lists(a, b);
-		case TOK_LIST_END:
-		case TOK_EOF:
-		default:
-			return 1;
-		}
-	case TOK_LIST_END:
-		switch (b_tok.type) {
-		case TOK_INT:
-		case TOK_LIST_BEGIN:
-			return -1;
-		case TOK_LIST_END:
-			return compare_lists(a, b);
-		case TOK_EOF:
-		default:
-			return 1;
-		}
-	case TOK_EOF:
-	default:
-		switch (b_tok.type) {
-		case TOK_INT:
-		case TOK_LIST_BEGIN:
-		case TOK_LIST_END:
-			return -1;
-		case TOK_EOF:
-		default:
-			return 0;
-		}
+	if (a_tok.type == TOK_EOF)
+		return -1;
+	if (a_tok.type == b_tok.type && a_tok.val  == b_tok.val)
+		return compare_lists(a, b);
+	if (a_tok.type == TOK_INT && b_tok.type == TOK_INT)
+		return sgn(a_tok.val - b_tok.val);
+	if (a_tok.type == TOK_INT && b_tok.type == TOK_LIST_BEGIN) {
+		snprintf(buf, sizeof(buf), "%d]", a_tok.val);
+		return compare_lists(buf, b);
 	}
+	if (a_tok.type == TOK_LIST_BEGIN && b_tok.type == TOK_INT) {
+		snprintf(buf, sizeof(buf), "%d]", b_tok.val);
+		return compare_lists(a, buf);
+	}
+
+	return sgn(b_tok.type - a_tok.type);
 }
 
 int
