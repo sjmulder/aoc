@@ -11,4 +11,5 @@
 ./day11 <../data/11-input.txt &
 ./day12 <../data/12-input.txt &
 ./day13 <../data/13-input.txt &
+./day14 <../data/14-input.txt &
 wait
