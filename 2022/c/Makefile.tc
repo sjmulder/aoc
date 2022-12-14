@@ -28,7 +28,7 @@ day13.exe: day13.obj stdio.obj
 	tcc day13.obj stdio.obj
 
 day12.obj: compat\util.h
-day13.obj: compat\stdio.h
+day13.obj: compat\stdio.h compat\string.h
 
 stdio.obj: compat\stdio.c compat\stdio.h
 	tcc -c compat\stdio.c
