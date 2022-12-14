@@ -1,12 +1,12 @@
+#include <stdio.h>
+#include <stdarg.h>
+#include <assert.h>
+
 #ifdef __TURBOC__
 # include "compat/stdio.h"
 #else
 # include "../compat/stdio.h"
 #endif
-
-#include <stdio.h>
-#include <stdarg.h>
-#include <assert.h>
 
 #ifdef COMPAT_SNPRINTF
 int
