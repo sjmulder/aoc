@@ -16,4 +16,12 @@ clean:
 	rm -f ${PROGS} *.o
 	rm -rfv *.dSYM
 
+day07: day07.o compat/stdio.o compat/string.o
+	${LINK.c} -o day07 day07.o compat/stdio.o compat/string.o ${LDLIBS}
+day12: day12.o compat/stdio.o
+	${LINK.c} -o day12 day12.o compat/stdio.o ${LDLIBS}
+
+day07.o: compat/stdio.h compat/string.h
+day12.o: compat/stdio.h compat/util.h
+
 .PHONY: all run clean
