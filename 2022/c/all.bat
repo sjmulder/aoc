@@ -1,3 +1,4 @@
+@echo off
 day01.exe ..\data\01-input.txt
 day02.exe ..\data\02-input.txt
 day03.exe ..\data\03-input.txt
