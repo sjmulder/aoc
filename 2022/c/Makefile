@@ -24,6 +24,7 @@ day12: day12.o stdio.o
 day07.o: day07.c compat/stdio.h compat/string.h
 day12.o: day12.c compat/stdio.h compat/util.h
 
+vis.o: vis.c vis.h
 stdio.o: compat/stdio.c compat/stdio.h
 string.o: compat/string.c compat/string.h
 
