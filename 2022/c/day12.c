@@ -95,24 +95,3 @@ main()
 	return 0;
 }
 
-static void __attribute__((unused))
-dump(void)
-{
-	int y,x;
-
-	printf(" sz=%d,%d start=%d,%d end=%d,%d\n",
-	    w,h, sx,sy, ex,ey);
-
-	for (y=0; y<h; y++) {
-		printf("%.*s", w, map[y]);
-
-		for (x=0; x<w; x++) {
-			if (dist[y][x] == INT_MAX)
-				printf(" ??");
-			else
-				printf(" %2d", dist[y][x]);
-		}
-
-		putchar('\n');
-	}
-}
