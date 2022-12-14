@@ -5,7 +5,7 @@
 # No day09: requires a 512*512 static array
 # No day11: requires int64
 PROGS=	day01.exe day02.exe day03.exe day04.exe day05.exe day06.exe \
-	day08.exe day10.exe day12.exe day13.exe
+	day07.exe day08.exe day10.exe day12.exe day13.exe
 
 all: $(PROGS)
 
@@ -19,7 +19,8 @@ day03.exe: day03.c
 day04.exe: day04.c
 day05.exe: day05.c
 day06.exe: day06.c
-day07.exe: day07.c
+day07.exe: day07.obj stdio.obj string.obj
+	tcc day07.obj stdio.obj string.obj
 day08.exe: day08.c
 day10.exe: day10.c
 day12.exe: day12.obj
@@ -31,6 +32,8 @@ day13.obj: compat\stdio.h
 
 stdio.obj: compat\stdio.c compat\stdio.h
 	tcc -c compat\stdio.c
+string.obj: compat\string.c compat\string.h
+	tcc -c compat\string.c
 
 .c.obj:
 	tcc -c $<

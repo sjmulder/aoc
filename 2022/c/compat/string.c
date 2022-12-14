@@ -1,4 +1,10 @@
-#include "../compat/string.h"
+#include <stddef.h>
+
+#ifdef __TURBOC__
+# include "compat/string.h"
+#else
+# include "../compat/string.h"
+#endif
 
 #ifdef COMPAT_STRSEP
 char *
