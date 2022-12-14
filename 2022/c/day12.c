@@ -2,6 +2,7 @@
 #include <string.h>
 #include <limits.h>
 #include <assert.h>
+#include "compat/util.h"
 
 #define SZY	48
 #define SZX	144
