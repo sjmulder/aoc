@@ -13,7 +13,7 @@ static int w,h, sx,sy, ex,ey;
 
 static int max(int a, int b) { return a>b ? a : b; }
 
-static void __atribute__((unused))
+static void UNUSED
 dump(void)
 {
 	int y,x;
