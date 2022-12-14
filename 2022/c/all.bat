@@ -10,5 +10,6 @@ day08.exe ..\data\08-input.txt
 day09.exe ..\data\09-input.txt
 day10.exe ..\data\10-input.txt
 day11.exe ..\data\11-input.txt
+echo -- day12 can take a while
 day12.exe ..\data\12-input.txt
 day13.exe ..\data\13-input.txt
