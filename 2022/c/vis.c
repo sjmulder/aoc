@@ -25,6 +25,7 @@ vis_begin(
 		"-framerate", fps_str,
 		"-i", "-",
 		"-y",	/* overwrite existing file */
+		"-pix_fmt", "yuv420p",
 		filename,
 		NULL
 	};
