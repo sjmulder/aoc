@@ -17,6 +17,8 @@ cmake-build-*/
 *.o
 *.d
 *.obj
+*.bak
+*.map
 *.pdb
 *.ilk
 *.user
