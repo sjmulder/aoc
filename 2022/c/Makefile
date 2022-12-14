@@ -24,4 +24,9 @@ day12: day12.o compat/stdio.o
 day07.o: compat/stdio.h compat/string.h
 day12.o: compat/stdio.h compat/util.h
 
+compat/stdio.o: compat/stdio.c compat/stdio.h
+	${COMPILE.c} -o compat/stdio.o compat/stdio.c
+compat/string.o: compat/string.c compat/string.h
+	${COMPILE.c} -o compat/string.o compat/string.c
+
 .PHONY: all run clean
