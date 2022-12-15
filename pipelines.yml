@@ -17,9 +17,9 @@ jobs:
       make -j -C cbmbasic-master
       sudo cp cbmbasic-master/cbmbasic /usr/local/bin/
     displayName: Install cbmbasic
-  - script: bmake
+  - script: bmake WITH_BASIC=1
     displayName: Build
-  - script: bmake run
+  - script: bmake run WITH_BASIC=1
     displayName: Run
 
 - job: macos
@@ -33,9 +33,9 @@ jobs:
       version: 6.x
   - script: brew install bmake
     displayName: Install packages
-  - script: bmake nobasic
+  - script: bmake
     displayName: Build
-  - script: bmake run-nobasic
+  - script: bmake run
     displayName: Run
 
 - job: vs_x86

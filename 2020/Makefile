@@ -3,8 +3,6 @@ all:
 	${MAKE} -C c-golf
 	${MAKE} -C cs
 
-nobasic: all
-
 clean:
 	${MAKE} -C c clean
 	${MAKE} -C c-golf clean
@@ -14,15 +12,10 @@ run:
 	${MAKE} -C awk run
 	${MAKE} -C c run
 	${MAKE} -C c-golf run
+	${MAKE} -C cs run
+	${MAKE} -C js run
+.if "${WITH_BASIC}" == "1"
 	${MAKE} -C c64-basic run
-	${MAKE} -C cs run
-	${MAKE} -C js run
+.endif
 
-run-nobasic:
-	${MAKE} -C awk run
-	${MAKE} -C c run
-	${MAKE} -C c-golf run
-	${MAKE} -C cs run
-	${MAKE} -C js run
-
-.PHONY: all nobasic run run-nobasic clean
+.PHONY: all run clean
