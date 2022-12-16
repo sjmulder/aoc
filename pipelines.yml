@@ -65,14 +65,16 @@ jobs:
       configuration: Release
 
 - job: vc6
-  displayName: "2020: Visual C++ 6"
+  displayName: "Visual C++ 6"
   continueOnError: true
   pool:
     name: default
     demands: vc6
   steps:
   - script: cd 2020\c\vc6 & msdev aoc2020.dsw /make all release
-    displayName: Build
+    displayName: Build 2020
+  - script: cd 2022\c\vc6 & msdev aoc2022.dsw /make all release
+    displayName: Build 2022
 
 - job: vs_dotnet
   displayName: "2021: Windows (dotnet)"
