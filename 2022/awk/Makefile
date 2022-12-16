@@ -3,4 +3,6 @@ all:
 run:
 	@./all.sh
 
-.PHONY: all, run
+clean:
+
+.PHONY: all run clean
