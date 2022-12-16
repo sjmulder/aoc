@@ -28,8 +28,14 @@ jobs:
   - script: bmake
     displayName: Build
 
-- job: vs_x86
-  displayName: "2020: Visual Studio (x86)"
+- job: vs
+  displayName: "Visual Studio"
+  strategy:
+    matrix:
+      x86:
+        platform: x86
+      x64:
+        platform: x64
   pool:
     vmImage: windows-2019
   steps:
@@ -37,23 +43,11 @@ jobs:
     displayName: Build
     inputs:
       solution: aoc.sln
-      platform: x86
-      configuration: Release
-
-- job: vs_x64
-  displayName: "2020: Visual Studio (x64)"
-  pool:
-    vmImage: windows-2019
-  steps:
-  - task: VSBuild@1
-    displayName: Build
-    inputs:
-      solution: aoc.sln
-      platform: x64
+      platform: $(platform)
       configuration: Release
 
 - job: vs_arm
-  displayName: "2020: Visual Studio (arm)"
+  displayName: "Visual Studio (arm)"
   pool:
     vmImage: windows-2019
   steps:
