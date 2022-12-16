@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include <assert.h>
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
@@ -11,6 +12,7 @@ static struct valve valves[64];
 static size_t nvalves;
 static int dists[64][64];	/* min. distances between valves */
 
+int min(int a, int b) { return a<b ? a : b; }
 int max(int a, int b) { return a>b ? a : b; }
 
 /* creates if not exists */
@@ -29,31 +31,21 @@ lookup_name(const char name[3])
 	return i;
 }
 
-/* propagates shortest distances through dists[][] */
+/* Floyd-Warshall algorithm - compute all-pair shortest paths */
 static void
 update_dists(void)
 {
-	size_t nchanged, i,step1,step2;
-	int d;
+	size_t i,j,k;
 
-	do {
-		nchanged = 0;
+	for (i=0; i < nvalves; i++)
+	for (j=0; j < nvalves; j++)
+		if (i != j && !dists[i][j])
+			dists[i][j] = INT_MAX/2;
 
-		for (i=0; i<nvalves; i++)
-		for (step1=0; step1 < nvalves; step1++)
-		for (step2=0; step2 < nvalves; step2++) {
-			if (i == step2) continue;
-			if (!dists[i][step1]) break;
-			if (!dists[step1][step2]) continue;
-
-			d = dists[i][step1] + dists[step1][step2];
-
-			if (!dists[i][step2] || d < dists[i][step2]) {
-				nchanged++;
-				dists[i][step2] = d;
-			}
-		}
-	} while (nchanged);
+	for (k=0; k < nvalves; k++)
+	for (i=0; i < nvalves; i++)
+	for (j=0; j < nvalves; j++)
+		dists[i][j] = min(dists[i][j], dists[i][k]+dists[k][j]);
 }
 
 static int
