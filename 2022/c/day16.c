@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
 #include <assert.h>
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
@@ -29,23 +28,6 @@ lookup_name(const char name[3])
 	memcpy(valves[nvalves++].name, name, 3);
 
 	return i;
-}
-
-/* Floyd-Warshall algorithm - compute all-pair shortest paths */
-static void
-update_dists(void)
-{
-	size_t i,j,k;
-
-	for (i=0; i < nvalves; i++)
-	for (j=0; j < nvalves; j++)
-		if (i != j && !dists[i][j])
-			dists[i][j] = INT_MAX/2;
-
-	for (k=0; k < nvalves; k++)
-	for (i=0; i < nvalves; i++)
-	for (j=0; j < nvalves; j++)
-		dists[i][j] = min(dists[i][j], dists[i][k]+dists[k][j]);
 }
 
 static int
@@ -92,7 +74,10 @@ int
 main()
 {
 	char buf[128], name[5], exits[5][3];
-	int p1,p2, n,i, rate, idx;
+	int p1,p2, n, rate, idx;
+	size_t i,j,k;
+
+	memset(dists, 0x0f, sizeof(dists)); /* large numbers */
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		memset(exits, 0, sizeof(exits));
@@ -108,11 +93,15 @@ main()
 		idx = lookup_name(name);
 		valves[idx].rate = rate;
 
-		for (i=2; i<n; i++)
+		for (i=2; i < (size_t)n; i++)
 			dists[idx][lookup_name(exits[i-2])] = 1;
 	}
 
-	update_dists();
+	/* Floyd-Warshall algorithm - all-pair shortest paths */
+	for (k=0; k < nvalves; k++)
+	for (i=0; i < nvalves; i++)
+	for (j=0; j < nvalves; j++)
+		dists[i][j] = min(dists[i][j], dists[i][k]+dists[k][j]);
 
 	idx = lookup_name("AA");
 	p1 = max_val(idx, 30, 0, 0);
