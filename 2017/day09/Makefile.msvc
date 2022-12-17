@@ -1,6 +1,0 @@
-CFLAGS = /nologo /W3 /Zi
-
-all: day09.exe
-clean: ; !del day09.exe *.obj *.pdb *.ilk
-
-.PHONY: all clean
