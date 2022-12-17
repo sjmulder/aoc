@@ -88,8 +88,6 @@ main() {
 	int nr, t=0, dx, x,y;
 	int64_t nsettled=0, p1=0;
 
-	//print_grid();
-
 	nr = (int)fread(jets, 1, sizeof(jets), stdin);
 	while (nr>0 && isspace(jets[nr-1]))
 		nr--;
@@ -101,21 +99,13 @@ main() {
 		default: goto end;
 		}
 
-		//printf(" move %c\n", dx<0 ? '<' : '>');
-
 		if (!hit_test(dx, 0))
 			px += dx;
-		//else
-		//	printf(" hit something\n");
 
-		//print_grid();
- 
-		if (!hit_test(0, 1)) {
-			//printf(" move v\n");
+		if (!hit_test(0, 1))
 			py++;
-		} else {
+		else {
 			nsettled++;
-			//printf(" settled %d\n", nsettled);
 
 			for (y=0; y<SH; y++)
 			for (x=0; x<SW; x++)
@@ -133,18 +123,12 @@ main() {
 				p1 = GH-ymin;
 				break; /* comment for p2 */
 			}
-			if (nsettled % (P2/100000) == 0)
-				printf(" %2.3f %% %" PRId64 "\n",
-				    (nsettled / (P2/100000))/1000.0f,
-				    nsettled);
 
 			pi = (pi+1) % (int)LEN(shapes);
 			px = 2;
 			py = ymin-SH-SPAWNY;
 			assert(py >= 0);
 		}
-
-		//print_grid();
 	}
 end:
 	printf("17: %" PRId64 " %" PRId64 " \n", p1, (int64_t)GH-ymin);
