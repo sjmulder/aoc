@@ -61,14 +61,9 @@ hist_find(size_t lim, int t, int pi)
 }
 
 /*
- * Find a repeating game state pattern based on the top of the
- * history stack.
- *
- * Repeating game state pattern means two cycles of:
- *  - same piece
- *  - same time
- *  - same top-delta per cycle
- *  - same nstack-delta per cycle
+ * Find a repeating game state pattern by taking the top of the history
+ * stack and looking for two more history entries with the same piece
+ * and time that are equidistant wrt. stack height and stack count.
  */
 static int
 find_cycle(int *dtop, int64_t *dnstack)
