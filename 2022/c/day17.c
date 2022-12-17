@@ -101,34 +101,33 @@ main() {
 
 		if (!hit_test(dx, 0))
 			px += dx;
-
-		if (!hit_test(0, 1))
+		if (!hit_test(0, 1)) {
+			/* nothing hit, next step */
 			py++;
-		else {
-			nsettled++;
+			continue;
+		}
 
-			for (y=0; y<SH; y++)
-			for (x=0; x<SW; x++)
-				if (shapes[pi][y][x] == '#') {
-					assert(px+x >= 0);
-					assert(py+y >= 0);
-					assert(px+x < GW);
-					assert(py+y < GH);
+		/* piece settled */
+		nsettled++;
 
-					ymin = min(ymin, py+y);
-					grid[py+y][px+x] = 1;
-				}
-
-			if (nsettled == 2022) {
-				p1 = GH-ymin;
-				break; /* comment for p2 */
+		for (y=0; y<SH; y++)
+		for (x=0; x<SW; x++)
+			if (px+x >= 0 && px+x < GW &&
+			    py+y >= 0 && py+y < GH &&
+			    shapes[pi][y][x] == '#') {
+				grid[py+y][px+x] = 1;
+				ymin = min(ymin, py+y);
 			}
 
-			pi = (pi+1) % (int)LEN(shapes);
-			px = 2;
-			py = ymin-SH-SPAWNY;
-			assert(py >= 0);
+		if (nsettled == 2022) {
+			p1 = GH-ymin;
+			break; /* comment for p2 */
 		}
+
+		pi = (pi+1) % (int)LEN(shapes);
+		px = 2;
+		py = ymin-SH-SPAWNY;
+		assert(py >= 0);
 	}
 end:
 	printf("17: %" PRId64 " %" PRId64 " \n", p1, (int64_t)GH-ymin);
