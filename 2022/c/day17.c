@@ -145,9 +145,6 @@ main() {
 		}
 
 		//print_grid();
-
-		/* check lines to clear */
-		/* clear lines */
 	}
 end:
 	printf("17: %" PRId64 " %" PRId64 " \n", p1, (int64_t)GH-ymin);
