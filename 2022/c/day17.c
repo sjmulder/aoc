@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include <inttypes.h>
 #include <assert.h>
-#include "compat/util.h"
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
