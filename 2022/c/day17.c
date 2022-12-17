@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
-#include <inttypes.h>
 #include <assert.h>
 #include "compat/util.h"
 
@@ -86,7 +85,7 @@ int
 main() {
 	static char jets[16*1024];
 	int nr, t=0, dx, x,y;
-	int64_t nsettled=0, p1=0;
+	int64_t nsettled=0;
 
 	nr = (int)fread(jets, 1, sizeof(jets), stdin);
 	while (nr>0 && isspace(jets[nr-1]))
@@ -108,8 +107,6 @@ main() {
 		}
 
 		/* piece settled */
-		nsettled++;
-
 		for (y=0; y<SH; y++)
 		for (x=0; x<SW; x++)
 			if (px+x >= 0 && px+x < GW &&
@@ -119,9 +116,9 @@ main() {
 				ymin = min(ymin, py+y);
 			}
 
-		if (nsettled == 2022) {
-			p1 = GH-ymin;
-			break; /* comment for p2 */
+		if (++nsettled == 2022) {
+			printf("17: %d ", GH-ymin);
+			fflush(stdout);
 		}
 
 		pi = (pi+1) % (int)LEN(shapes);
@@ -130,6 +127,6 @@ main() {
 		assert(py >= 0);
 	}
 end:
-	printf("17: %" PRId64 " %" PRId64 " \n", p1, (int64_t)GH-ymin);
+	printf("%d\n", GH-ymin);
 	return 0;
 }
