@@ -11,8 +11,7 @@
 #define SW	4
 #define SH	4
 #define GW	7
-#define GH	1024
-#define SHIFT	768	/* rows to shift grid when full */
+#define GH	4096
 #define SPAWNY	3	/* offset from top */
 #define P2	1000000000000
 
@@ -87,7 +86,7 @@ int
 main() {
 	static char jets[16*1024];
 	int nr, t=0, dx, x,y;
-	int64_t nsettled=0, shift=0, p1=0;
+	int64_t nsettled=0, p1=0;
 
 	//print_grid();
 
@@ -131,7 +130,7 @@ main() {
 				}
 
 			if (nsettled == 2022) {
-				p1 = shift+GH-ymin;
+				p1 = GH-ymin;
 				break; /* comment for p2 */
 			}
 			if (nsettled % (P2/100000) == 0)
@@ -142,15 +141,7 @@ main() {
 			pi = (pi+1) % (int)LEN(shapes);
 			px = 2;
 			py = ymin-SH-SPAWNY;
-
-			if (py < 0) {
-				memmove(grid[SHIFT], grid[0],
-				    GW*(GH-SHIFT));
-				memset(grid[0], 0, GW*SHIFT);
-				py += SHIFT;
-				ymin += SHIFT;
-				shift += SHIFT;
-			}
+			assert(py >= 0);
 		}
 
 		//print_grid();
@@ -159,6 +150,6 @@ main() {
 		/* clear lines */
 	}
 end:
-	printf("17: %" PRId64 " %" PRId64 " \n", p1, shift+GH-ymin);
+	printf("17: %" PRId64 " %" PRId64 " \n", p1, (int64_t)GH-ymin);
 	return 0;
 }
