@@ -31,6 +31,10 @@ static size_t nhist;
 
 static int min(int a, int b) { return a<b ? a : b; }
 
+/*
+ * Store the given state for cycle detection later on. Called when
+ * a new piece (pi) is selected.
+ */
 static void
 hist_push(int t, int pi, int top, int64_t nstack)
 {
@@ -42,7 +46,9 @@ hist_push(int t, int pi, int top, int64_t nstack)
 	nhist++;
 }
 
-/* reverse search first 'lim' of history for t+pi match */
+/*
+ * Reverse search first 'lim' of history for maching t+pi.
+ */
 static struct hist *
 hist_find(size_t lim, int t, int pi)
 {
@@ -55,7 +61,16 @@ hist_find(size_t lim, int t, int pi)
 	return NULL;
 }
 
-/* find game state cycle based on current hist top */
+/*
+ * Find a repeating game state pattern based on the top of the
+ * history stack.
+ *
+ * Repeating game state pattern means two cycles of:
+ *  - same piece
+ *  - same time
+ *  - same top-delta per cycle
+ *  - same nstack-delta per cycle
+ */
 static int
 find_cycle(int *dtop, int64_t *dnstack)
 {
@@ -108,6 +123,11 @@ main()
 	while (nr>0 && isspace(jets[nr-1]))
 		nr--;
 
+	/*
+	 * Basic Tetris simulation with pi/px/py representing the
+	 * current piece and its position, and t (for 'time') the
+	 * position within the repeating input cycle.
+	 */
 	for (t=0; nstack < P2; t = (t+1) % nr) {
 		dx = (jets[t] == '>') *2-1;
 
@@ -132,6 +152,17 @@ main()
 		if (++nstack == 2022)
 			p1 = GH-top;
 
+		/*
+		 * Part 2 magic: find game state cycle. If detected,
+		 * skip ahead by however many cycles fit between
+		 * nstack and the target (P2).
+		 *
+		 * The grid (and 'top') are untouched, which is OK since
+		 * the point of the cycle is that the game state between
+		 * iterations is idential. Instead, the skipped height
+		 * is stored in 'yskip'.' nstack' is updated as normal
+		 * (adding the number stacked pieces in the skip).
+		 */
 		if (!yskip) {
 			hist_push(t, pi, top, nstack);
 
