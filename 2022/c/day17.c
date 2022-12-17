@@ -25,49 +25,14 @@ static const char shapes[][SH][SW+1] = {
 	{ "....", "....", "##..", "##.." }
 };
 
-
 static char grid[GH][GW];
 static struct hist hist[4096];
 static size_t nhist;
-static int t, top=GH;			/* top: stack top */
-static int pi, px=2, py=GH-SH-SPAWNY;	/* piece index, pos */
-static int64_t nstack;		/* no. stacked */
 
 static int min(int a, int b) { return a<b ? a : b; }
-//static int max(int a, int b) { return a>b ? a : b; }
-
-static void UNUSED
-print_grid(void)
-{
-	int x,y;
-
-	printf(" top: %d, piece %d at %d,%d\n", GH-top, pi, px,py);
-
-	for (y = py-1; y < min(GH, top+10); y++) {
-		putchar('|');
-
-		for (x=0; x<GW; x++) {
-			if (y >= py && y < py+SH &&
-			    x >= px && x < px+SW &&
-			    shapes[pi][y-py][x-px] == '#')
-				putchar('@');
-			else if (y >= 0 && grid[y][x])
-				putchar('#');
-			else
-				putchar('.');
-		}
-
-		printf("|\n");
-	}
-
-	putchar('+');
-	for (x=0; x<GW; x++)
-		putchar('-');
-	printf("+\n\n");
-}
 
 static void
-hist_push(void)
+hist_push(int t, int pi, int top, int64_t nstack)
 {
 	assert(nhist < LEN(hist));
 	hist[nhist].t = t;
@@ -79,7 +44,7 @@ hist_push(void)
 
 /* reverse search first 'lim' of history for t+pi match */
 static struct hist *
-hist_find(size_t lim)
+hist_find(size_t lim, int t, int pi)
 {
 	size_t i;
 
@@ -90,17 +55,22 @@ hist_find(size_t lim)
 	return NULL;
 }
 
+/* find game state cycle based on current hist top */
 static int
 find_cycle(int *dtop, int64_t *dnstack)
 {
-	struct hist *h1=hist+nhist, *h2;
+	struct hist *h1,*h2,*h3;
 
-	while ((h1 = h2 = hist_find(h1-hist)))
-	while ((h2 = hist_find(h2-hist)))
-		if (h1->top - top == h2->top - h1->top &&
-		    nstack - h1->nstack == h1->nstack - h2->nstack) {
-			*dtop = h1->top - top;
-			*dnstack = nstack - h1->nstack;
+	h1 = h2 = &hist[nhist-1];
+
+	while ((h2 = h3 = hist_find(h2-hist, h1->t, h1->pi)))
+	while ((     h3 = hist_find(h3-hist, h1->t, h1->pi)))
+		if (h1->top - h2->top ==
+		    h2->top - h3->top &&
+		    h2->nstack - h1->nstack ==
+		    h3->nstack - h2->nstack) {
+			*dtop    = h2->top - h1->top;
+			*dnstack = h1->nstack - h2->nstack;
 			return 1;
 		}
 
@@ -108,47 +78,42 @@ find_cycle(int *dtop, int64_t *dnstack)
 }
 
 static int
-hit_test(int dx, int dy)
+hit_test(int pi, int px, int py)
 {
 	int x,y;
 
-	assert(py+dy >= 0);
+	assert(py >= 0);
 
-	if (px+dx < 0 || py+dy > GH-SH)
+	if (px < 0 || py > GH-SH)
 		return 1;
 
 	for (y=0; y<SH; y++)
 	for (x=0; x<SW; x++)
-		if (shapes[pi][y][x] == '#' && (
-		    py+dy+y >= GH ||
-		    px+dx+x >= GW ||
-		    grid[py+dy+y][px+dx+x]))
+		if (shapes[pi][y][x] == '#' &&
+		    (py+y >= GH || px+x >= GW || grid[py+y][px+x]))
 			return 1;
 
 	return 0;
 }
 
 int
-main() {
+main()
+{
 	static char jets[16*1024];
-	int nr, dx, x,y;
-	int dtop;
-	int64_t dnstack, yskip=0, ncycles;
+	int top=GH, t, nr, dx, x,y, dtop;
+	int pi=0, px=2, py=GH-SH-SPAWNY;
+	int64_t p1=0, nstack=0, yskip=0, ncycles, dnstack;
 
 	nr = (int)fread(jets, 1, sizeof(jets), stdin);
 	while (nr>0 && isspace(jets[nr-1]))
 		nr--;
 
 	for (t=0; nstack < P2; t = (t+1) % nr) {
-		switch (jets[t]) {
-		case '<': dx=-1; break;
-		case '>': dx= 1; break;
-		default: goto end;
-		}
+		dx = (jets[t] == '>') *2-1;
 
-		if (!hit_test(dx, 0))
+		if (!hit_test(pi, px+dx, py))
 			px += dx;
-		if (!hit_test(0, 1)) {
+		if (!hit_test(pi, px, py+1)) {
 			/* nothing hit, next step */
 			py++;
 			continue;
@@ -164,13 +129,11 @@ main() {
 				top = min(top, py+y);
 			}
 
-		if (++nstack == 2022) {
-			printf("17: %d ", GH-top);
-			fflush(stdout);
-		}
+		if (++nstack == 2022)
+			p1 = GH-top;
 
 		if (!yskip) {
-			hist_push();
+			hist_push(t, pi, top, nstack);
 
 			if (find_cycle(&dtop, &dnstack)) {
 				ncycles = (P2-nstack)/dnstack;
@@ -184,7 +147,7 @@ main() {
 		py = top-SH-SPAWNY;
 		assert(py >= 0);
 	}
-end:
-	printf("%" PRId64 "\n", yskip + GH-top);
+
+	printf("17: %"PRId64" %"PRId64"\n", p1, yskip+GH-top);
 	return 0;
 }
