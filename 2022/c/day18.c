@@ -1,34 +1,58 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
 
 #define GSZ	24
-#define SHIFT	1
+
+enum { AIR, CUBE, EXPOSED };
+
+static int oob(int n) { return n<0 || n>=GSZ; }
+static int oob3(int x, int y, int z) { return oob(x)||oob(y)||oob(z); }
 
 int
 main()
 {
-	static char grid[GSZ][GSZ][GSZ];
-	int x,y,z, dx,dy,dz, p1=0;
+	static uint8_t grid[GSZ][GSZ][GSZ];
+	int p1=0,p2=0, x,y,z, u,v,w, nchanged=0;
 
 	while (scanf(" %d,%d,%d", &x,&y,&z) == 3) {
-		x+=SHIFT; y+=SHIFT; z+=SHIFT;
-
-		assert(x>0); assert(x < GSZ-1);
-		assert(y>0); assert(y < GSZ-1);
-		assert(z>0); assert(z < GSZ-1);
-
-		grid[z][y][x] = 1;
-		p1 += 6;
-
-		for (dz=-1; dz<=1; dz++)
-		for (dy=-1; dy<=1; dy++)
-		for (dx=-1; dx<=1; dx++)
-			if (abs(dx)+abs(dy)+abs(dz) == 1 &&
-			    grid[z+dz][y+dy][x+dx])
-				p1 -= 2;
+		assert(!oob3(x,y,z));
+		grid[x][y][z] = CUBE;
 	}
 
-	printf("18: %d\n", p1);
+	do {
+		nchanged = 0;
+
+		for (x=0; x<GSZ; x++)
+		for (y=0; y<GSZ; y++)
+		for (z=0; z<GSZ; z++)
+		for (u=x-1; u<=x+1; u++)
+		for (v=y-1; v<=y+1; v++)
+		for (w=z-1; w<=z+1; w++) {
+			if (grid[x][y][z] != AIR ||
+			    abs(x-u) + abs(y-v) + abs(z-w) != 1)
+				continue;
+			if (oob3(u,v,w) || grid[u][v][w] == EXPOSED) {
+				grid[x][y][z] = EXPOSED;
+				nchanged++;
+			}
+		}
+	} while (nchanged);
+
+	for (x=0; x<GSZ; x++)
+	for (y=0; y<GSZ; y++)
+	for (z=0; z<GSZ; z++)
+	for (u=x-1; u<=x+1; u++)
+	for (v=y-1; v<=y+1; v++)
+	for (w=z-1; w<=z+1; w++) {
+		if (grid[x][y][z] != CUBE ||
+		    abs(x-u) + abs(y-v) + abs(z-w) != 1)
+				continue;
+		p1 += oob3(u,v,w) || grid[u][v][w] != CUBE;
+		p2 += oob3(u,v,w) || grid[u][v][w] == EXPOSED;
+	}
+
+	printf("18: %d %d\n", p1, p2);
 	return 0;
 }
