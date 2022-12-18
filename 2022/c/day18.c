@@ -3,17 +3,55 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#ifdef WITH_VIS
+# include "vis.h"
+#endif
+
 #define GSZ	24
 
 enum { AIR, CUBE, EXPOSED };
 
+static uint8_t grid[GSZ][GSZ][GSZ];
+
 static int oob(int n) { return n<0 || n>=GSZ; }
 static int oob3(int x, int y, int z) { return oob(x)||oob(y)||oob(z); }
+
+#ifdef WITH_VIS
+static struct vis_grid vis_grid = {
+	.w = GSZ,
+	.h = GSZ,
+	.cell_sz = 16,
+	.border = 1,
+	.colors = {
+		[AIR] = {64,64,196},
+		[CUBE] = {128,128,128},
+		[EXPOSED] = {0,0,0}
+	}
+};
+
+static void
+vis18_render(void)
+{
+	struct vis vis;
+	int z;
+
+	vis_begin(&vis, "day18.mp4", 30,
+	    GSZ * vis_grid.cell_sz,
+	    GSZ * vis_grid.cell_sz);
+
+	for (z=0; z<GSZ; z++) {
+		vis_grid.data = (uint8_t *)grid[z];
+		vis_draw_grid(&vis, &vis_grid);
+		vis_emit(&vis, 15);
+	}
+
+	vis_end(&vis);
+}
+#endif
 
 int
 main()
 {
-	static uint8_t grid[GSZ][GSZ][GSZ];
 	int p1=0,p2=0, x,y,z, u,v,w, nchanged=0;
 
 	while (scanf(" %d,%d,%d", &x,&y,&z) == 3) {
@@ -52,6 +90,10 @@ main()
 		p1 += oob3(u,v,w) || grid[u][v][w] != CUBE;
 		p2 += oob3(u,v,w) || grid[u][v][w] == EXPOSED;
 	}
+
+#if WITH_VIS
+	vis18_render();
+#endif
 
 	printf("18: %d %d\n", p1, p2);
 	return 0;
