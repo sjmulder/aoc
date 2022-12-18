@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "lines:     " $(wc -l $1 | awk '{print $1}')
-echo "max length:" $(wc -L $1 | awk '{print $1}')
+echo "max length:" $(wc -l $1 | awk '{print $1}')
 
 grep -Eo -- '-?[0-9]+' $1 | awk '
       { if ($0 < min || !have_min) { min = $0; have_min = 1; }
