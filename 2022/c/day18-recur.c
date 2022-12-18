@@ -30,9 +30,6 @@
  *   AIR (copied)
  */
 
- Take e.g. the debug output for coordinate '6 9 12',
- * which is suppsoed to be EXPOSED but resolves to AIR (a pocket) 
-
 #define GSZ	24
 
 static char grid[GSZ][GSZ][GSZ];
