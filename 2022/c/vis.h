@@ -9,7 +9,8 @@ struct vis {
 struct vis_grid {
 	uint8_t *data;
 	uint8_t colors[256][3];
-	size_t w, h;
+	uint8_t transparent[256];
+	size_t x,y, w,h;
 	size_t cell_sz, border;
 };
 

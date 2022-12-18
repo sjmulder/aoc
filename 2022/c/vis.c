@@ -105,9 +105,12 @@ vis_draw_grid(struct vis *vis, struct vis_grid *grid)
 	for (x=0; x < grid->w; x++) {
 		val = grid->data[y * grid->w + x];
 
+		if (grid->transparent[val])
+			continue;
+
 		vis_fill(vis,
-		    x * grid->cell_sz + grid->border,
-		    y * grid->cell_sz + grid->border,
+		    grid->x + x * grid->cell_sz + grid->border,
+		    grid->y + y * grid->cell_sz + grid->border,
 		    grid->cell_sz - grid->border*2,
 		    grid->cell_sz - grid->border*2,
 		    grid->colors[val][0],

@@ -24,8 +24,10 @@ static struct vis_grid vis_grid = {
 	.border = 1,
 	.colors = {
 		[AIR] = {64,64,196},
-		[CUBE] = {128,128,128},
-		[EXPOSED] = {0,0,0}
+		[CUBE] = {128,128,128}
+	},
+	.transparent = {
+		[EXPOSED] = 1
 	}
 };
 
@@ -33,16 +35,25 @@ static void
 vis18_render(void)
 {
 	struct vis vis;
-	int z;
+	size_t z, i;
 
 	vis_begin(&vis, "day18.mp4", 30,
-	    GSZ * vis_grid.cell_sz,
-	    GSZ * vis_grid.cell_sz);
+	    GSZ * vis_grid.cell_sz + (GSZ-1)*8,
+	    GSZ * vis_grid.cell_sz + (GSZ-1)*8);
+
+	vis_grid.x = (GSZ-1)*8;
+	vis_grid.y = 0;
 
 	for (z=0; z<GSZ; z++) {
+		vis_grid.x -= 8;
+		vis_grid.y += 8;
+
 		vis_grid.data = (uint8_t *)grid[z];
 		vis_draw_grid(&vis, &vis_grid);
-		vis_emit(&vis, 15);
+		vis_emit(&vis, z == GSZ-1 ? 30 : 15);
+
+		for (i=0; i < vis.w * vis.h *3; i++)
+			vis.frame[i] = (uint8_t)(2* vis.frame[i] /3);
 	}
 
 	vis_end(&vis);
