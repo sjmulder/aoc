@@ -18,56 +18,6 @@ size_t nbp;
 static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
-static void
-read_input(void)
-{
-	static char buf[196];
-	char *rest, *s;
-	int rres, cres, cost;
-
-	while ((rest = fgets(buf, sizeof(buf), stdin))) {
-		assert(nbp < LEN(bps));
-		nbp++;
-
-		rest = strchr(rest, ':'); assert(rest);
-		rest++; assert(rest);
-
-		while ((s = strsep(&rest, "."))) {
-			if (!*s || *s == '\n' || *s == '\r')
-				break;
-
-			rres =
-			    !strncmp(s, " Each ge", 8) ? 0 :
-			    !strncmp(s, " Each ob", 8) ? 1 :
-			    !strncmp(s, " Each cl", 8) ? 2 :
-			    !strncmp(s, " Each or", 8) ? 3 : -1;
-			assert(rres != -1);
-			assert(rres < NRES);
-
-			while (1) {
-				while (*s && !isdigit(*s))
-					s++;
-				if (!*s)
-					break;
-
-				cost = (int)strtol(s, &s, 10);
-				assert(cost >= 0);
-
-				cres =
-				    !strncmp(s, " ge", 3) ? 0 :
-				    !strncmp(s, " ob", 3) ? 1 :
-				    !strncmp(s, " cl", 3) ? 2 :
-				    !strncmp(s, " or", 3) ? 3 : -1;
-				assert(cres != -1);
-				assert(cres < NRES);
-
-				bps[nbp-1].price[rres][cres] = cost;
-				s += 4;
-			}
-		}
-	}
-}
-
 static int
 recur(struct st st)
 {
@@ -137,7 +87,21 @@ main()
 	struct st st;
 	int i, val, p1=0, p2=1;
 
-	read_input();
+	while (6 == scanf(
+" Blueprint %*d:"
+" Each ore robot costs %d ore."
+" Each clay robot costs %d ore."
+" Each obsidian robot costs %d ore and %d clay."
+" Each geode robot costs %d ore and %d obsidian.",
+	    &bps[nbp].price[ORE][ORE],
+	    &bps[nbp].price[CLAY][ORE],
+	    &bps[nbp].price[OBSID][ORE],
+	    &bps[nbp].price[OBSID][CLAY],
+	    &bps[nbp].price[GEODE][ORE],
+	    &bps[nbp].price[GEODE][OBSID])) {
+		nbp++;
+		assert(nbp < LEN(bps));
+	}
 
 	memset(&st, 0, sizeof(st));
 	st.robos[ORE] = 1;
