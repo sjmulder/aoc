@@ -7,7 +7,7 @@
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 #define NRES	4
 
-enum { GEODE, OBSID, CLAY, ORE };
+enum { GEO, OBS, CLY, ORE };
 struct bp { int price[NRES][NRES]; };
 struct st { struct bp *bp; int t, res[NRES], robos[NRES]; };
 
@@ -18,13 +18,13 @@ static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
 static int
-recur(struct st st, int best)
+recur(struct bp *bp, struct st st, int best)
 {
 	struct st st2;
 	int i,j, tbuy, maxp;
 
-	/* option 1: do nothing (if we make GEODE) */
-	best = max(best, st.res[GEODE] + st.t*st.robos[GEODE]);
+	/* option 1: do nothing (if we make GEO) */
+	best = max(best, st.res[GEO] + st.t*st.robos[GEO]);
 
 	/* prune time spent looking at pointless t=end decisions */
 	if (st.t <= 1)
@@ -34,14 +34,13 @@ recur(struct st st, int best)
 	 * Prune by testing upper limit, thanks /u/Boojum!
 	 * https://www.reddit.com/r/adventofcode/comments/zpihwi/2022_day_19_solutions/j0tls7a/
 	 */
-	if (st.res[GEODE] + st.t*st.robos[GEODE] + st.t*(st.t+1)/2 <
-	    best)
+	if (st.res[GEO] + st.t*st.robos[GEO] + st.t*(st.t+1)/2 < best)
 		return best;
 
 	/* option 2[i]: (save up for and) buy new robot of type i */
 	for (i=0; i<NRES; i++) {
 		/* only if we don't already make enough of that */
-		if (i != GEODE) {
+		if (i != GEO) {
 			for (j=0, maxp=0; j<NRES; j++)
 				maxp = max(maxp, st.bp->price[j][i]);
 			if (st.robos[i] >= maxp)
@@ -87,12 +86,10 @@ main()
 " Each clay robot costs %d ore."
 " Each obsidian robot costs %d ore and %d clay."
 " Each geode robot costs %d ore and %d obsidian.",
-	    &bps[nbp].price[ORE][ORE],
-	    &bps[nbp].price[CLAY][ORE],
-	    &bps[nbp].price[OBSID][ORE],
-	    &bps[nbp].price[OBSID][CLAY],
-	    &bps[nbp].price[GEODE][ORE],
-	    &bps[nbp].price[GEODE][OBSID])) {
+	    &bps[nbp].price[ORE][ORE], &bps[nbp].price[CLY][ORE],
+	    &bps[nbp].price[OBS][ORE], &bps[nbp].price[OBS][CLY],
+	    &bps[nbp].price[GEO][ORE],
+	    &bps[nbp].price[GEO][OBS])) {
 		nbp++;
 		assert(nbp < LEN(bps));
 	}
