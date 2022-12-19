@@ -2,7 +2,7 @@
 
 PROGS+=	day01 day02 day03 day04 day05 day06 day06-orig day07 \
 	day07-orig day08 day08-orig day09 day10 day11 day12 day13 \
-	day14 day15 day15-tests day16 day17 day18 day18-recur
+	day14 day15 day15-tests day16 day17 day18 day18-recur day19
 
 CFLAGS+=	-Wall -Wextra
 CFLAGS+=	-O3
