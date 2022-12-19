@@ -17,25 +17,35 @@ size_t nbp;
 static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
-static int
-recur(struct st st)
+static void
+recur(struct st st, int *top)
 {
 	struct st st2;
-	int i,j, tbuy, best=0, maxp;
-
-	if (st.t <= 1)
-		return st.res[GEODE] + st.robos[GEODE]*st.t;
+	int i,j, tbuy, maxp;
 
 	/* option 1: do nothing (if we make GEODE) */
-	best = st.res[GEODE] + st.t*st.robos[GEODE];
+	*top = max(*top, st.res[GEODE] + st.t*st.robos[GEODE]);
 
-	/* option 2[i]: save up for new robot of type i */
+	/* prune time spent looking at pointless t=end decisions */
+	if (st.t <= 1) {
+		*top = max(*top, st.res[GEODE] + st.robos[GEODE]*st.t);
+		return;
+	}
+
+	/*
+	 * Prune by testing upper limit, thanks /u/Boojum!
+	 * https://www.reddit.com/r/adventofcode/comments/zpihwi/2022_day_19_solutions/j0tls7a/
+	 */
+	if (st.t*st.res[GEODE] + st.t*(st.t+1)/2 < *top)
+		return;
+
+	/* option 2[i]: (save up for and) buy new robot of type i */
 	for (i=0; i<NRES; i++) {
 		/* only if we don't already make enough of that */
 		if (i != GEODE) {
 			for (j=0, maxp=0; j<NRES; j++)
 				maxp = max(maxp, st.bp->price[j][i]);
-			if (i && st.robos[i] >= maxp)
+			if (st.robos[i] >= maxp)
 				continue;
 		}
 
@@ -59,18 +69,16 @@ recur(struct st st)
 		}
 		st2.robos[i]++;
 
-		best = max(best, recur(st2));
+		recur(st2, top);
 	nobuy: ;
 	}
-
-	return best;
 }
 
 int
 main()
 {
 	struct st st;
-	int i, val, p1=0, p2=1;
+	int i, top, p1=0, p2=1;
 
 	while (6 == scanf(
 " Blueprint %*d:"
@@ -94,13 +102,17 @@ main()
 	for (i=0; i < (int)nbp; i++) {
 		st.t = 24;
 		st.bp = &bps[i];
-		p1 += (i+1) * (val = recur(st));
+		top = 0;
+		recur(st, &top);
+		p1 += (i+1)*top;
 	}
 
 	for (i=0; i < min((int)nbp, 3); i++) {
 		st.t = 32;
 		st.bp = &bps[i];
-		p2 *= (val = recur(st));
+		top = 0;
+		recur(st, &top);
+		p2 *= top;
 	}
 
 	printf("19: %d %d\n", p1, p2);
