@@ -4,9 +4,8 @@
 #include <ctype.h>
 #include <assert.h>
 
-#define LEN(a)		(sizeof(a)/sizeof(*(a)))
-#define NRES		4
-#define VERBOSITY	0	/* 0, 1 or 2 */
+#define LEN(a)	(sizeof(a)/sizeof(*(a)))
+#define NRES	4
 
 enum { GEODE, OBSID, CLAY, ORE };
 struct bp { int price[NRES][NRES]; };
@@ -26,12 +25,6 @@ recur(struct st st)
 
 	if (st.t <= 1)
 		return st.res[GEODE] + st.robos[GEODE]*st.t;
-
-	if (VERBOSITY > 1)
-		printf("t=%2d res=%3d %3d %3d %3d "
-		    "robos=%2d %2d %2d %2d\n", st.t, st.res[0],
-		    st.res[1], st.res[2], st.res[3], st.robos[0],
-		    st.robos[1], st.robos[2], st.robos[3]);
 
 	/* option 1: do nothing (if we make GEODE) */
 	best = st.res[GEODE] + st.t*st.robos[GEODE];
@@ -70,9 +63,6 @@ recur(struct st st)
 	nobuy: ;
 	}
 
-	if (VERBOSITY > 1)
-		printf("\33[A\33[2K");
-
 	return best;
 }
 
@@ -105,16 +95,12 @@ main()
 		st.t = 24;
 		st.bp = &bps[i];
 		p1 += (i+1) * (val = recur(st));
-		if (VERBOSITY > 0)
-			printf(" p1 bp %d: val=%d\n", i, val);
 	}
 
 	for (i=0; i < min((int)nbp, 3); i++) {
 		st.t = 32;
 		st.bp = &bps[i];
 		p2 *= (val = recur(st));
-		if (VERBOSITY > 0)
-			printf(" p2 bp %d: val=%d\n", i, val);
 	}
 
 	printf("19: %d %d\n", p1, p2);
