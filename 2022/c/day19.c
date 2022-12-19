@@ -8,17 +8,16 @@
 #define NRES	4
 
 enum { GEO, OBS, CLY, ORE };
-struct bp { int price[NRES][NRES]; };
 struct st { int t, res[NRES], robos[NRES]; };
 
-struct bp bps[32];
-size_t nbp;
+static int bps[32][NRES][NRES];
+static size_t nbp;
 
 static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
 static int
-recur(struct bp *bp, struct st st, int best)
+recur(int bp[NRES][NRES], struct st st, int best)
 {
 	struct st st2;
 	int i,j, tbuy, maxp;
@@ -42,7 +41,7 @@ recur(struct bp *bp, struct st st, int best)
 		/* only if we don't already make enough of that */
 		if (i != GEO) {
 			for (j=0, maxp=0; j<NRES; j++)
-				maxp = max(maxp, bp->price[j][i]);
+				maxp = max(maxp, bp[j][i]);
 			if (st.robos[i] >= maxp)
 				continue;
 		}
@@ -50,10 +49,10 @@ recur(struct bp *bp, struct st st, int best)
 		/* can buy, and how long? */
 		tbuy = 1;
 		for (j=0; j<NRES; j++) {
-			if (st.res[j] >= bp->price[i][j]) continue;
+			if (st.res[j] >= bp[i][j]) continue;
 			if (!st.robos[j]) goto nobuy;
 			tbuy = max(tbuy,
-			    (bp->price[i][j] - st.res[j] +
+			    (bp[i][j] - st.res[j] +
 			     st.robos[j]-1) / st.robos[j] +1);
 			if (tbuy >= st.t) goto nobuy;
 		}
@@ -63,7 +62,7 @@ recur(struct bp *bp, struct st st, int best)
 		st2.t -= tbuy;
 		for (j=0; j<NRES; j++) {
 			st2.res[j] += st2.robos[j] * tbuy;
-			st2.res[j] -= bp->price[i][j];
+			st2.res[j] -= bp[i][j];
 		}
 		st2.robos[i]++;
 
@@ -86,10 +85,10 @@ main()
 " Each clay robot costs %d ore."
 " Each obsidian robot costs %d ore and %d clay."
 " Each geode robot costs %d ore and %d obsidian.",
-	    &bps[nbp].price[ORE][ORE], &bps[nbp].price[CLY][ORE],
-	    &bps[nbp].price[OBS][ORE], &bps[nbp].price[OBS][CLY],
-	    &bps[nbp].price[GEO][ORE],
-	    &bps[nbp].price[GEO][OBS])) {
+	    &bps[nbp][ORE][ORE], &bps[nbp][CLY][ORE],
+	    &bps[nbp][OBS][ORE], &bps[nbp][OBS][CLY],
+	    &bps[nbp][GEO][ORE],
+	    &bps[nbp][GEO][OBS])) {
 		nbp++;
 		assert(nbp < LEN(bps));
 	}
@@ -99,11 +98,11 @@ main()
 	st.t = 24;
 
 	for (i=0; i < (int)nbp; i++)
-		p1 += (i+1) * recur(&bps[i], st, 0);
+		p1 += (i+1) * recur(bps[i], st, 0);
 
 	st.t = 32;
 	for (i=0; i < min((int)nbp, 3); i++)
-		p2 *= recur(&bps[i], st, 0);
+		p2 *= recur(bps[i], st, 0);
 
 	printf("19: %d %d\n", p1, p2);
 	return 0;
