@@ -4,8 +4,9 @@
 #include <ctype.h>
 #include <assert.h>
 
-#define LEN(a)	(sizeof(a)/sizeof(*(a)))
-#define NRES	4
+#define LEN(a)		(sizeof(a)/sizeof(*(a)))
+#define NRES		4
+#define VERBOSITY	0	/* 0, 1 or 2 */
 
 enum { GEODE, OBSID, CLAY, ORE };
 struct bp { int price[NRES][NRES]; };
@@ -14,7 +15,7 @@ struct st { struct bp *bp; int t, res[NRES], robos[NRES]; };
 struct bp bps[32];
 size_t nbp;
 
-//static int min(int a, int b) { return a<b ? a : b; }
+static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
 static void
@@ -72,18 +73,30 @@ recur(struct st st)
 {
 	static int depth;
 	struct st st2;
-	int i,j, tbuy, best=0;
+	int i,j, tbuy, best=0, maxp;
 
-	if (st.t <= 0)
-		return st.res[GEODE];
+	if (st.t <= 1)
+		return st.res[GEODE] + st.robos[GEODE]*st.t;
 
-	/* option 1: wait it out if we have GEODE income */
-	if (st.robos[GEODE]) {
-		best = max(best, st.res[GEODE] + st.t*st.robos[GEODE]);
-	}
+	if (VERBOSITY > 1)
+		printf("t=%2d res=%3d %3d %3d %3d "
+		    "robos=%2d %2d %2d %2d\n", st.t, st.res[0],
+		    st.res[1], st.res[2], st.res[3], st.robos[0],
+		    st.robos[1], st.robos[2], st.robos[3]);
+
+	/* option 1: do nothing (if we make GEODE) */
+	best = st.res[GEODE] + st.t*st.robos[GEODE];
 
 	/* option 2[i]: save up for new robot of type i */
 	for (i=0; i<NRES; i++) {
+		/* only if we don't already make enough of that */
+		if (i != GEODE) {
+			for (j=0, maxp=0; j<NRES; j++)
+				maxp = max(maxp, st.bp->price[j][i]);
+			if (i && st.robos[i] >= maxp)
+				continue;
+		}
+
 		/* can buy, and how long? */
 		tbuy = 1;
 		for (j=0; j<NRES; j++) {
@@ -112,6 +125,9 @@ recur(struct st st)
 	nobuy: ;
 	}
 
+	if (VERBOSITY > 1)
+		printf("\33[A\33[2K");
+
 	return best;
 }
 
@@ -119,7 +135,7 @@ int
 main()
 {
 	struct st st;
-	int i, val, p1=0, p2=0;
+	int i, val, p1=0, p2=1;
 
 	read_input();
 
@@ -130,16 +146,17 @@ main()
 		st.t = 24;
 		st.bp = &bps[i];
 		p1 += (i+1) * (val = recur(st));
-		//printf(" p1 bp %d: val=%d q=%d\n", i, val, (i+1)*val);
+		if (VERBOSITY > 0)
+			printf(" p1 bp %d: val=%d\n", i, val);
 	}
-#if 0
+
 	for (i=0; i < min((int)nbp, 3); i++) {
 		st.t = 32;
 		st.bp = &bps[i];
-		p2 += (i+1) * (val = recur(st));
-		//printf(" p2 bp %d: val=%d q=%d\n", i, val, (i+1)*val);
+		p2 *= (val = recur(st));
+		if (VERBOSITY > 0)
+			printf(" p2 bp %d: val=%d\n", i, val);
 	}
-#endif
 
 	printf("19: %d %d\n", p1, p2);
 	return 0;
