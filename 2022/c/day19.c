@@ -17,25 +17,26 @@ size_t nbp;
 static int min(int a, int b) { return a<b ? a : b; }
 static int max(int a, int b) { return a>b ? a : b; }
 
-static void
-recur(struct st st, int *top)
+static int
+recur(struct st st, int best)
 {
 	struct st st2;
 	int i,j, tbuy, maxp;
 
 	/* option 1: do nothing (if we make GEODE) */
-	*top = max(*top, st.res[GEODE] + st.t*st.robos[GEODE]);
+	best = max(best, st.res[GEODE] + st.t*st.robos[GEODE]);
 
 	/* prune time spent looking at pointless t=end decisions */
 	if (st.t <= 1)
-		return;
+		return best;
 
 	/*
 	 * Prune by testing upper limit, thanks /u/Boojum!
 	 * https://www.reddit.com/r/adventofcode/comments/zpihwi/2022_day_19_solutions/j0tls7a/
 	 */
-	if (st.res[GEODE]+st.t*st.robos[GEODE] + st.t*(st.t+1)/2 < *top)
-		return;
+	if (st.res[GEODE] + st.t*st.robos[GEODE] + st.t*(st.t+1)/2 <
+	    best)
+		return best;
 
 	/* option 2[i]: (save up for and) buy new robot of type i */
 	for (i=0; i<NRES; i++) {
@@ -67,16 +68,18 @@ recur(struct st st, int *top)
 		}
 		st2.robos[i]++;
 
-		recur(st2, top);
+		best = max(best, recur(st2, best));
 	nobuy: ;
 	}
+
+	return best;
 }
 
 int
 main()
 {
 	struct st st;
-	int i, top, p1=0, p2=1;
+	int i, p1=0, p2=1;
 
 	while (6 == scanf(
 " Blueprint %*d:"
@@ -100,17 +103,13 @@ main()
 	for (i=0; i < (int)nbp; i++) {
 		st.t = 24;
 		st.bp = &bps[i];
-		top = 0;
-		recur(st, &top);
-		p1 += (i+1)*top;
+		p1 += (i+1) * recur(st, 0);
 	}
 
 	for (i=0; i < min((int)nbp, 3); i++) {
 		st.t = 32;
 		st.bp = &bps[i];
-		top = 0;
-		recur(st, &top);
-		p2 *= top;
+		p2 *= recur(st, 0);
 	}
 
 	printf("19: %d %d\n", p1, p2);
