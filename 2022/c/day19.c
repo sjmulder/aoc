@@ -34,7 +34,7 @@ recur(struct st st, int *top)
 	 * Prune by testing upper limit, thanks /u/Boojum!
 	 * https://www.reddit.com/r/adventofcode/comments/zpihwi/2022_day_19_solutions/j0tls7a/
 	 */
-	if (st.t*st.res[GEODE] + st.t*(st.t+1)/2 < *top)
+	if (st.res[GEODE]+st.t*st.robos[GEODE] + st.t*(st.t+1)/2 < *top)
 		return;
 
 	/* option 2[i]: (save up for and) buy new robot of type i */
