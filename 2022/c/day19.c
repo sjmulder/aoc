@@ -27,10 +27,8 @@ recur(struct st st, int *top)
 	*top = max(*top, st.res[GEODE] + st.t*st.robos[GEODE]);
 
 	/* prune time spent looking at pointless t=end decisions */
-	if (st.t <= 1) {
-		*top = max(*top, st.res[GEODE] + st.robos[GEODE]*st.t);
+	if (st.t <= 1)
 		return;
-	}
 
 	/*
 	 * Prune by testing upper limit, thanks /u/Boojum!
