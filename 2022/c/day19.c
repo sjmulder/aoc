@@ -9,7 +9,7 @@
 
 enum { GEO, OBS, CLY, ORE };
 struct bp { int price[NRES][NRES]; };
-struct st { struct bp *bp; int t, res[NRES], robos[NRES]; };
+struct st { int t, res[NRES], robos[NRES]; };
 
 struct bp bps[32];
 size_t nbp;
@@ -42,7 +42,7 @@ recur(struct bp *bp, struct st st, int best)
 		/* only if we don't already make enough of that */
 		if (i != GEO) {
 			for (j=0, maxp=0; j<NRES; j++)
-				maxp = max(maxp, st.bp->price[j][i]);
+				maxp = max(maxp, bp->price[j][i]);
 			if (st.robos[i] >= maxp)
 				continue;
 		}
@@ -50,10 +50,10 @@ recur(struct bp *bp, struct st st, int best)
 		/* can buy, and how long? */
 		tbuy = 1;
 		for (j=0; j<NRES; j++) {
-			if (st.res[j] >= st.bp->price[i][j]) continue;
+			if (st.res[j] >= bp->price[i][j]) continue;
 			if (!st.robos[j]) goto nobuy;
 			tbuy = max(tbuy,
-			    (st.bp->price[i][j] - st.res[j] +
+			    (bp->price[i][j] - st.res[j] +
 			     st.robos[j]-1) / st.robos[j] +1);
 			if (tbuy >= st.t) goto nobuy;
 		}
@@ -63,11 +63,11 @@ recur(struct bp *bp, struct st st, int best)
 		st2.t -= tbuy;
 		for (j=0; j<NRES; j++) {
 			st2.res[j] += st2.robos[j] * tbuy;
-			st2.res[j] -= st2.bp->price[i][j];
+			st2.res[j] -= bp->price[i][j];
 		}
 		st2.robos[i]++;
 
-		best = max(best, recur(st2, best));
+		best = max(best, recur(bp, st2, best));
 	nobuy: ;
 	}
 
@@ -96,18 +96,14 @@ main()
 
 	memset(&st, 0, sizeof(st));
 	st.robos[ORE] = 1;
+	st.t = 24;
 
-	for (i=0; i < (int)nbp; i++) {
-		st.t = 24;
-		st.bp = &bps[i];
-		p1 += (i+1) * recur(st, 0);
-	}
+	for (i=0; i < (int)nbp; i++)
+		p1 += (i+1) * recur(&bps[i], st, 0);
 
-	for (i=0; i < min((int)nbp, 3); i++) {
-		st.t = 32;
-		st.bp = &bps[i];
-		p2 *= recur(st, 0);
-	}
+	st.t = 32;
+	for (i=0; i < min((int)nbp, 3); i++)
+		p2 *= recur(&bps[i], st, 0);
 
 	printf("19: %d %d\n", p1, p2);
 	return 0;
