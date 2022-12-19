@@ -21,7 +21,6 @@ static int max(int a, int b) { return a>b ? a : b; }
 static int
 recur(struct st st)
 {
-	static int depth;
 	struct st st2;
 	int i,j, tbuy, best=0, maxp;
 
@@ -58,8 +57,6 @@ recur(struct st st)
 			if (tbuy >= st.t) goto nobuy;
 		}
 
-		best = max(best, st.res[GEODE] + st.t*st.robos[GEODE]);
-
 		/* skip ahead and buy */
 		st2 = st;
 		st2.t -= tbuy;
@@ -69,9 +66,7 @@ recur(struct st st)
 		}
 		st2.robos[i]++;
 
-		depth++;
 		best = max(best, recur(st2));
-		depth--;
 	nobuy: ;
 	}
 
