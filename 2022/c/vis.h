@@ -1,5 +1,5 @@
 struct vis {
-	char *frame;
+	uint8_t *frame;
 	size_t w, h;
 
 	pid_t ffmpeg_pid;

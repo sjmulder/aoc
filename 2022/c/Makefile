@@ -37,9 +37,11 @@ CFLAGS+=	-DWITH_VIS=1
 
 day14: vis.o
 day18: vis.o
+day20: vis.o
 
 day14.o: vis.h
 day18.o: vis.h
+day20.o: vis.h
 .endif
 
 .o:
