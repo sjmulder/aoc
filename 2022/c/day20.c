@@ -13,92 +13,55 @@ static int wrap(int i, int n) { return (i %n +n) %n; }
  * id:  the 'identity' of the number (its original index)
  * idx: index in the output array
  */
-static int64_t id_val[SZ];
-static int id_idx[SZ];
-static int idx_id[SZ];
+static int64_t val[SZ];	/* values by id */
+static int ix[SZ];	/* indexes by id */
+static int id[SZ];	/* id by index */
 static int n, zero_id;
 
 static int64_t
 run(int steps)
 {
-	int s, i,j;
-	int cur_idx, new_idx;
-	int64_t val;
+	int s,i,j, f,t;
+	int64_t v;
 
-	for (i=0; i<n; i++) id_idx[i] = i;
-	for (i=0; i<n; i++) idx_id[i] = i;
+	for (i=0; i<n; i++) ix[i] = i;
+	for (i=0; i<n; i++) id[i] = i;
 
 	for (s=0; s<steps; s++)
 	for (i=0; i<n; i++) {
-		val = id_val[i];
-		cur_idx = id_idx[i];
-		new_idx = wrap(cur_idx + (int)(val % (n-1)), n);
+		v = val[i];
+		f = ix[i];	/* f: from index, t: to index */
+		t = wrap(f + (int)(v%(n-1)), n);
 
-		if (val > 0 && new_idx > cur_idx) {
-			memmove(
-			    &idx_id[cur_idx],
-			    &idx_id[cur_idx+1],
-			    (new_idx - cur_idx) * sizeof(*idx_id));
-
-			idx_id[new_idx] = i;
-
-			for (j = cur_idx; j <= new_idx; j++)
-				id_idx[idx_id[j]] = j;
-		} else if (val < 0 && new_idx < cur_idx) {
-			memmove(
-			    &idx_id[new_idx+1],
-			    &idx_id[new_idx],
-			    (cur_idx - new_idx) * sizeof(*idx_id));
-
-			idx_id[new_idx] = i;
-
-			for (j = new_idx; j <= cur_idx; j++)
-				id_idx[idx_id[j]] = j;
-		} else if (val > 0 && new_idx < cur_idx) {
-			memmove(
-			    &idx_id[cur_idx],
-			    &idx_id[cur_idx+1],
-			    (n - cur_idx -1) * sizeof(*idx_id));
-
-			idx_id[n-1] = idx_id[0];
-
-			memmove(
-			    &idx_id[0],
-			    &idx_id[1],
-			    new_idx * sizeof(*idx_id));
-
-			idx_id[new_idx] = i;
-
-			for (j=0; j <= new_idx; j++)
-				id_idx[idx_id[j]] = j;
-			for (j = cur_idx; j < n; j++)
-				id_idx[idx_id[j]] = j;
-		} else if (val < 0 && new_idx > cur_idx) {
-			memmove(
-			    &idx_id[1],
-			    &idx_id[0],
-			    cur_idx * sizeof(*idx_id));
-
-			idx_id[0] = idx_id[n-1];
-
-			memmove(
-			    &idx_id[new_idx+1],
-			    &idx_id[new_idx],
-			    (n - new_idx -1) * sizeof(*idx_id));
-
-			idx_id[new_idx] = i;
-
-			for (j=0; j <= cur_idx; j++)
-				id_idx[idx_id[j]] = j;
-			for (j = new_idx; j < n; j++)
-				id_idx[idx_id[j]] = j;
+		if (v>0 && t>f) {
+			memmove(id+f, id+f+1, (t-f)*sizeof(*id));
+			id[t] = i;
+			for (j=f; j<=t; j++) ix[id[j]] = j;
+		} else if (v<0 && t<f) {
+			memmove(id+t+1, id+t, (f-t)*sizeof(*id));
+			id[t] = i;
+			for (j=t; j<=f; j++) ix[id[j]] = j;
+		} else if (v>0 && t<f) {
+			memmove(id+f, id+f+1, (n-f-1)*sizeof(*id));
+			id[n-1] = id[0];
+			memmove(id, id+1, t*sizeof(*id));
+			id[t] = i;
+			for (j=0; j<=t; j++) ix[id[j]] = j;
+			for (j=f; j<n;  j++) ix[id[j]] = j;
+		} else if (v<0 && t>f) {
+			memmove(id+1, id, f*sizeof(*id));
+			id[0] = id[n-1];
+			memmove(id+t+1, id+t, (n-t-1)*sizeof(*id));
+			id[t] = i;
+			for (j=0; j<=f; j++) ix[id[j]] = j;
+			for (j=t; j<n;  j++) ix[id[j]] = j;
 		}
 	}
 
 	return
-	    id_val[idx_id[wrap(id_idx[zero_id] + 1000, n)]] +
-	    id_val[idx_id[wrap(id_idx[zero_id] + 2000, n)]] +
-	    id_val[idx_id[wrap(id_idx[zero_id] + 3000, n)]];
+	    val[id[wrap(ix[zero_id] + 1000, n)]] +
+	    val[id[wrap(ix[zero_id] + 2000, n)]] +
+	    val[id[wrap(ix[zero_id] + 3000, n)]];
 }
 
 int
@@ -107,15 +70,14 @@ main()
 	int i;
 	int64_t p1,p2;
 
-	while (scanf("%" PRId64, &id_val[n]) == 1) {
-		if (id_val[n] == 0)
-			zero_id = n;
+	while (scanf("%" PRId64, &val[n]) == 1) {
+		if (val[n] == 0) zero_id = n;
 		n++;
 		assert(n < SZ);
 	}
 
 	p1 = run(1);
-	for (i=0; i<n; i++) id_val[i] *= 811589153;
+	for (i=0; i<n; i++) val[i] *= 811589153;
 	p2 = run(10);
 
 	printf("20: %" PRId64 " %" PRId64 "\n", p1, p2);
