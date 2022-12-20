@@ -33,7 +33,7 @@ run(int steps)
 			if (v<0) t--;	/* shifts with array */
 			memmove(id+f, id+f+1, (t-f)*sizeof(*id));
 		} else if (t<f) {
-			if (v>0) t++;	/* shift with array */
+			if (v>0) t++;	/* shifts with array */
 			memmove(id+t+1, id+t, (f-t)*sizeof(*id));
 		}
 
