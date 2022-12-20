@@ -23,8 +23,7 @@ static int64_t
 run(int steps)
 {
 	int s, i,j;
-	int cur_idx, new_idx, d;
-	int a_id, b_id, a_idx, b_idx;
+	int cur_idx, new_idx;
 	int64_t val;
 
 	for (i=0; i<n; i++) id_idx[i] = i;
@@ -34,16 +33,48 @@ run(int steps)
 	for (i=0; i<n; i++) {
 		val = id_val[i];
 		cur_idx = id_idx[i];
-		new_idx = cur_idx + (int)(val % (n-1));
-		d = sgn(val);
+		new_idx = wrap(cur_idx + (int)(val % (n-1)), n);
 
-		for (j = cur_idx; j != new_idx; j += d) {
-			a_id = idx_id[(a_idx = wrap(j, n))];
-			b_id = idx_id[(b_idx = wrap(j+d, n))];
+		if (val > 0 && wrap(new_idx, n) > cur_idx)
+			memmove(
+			    &idx_id[cur_idx],
+			    &idx_id[cur_idx+1],
+			    (new_idx - cur_idx) * sizeof(*idx_id));
+		else if (val < 0 && wrap(new_idx, n) < cur_idx)
+			memmove(
+			    &idx_id[new_idx+1],
+			    &idx_id[new_idx],
+			    (cur_idx - new_idx) * sizeof(*idx_id));
+		else if (val > 0 && wrap(new_idx, n) < cur_idx) {
+			memmove(
+			    &idx_id[cur_idx],
+			    &idx_id[cur_idx+1],
+			    (n - cur_idx -1) * sizeof(*idx_id));
 
-			id_idx[a_id] = b_idx; idx_id[a_idx] = b_id;
-			id_idx[b_id] = a_idx; idx_id[b_idx] = a_id;
+			idx_id[n-1] = idx_id[0];
+
+			memmove(
+			    &idx_id[0],
+			    &idx_id[1],
+			    new_idx * sizeof(*idx_id));
+		} else if (val < 0 && wrap(new_idx, n) > cur_idx) {
+			memmove(
+			    &idx_id[1],
+			    &idx_id[0],
+			    cur_idx * sizeof(*idx_id));
+
+			idx_id[0] = idx_id[n-1];
+
+			memmove(
+			    &idx_id[new_idx+1],
+			    &idx_id[new_idx],
+			    (n - new_idx -1) * sizeof(*idx_id));
 		}
+
+		idx_id[new_idx] = i;
+
+		for (j=0; j<n; j++)
+			id_idx[idx_id[j]] = j;
 	}
 
 	return
