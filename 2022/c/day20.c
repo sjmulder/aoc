@@ -35,17 +35,17 @@ run(int steps)
 		cur_idx = id_idx[i];
 		new_idx = wrap(cur_idx + (int)(val % (n-1)), n);
 
-		if (val > 0 && wrap(new_idx, n) > cur_idx)
+		if (val > 0 && new_idx > cur_idx)
 			memmove(
 			    &idx_id[cur_idx],
 			    &idx_id[cur_idx+1],
 			    (new_idx - cur_idx) * sizeof(*idx_id));
-		else if (val < 0 && wrap(new_idx, n) < cur_idx)
+		else if (val < 0 && new_idx < cur_idx)
 			memmove(
 			    &idx_id[new_idx+1],
 			    &idx_id[new_idx],
 			    (cur_idx - new_idx) * sizeof(*idx_id));
-		else if (val > 0 && wrap(new_idx, n) < cur_idx) {
+		else if (val > 0 && new_idx < cur_idx) {
 			memmove(
 			    &idx_id[cur_idx],
 			    &idx_id[cur_idx+1],
@@ -57,7 +57,7 @@ run(int steps)
 			    &idx_id[0],
 			    &idx_id[1],
 			    new_idx * sizeof(*idx_id));
-		} else if (val < 0 && wrap(new_idx, n) > cur_idx) {
+		} else if (val < 0 && new_idx > cur_idx) {
 			memmove(
 			    &idx_id[1],
 			    &idx_id[0],
