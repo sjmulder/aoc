@@ -7,7 +7,6 @@
 
 #define SZ	5120
 
-static int sgn(int64_t x) { return x<0 ? -1 : x>0 ? 1 : 0; }
 static int wrap(int i, int n) { return (i %n +n) %n; }
 
 /*
