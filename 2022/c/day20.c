@@ -29,18 +29,12 @@ run(int steps)
 		for (f=0; id[f]!=i; f++) ;	/* from idx */
 		t = (((f + v%(n-1)) %n) +n) %n;	/* to idx */
 
-		if (v>0 && t>f)
+		if (t>f) {
+			if (v<0) t--;
 			memmove(id+f, id+f+1, (t-f)*sizeof(*id));
-		else if (v<0 && t<f)
+		} else if (t<f) {
+			if (v>0) t++;
 			memmove(id+t+1, id+t, (f-t)*sizeof(*id));
-		else if (v>0 && t<f) {
-			memmove(id+f, id+f+1, (n-f-1)*sizeof(*id));
-			id[n-1] = id[0];
-			memmove(id, id+1, t*sizeof(*id));
-		} else if (v<0 && t>f) {
-			memmove(id+1, id, f*sizeof(*id));
-			id[0] = id[n-1];
-			memmove(id+t+1, id+t, (n-t-1)*sizeof(*id));
 		}
 
 		id[t] = i;
