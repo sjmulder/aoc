@@ -93,9 +93,6 @@ run(int steps)
 			for (j = new_idx; j < n; j++)
 				id_idx[idx_id[j]] = j;
 		}
-
-		idx_id[new_idx] = i;
-
 	}
 
 	return
