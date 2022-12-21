@@ -14,7 +14,7 @@ vis_begin(
     char *filename,
     size_t fps, size_t w, size_t h)
 {
-	int fds[2];
+	int fds[2], i;
 	char video_size[64], fps_str[32];
 
 	char *argv[] = {
@@ -42,6 +42,11 @@ vis_begin(
 
 	snprintf(video_size, sizeof(video_size), "%zux%zu", w, h);
 	snprintf(fps_str, sizeof(fps_str), "%zu", fps);
+
+	putchar('+');
+	for (i=0; argv[i]; i++)
+		printf(" %s", argv[i]);
+	putchar('\n');
 
 	if (pipe(fds) == -1)
 		err(1, "pipe");
