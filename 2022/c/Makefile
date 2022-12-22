@@ -4,7 +4,7 @@ DAYS=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 	day11 day12 day13 day14 day15 day16 day17 day18 day19 day20 \
 	day21
 
-PROGS=	${SOL} \
+PROGS=	${DAYS} \
 	day06-orig day07-orig day08-orig day15-tests day18-recur \
 	day19-wip day21-dot
 
@@ -15,18 +15,7 @@ CFLAGS+=	-O3
 
 LDLIBS+=	-lm
 
-BENCH?=		time -f "$p  %E  %M Kb  %F+%R faults"
-
-.for p in ${DAYS}
-INPUT.$p?=	${INPUT:U../../inputs/2022/${p:S/day//}-input.txt}
-RUN_CMD+=	./$p ${INPUT.$p};
-BENCH_CMD+=	${BENCH} ./$p <${INPUT.$p} >/dev/null;
-.endfor
-
 all: ${PROGS}
-
-run:   ${DAYS} ; ${RUN_CMD}
-bench: ${DAYS} ; ${BENCH_CMD}
 
 clean:
 	rm -f ${PROGS} *.o day21.dot day21.pdf
@@ -63,7 +52,6 @@ day18.o: vis.h
 .dot.pdf:
 	dot -T pdf $< >$@
 
-.o:
-	${LINK.c} -o $@ $> ${LDLIBS}
+.PHONY: all clean
 
-.PHONY: all run bench clean
+.include "../../mk/common.mk"
