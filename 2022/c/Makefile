@@ -1,13 +1,12 @@
 # Use BSD make (bmake)
 
-PROGS+=	day01 day02 day03 day04 day05 day06 day06-orig day07 \
-	day07-orig day08 day08-orig day09 day10 day11 day12 day13 \
-	day14 day15 day15-tests day16 day17 day18 day18-recur day19 \
-	day19-wip day20 day21 day21-dot
-
-RUN+=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
+DAYS=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 	day11 day12 day13 day14 day15 day16 day17 day18 day19 day20 \
 	day21
+
+PROGS=	${SOL} \
+	day06-orig day07-orig day08-orig day15-tests day18-recur \
+	day19-wip day21-dot
 
 CFLAGS+=	-Wall -Wextra
 CFLAGS+=	-O3
@@ -16,22 +15,18 @@ CFLAGS+=	-O3
 
 LDLIBS+=	-lm
 
-.for prog in ${RUN}
-INPUT.${prog}?=	${INPUT:U../../inputs/2022/${prog:S/day//}-input.txt}
+BENCH?=		time -f "$p  %E  %M Kb  %F+%R faults"
+
+.for p in ${DAYS}
+INPUT.$p?=	${INPUT:U../../inputs/2022/${p:S/day//}-input.txt}
+RUN_CMD+=	./$p ${INPUT.$p};
+BENCH_CMD+=	${BENCH} ./$p <${INPUT.$p} >/dev/null;
 .endfor
 
 all: ${PROGS}
 
-run: all
-.for prog in ${RUN}
-	@./${prog} ${INPUT.${prog}}
-.endfor
-
-bench:
-.for prog in ${RUN}
-	@time -f "${prog}  %E  %M Kb  %F+%R faults" \
-	  ./${prog} \ ${INPUT.${prog}} >/dev/null
-.endfor
+run:   ${DAYS} ; ${RUN_CMD}
+bench: ${DAYS} ; ${BENCH_CMD}
 
 clean:
 	rm -f ${PROGS} *.o day21.dot day21.pdf
