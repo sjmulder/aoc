@@ -1,29 +1,22 @@
 jobs:
 
-- job: linux
-  displayName: Linux
+- job: unix
+  displayName: Unix
+  strategy:
+    matrix:
+      macos:
+        vmImage: macOS-12
+        install: brew install
+      ubuntu:
+        vmImage: ubuntu-20.04
+        install: sudo apt install -y
   pool:
-    vmImage: ubuntu-20.04
+    vmImage: $(vmImage)
   steps:
   - task: UseDotNet@2
     displayName: Use .NET 6
-    inputs:
-      version: 6.x
-  - script: sudo apt install -y bmake
-    displayName: Install packages
-  - script: bmake
-    displayName: Build
-
-- job: macos
-  displayName: macOS
-  pool:
-    vmImage: macOS-12
-  steps:
-  - task: UseDotNet@2
-    displayName: Use .NET 6
-    inputs:
-      version: 6.x
-  - script: brew install bmake
+    inputs: { version: 6.x }
+  - script: $(install) bmake
     displayName: Install packages
   - script: bmake
     displayName: Build
