@@ -32,10 +32,9 @@ jobs:
   displayName: "Visual Studio"
   strategy:
     matrix:
-      x86:
-        platform: x86
-      x64:
-        platform: x64
+      x86: { platform: x86 }
+      x64: { platform: x64 }
+      arm: { platform: ARM }
   pool:
     vmImage: windows-2019
   steps:
@@ -44,18 +43,6 @@ jobs:
     inputs:
       solution: aoc.sln
       platform: $(platform)
-      configuration: Release
-
-- job: vs_arm
-  displayName: "Visual Studio (arm)"
-  pool:
-    vmImage: windows-2019
-  steps:
-  - task: VSBuild@1
-    displayName: Build
-    inputs:
-      solution: aoc.sln
-      platform: ARM
       configuration: Release
 
 - job: vc6
