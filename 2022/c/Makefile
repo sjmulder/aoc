@@ -16,18 +16,21 @@ CFLAGS+=	-O3
 
 LDLIBS+=	-lm
 
+.for prog in ${RUN}
+INPUT.${prog}?=	${INPUT:U../../inputs/2022/${prog:S/day//}-input.txt}
+.endfor
+
 all: ${PROGS}
 
 run: all
 .for prog in ${RUN}
-	@./${prog} <../../inputs/2022/${prog:S/day//}-input.txt
+	@./${prog} ${INPUT.${prog}}
 .endfor
 
 bench:
 .for prog in ${RUN}
-	@time -f "${prog}  %E  %M Kb  %F+%R faults" ./${prog} \
-	  <../../inputs/2022/${prog:S/day//}-input.txt \
-	  >/dev/null
+	@time -f "${prog}  %E  %M Kb  %F+%R faults" \
+	  ./${prog} \ ${INPUT.${prog}} >/dev/null
 .endfor
 
 clean:
