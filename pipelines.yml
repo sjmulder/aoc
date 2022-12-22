@@ -9,18 +9,10 @@ jobs:
     displayName: Use .NET 6
     inputs:
       version: 6.x
-  - script: sudo apt install -y bmake dos2unix
+  - script: sudo apt install -y bmake
     displayName: Install packages
-  - script: |
-      set -e
-      curl -L https://github.com/mist64/cbmbasic/archive/refs/heads/master.tar.gz | tar -xzf -
-      make -j -C cbmbasic-master
-      sudo cp cbmbasic-master/cbmbasic /usr/local/bin/
-    displayName: Install cbmbasic
-  - script: bmake WITH_BASIC=1
+  - script: bmake
     displayName: Build
-  - script: bmake run WITH_BASIC=1
-    displayName: Run
 
 - job: macos
   displayName: macOS
@@ -35,8 +27,6 @@ jobs:
     displayName: Install packages
   - script: bmake
     displayName: Build
-  - script: bmake run
-    displayName: Run
 
 - job: vs_x86
   displayName: "2020: Visual Studio (x86)"
@@ -49,12 +39,6 @@ jobs:
       solution: aoc.sln
       platform: x86
       configuration: Release
-  - task: PowerShell@2
-    displayName: Run (C)
-    inputs:
-      filePath: 2020/c/vs/all.ps1
-      arguments: '"Win32 Release"'
-      workingDirectory: 2020/c/vs/
 
 - job: vs_x64
   displayName: "2020: Visual Studio (x64)"
@@ -67,12 +51,6 @@ jobs:
       solution: aoc.sln
       platform: x64
       configuration: Release
-  - task: PowerShell@2
-    displayName: Run (C)
-    inputs:
-      filePath: 2020/c/vs/all.ps1
-      arguments: '"x64 Release"'
-      workingDirectory: 2020/c/vs/
 
 - job: vs_arm
   displayName: "2020: Visual Studio (arm)"
@@ -95,8 +73,6 @@ jobs:
   steps:
   - script: cd 2020\c\vc6 & msdev aoc2020.dsw /make all release
     displayName: Build
-  - script: cd 2020\c\vc6 & all.bat
-    displayName: Run
 
 - job: vs_dotnet
   displayName: "2021: Windows (dotnet)"
