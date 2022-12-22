@@ -3,4 +3,4 @@ SUBDIRS=	c cpp c-golf cs
 SUBDIRS+=	c64-basic
 .endif
 
-.include "../subdirs.mk"
+.include "../mk/subdirs.mk"

@@ -10,4 +10,4 @@ all-day07: all-intcode
 run:
 	echo "'run' not implemented for 2019" >&2
 
-.include "../subdirs.mk"
+.include "../mk/subdirs.mk"

@@ -3,4 +3,4 @@ SUBDIRS=	c c-golf cs awk
 SUBDIRS+=	c64-basic
 .endif
 
-.include "../subdirs.mk"
+.include "../mk/subdirs.mk"

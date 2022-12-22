@@ -1,3 +1,3 @@
 SUBDIRS=	c cs awk
 
-.include "../subdirs.mk"
+.include "../mk/subdirs.mk"

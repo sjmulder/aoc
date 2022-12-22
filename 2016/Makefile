@@ -1,3 +1,3 @@
 SUBDIRS=	c
 
-.include "../subdirs.mk"
+.include "../mk/subdirs.mk"
