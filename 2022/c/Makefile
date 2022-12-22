@@ -23,6 +23,13 @@ run: all
 	@./${prog} <../../inputs/2022/${prog:S/day//}-input.txt
 .endfor
 
+bench:
+.for prog in ${RUN}
+	@time -f "${prog}  %E  %M Kb  %F+%R faults" ./${prog} \
+	  <../../inputs/2022/${prog:S/day//}-input.txt \
+	  >/dev/null
+.endfor
+
 clean:
 	rm -f ${PROGS} *.o day21.dot day21.pdf
 	rm -rfv *.dSYM
