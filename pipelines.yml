@@ -8,7 +8,7 @@ jobs:
         vmImage: macOS-12
         install: brew install
       ubuntu:
-        vmImage: ubuntu-20.04
+        vmImage: ubuntu-22.04
         install: sudo apt install -y
   pool:
     vmImage: $(vmImage)
@@ -29,7 +29,7 @@ jobs:
       x64: { platform: x64 }
       arm: { platform: ARM }
   pool:
-    vmImage: windows-2019
+    vmImage: windows-2022
   steps:
   - task: VSBuild@1
     displayName: Build
