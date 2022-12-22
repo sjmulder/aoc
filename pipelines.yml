@@ -7,7 +7,10 @@ jobs:
       macos:
         vmImage: macOS-12
         install: brew install
-      ubuntu:
+      ubuntu-1804:
+        vmImage: ubuntu-18.04
+        install: sudo apt install -y
+      ubuntu-2204:
         vmImage: ubuntu-22.04
         install: sudo apt install -y
   pool:
