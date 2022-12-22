@@ -56,18 +56,3 @@ jobs:
     displayName: Build 2020
   - script: cd 2022\c\vc6 & msdev aoc2022.dsw /make all release
     displayName: Build 2022
-
-- job: vs_dotnet
-  displayName: "2021: Windows (dotnet)"
-  pool:
-    vmImage: windows-2019
-  steps:
-  - task: UseDotNet@2
-    displayName: Use .NET 6
-    inputs:
-      version: 6.x
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      workingDirectory: 2021/cs
-      arguments: -c Release
