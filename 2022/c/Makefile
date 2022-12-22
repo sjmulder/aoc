@@ -35,12 +35,9 @@ vis.o:    vis.c vis.h
 stdio.o:  compat/stdio.c compat/stdio.h
 string.o: compat/string.c compat/string.h
 
-day14-vis.o: day14.c vis.h
-	${COMPILE.c} -o $@ -DWITH_VIS=1 day14.c
-day18-vis.o: day18.c vis.h
-	${COMPILE.c} -o $@ -DWITH_VIS=1 day18.c
-day20-vis.o: day20.c vis.h
-	${COMPILE.c} -o $@ -DWITH_VIS=1 day20.c
+day14-vis.o: day14.c vis.h ; ${COMPILE.c} -o $@ -DWITH_VIS=1 day14.c
+day18-vis.o: day18.c vis.h ; ${COMPILE.c} -o $@ -DWITH_VIS=1 day18.c
+day20-vis.o: day20.c vis.h ; ${COMPILE.c} -o $@ -DWITH_VIS=1 day20.c
 
 day21.dot: day21-dot ../data/21-input.txt
 	./day21-dot <../data/21-input.txt >$@
