@@ -9,3 +9,4 @@ clean:
 	rm -f _built
 
 .PHONY: all clean
+.OBJDIR: .
