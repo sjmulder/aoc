@@ -33,6 +33,7 @@ move(int d, int v)
 		px += D[d][0];
 		py += D[d][1];
 
+#if 0
 		if (d == RIGHT && (px>=gw || G[py][px] == ' '))
 			for (px=0; G[py][px] == ' '; px++) ;
 		else if (d == DOWN && (py>=gh || G[py][px] == ' '))
@@ -41,7 +42,90 @@ move(int d, int v)
 			for (px=gw-1; G[py][px] == ' '; px--) ;
 		else if (d == UP && (py<0 || G[py][px] == ' '))
 			for (py=gh-1; G[py][px] == ' '; py--) ;
-
+#else
+		if (d == RIGHT && (px>=gw || G[py][px] == ' '))
+			switch (py/cz) {
+			case 0:
+				py = (3*cz) - (py%cz) -1;
+				px = (2*cz) -1;
+				d = LEFT;
+				break;
+			case 1:
+				px = (2*cz) + (py%cz);
+				py = (1*cz) -1;
+				d = UP;
+				break;
+			case 2:
+				py = (1*cz) - (py%cz) -1;
+				px = (3*cz) -1;
+				d = LEFT;
+				break;
+			case 3:
+				px = (1*cz) + (py%cz);
+				py = (3*cz) -1;
+				d = UP;
+				break;
+			}
+		else if (d == DOWN && (py>=gh || G[py][px] == ' '))
+			switch (px/cz) {
+			case 0:
+				px = (2*cz) + (px%cz);
+				py = 0;
+				d = DOWN;
+				break;
+			case 1:
+				py = (3*cz) + (px%cz);
+				px = (1*cz) -1;
+				d = LEFT;
+				break;
+			case 2:
+				py = (1*cz) + (px%cz);
+				px = (2*cz) -1;
+				d = LEFT;
+				break;
+			}
+		else if (d == LEFT && (px<0 || G[py][px] == ' '))
+			switch (py/cz) {
+			case 0:
+				py = (3*cz) - (py%cz) -1;
+				px = 0;
+				d = RIGHT;
+				break;
+			case 1:
+				px = (0*cz) + (py%cz);
+				py = (2*cz);
+				d = DOWN;
+				break;
+			case 2:
+				py = (1*cz) - (py%cz) -1;
+				px = (1*cz);
+				d = RIGHT;
+				break;
+			case 3:
+				px = (1*cz) + (py%cz);
+				py = 0;
+				d = DOWN;
+				break;
+			}
+		else if (d == UP && (py<0 || G[py][px] == ' '))
+			switch (px/cz) {
+			case 0:
+				py = (1*cz) + (px%cz);
+				px = (1*cz);
+				d = RIGHT;
+				break;
+			case 1:
+				py = (3*cz) + (px%cz);
+				px = 0;
+				d = RIGHT;
+				break;
+			case 2:
+				px = (0*cz) + (px%cz);
+				py = (4*cz) -1;
+				d = UP;
+				break;
+			}
+#endif
 		if (G[py][px] == '#') {
 			px=x0; py=y0; d=d0;
 			return;
@@ -101,7 +185,6 @@ main()
 # define SCALE	5
 
 static char P[GZ][GZ];	/* path */
-
 static struct vis vis;
 
 static struct vis_grid G_vis = {
