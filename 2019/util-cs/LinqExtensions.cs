@@ -37,28 +37,5 @@ namespace Aoc.Util
             if (list.Count > 0)
                 yield return list.ToArray();
         }
-
-        public static T MinBy<T, TKey>(
-                this IEnumerable<T> xs,
-                Func<T, TKey> selector)
-            where TKey : IComparable<TKey>
-        {
-            var minElem = default(T);
-            var minVal = default(TKey);
-            bool haveMin = false;
-
-            foreach (var x in xs)
-            {
-                var val = selector(x);
-                if (!haveMin || val.CompareTo(minVal) < 0)
-                {
-                    minVal = val;
-                    minElem = x;
-                    haveMin = true;
-                }
-            }
-
-            return minElem;
-        }
     }
 }
