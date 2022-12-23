@@ -19,6 +19,8 @@ vis_begin(
 
 	char *argv[] = {
 		"ffmpeg",
+		"-loglevel", "warning",
+		"-stats",
 		"-f", "rawvideo",
 		"-pixel_format", "rgb24",
 		"-video_size", video_size,
