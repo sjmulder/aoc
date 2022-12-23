@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 int
-main(int argc, char **argv)
+main()
 {
 	int list[N];
 	int pos=0, skip=0, length;

@@ -9,7 +9,7 @@
 int
 main()
 {
-	int *regs, val, cval, max = SHRT_MIN, i;
+	int *regs, val, cval, max=INT_MIN, i;
 	uint32_t reg, op, creg, cop;
 
 	if (!(regs = calloc(0x1000000, sizeof(*regs)))) {
@@ -49,13 +49,13 @@ main()
 		reg = op = creg = cop = 0;
 	}
 
-	printf("max ever:   %hd\n", max);
+	printf("max ever:   %d\n", max);
 
 	max = SHRT_MIN;
 	for (i = 0; i < 0x1000000; i++)
 		max = MAX(max, regs[i]);		
 
-	printf("max at end: %hd\n", max);
+	printf("max at end: %d\n", max);
 
 	return 0;
 }

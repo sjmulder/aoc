@@ -12,8 +12,8 @@ typedef struct amp {
 } Amp;
 
 static int run_amp(Icvm *, int, int);
-static int in_cb(void *);
-static void out_cb(int, void *);
+static int64_t in_cb(void *);
+static void out_cb(int64_t, void *);
 
 int
 main()
@@ -69,7 +69,7 @@ run_amp(Icvm *vm, int phase, int input)
 	return amp.out;
 }
 
-static int
+static int64_t
 in_cb(void *user)
 {
 	Amp *amp;
@@ -82,7 +82,7 @@ in_cb(void *user)
 }
 
 static void
-out_cb(int val, void *user)
+out_cb(int64_t val, void *user)
 {
 	Amp *amp;
 

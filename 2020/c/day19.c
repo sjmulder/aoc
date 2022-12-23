@@ -82,8 +82,9 @@ match(char *rule, char *s, char **endps, int maxendps)
 	do {
 		nendps += matchsub(rule, s, endps+nendps,
 		    maxendps-nendps);
-		rule = strchr(rule, '|')+1;
-	} while (rule != (char *)NULL+1);
+		rule = strchr(rule, '|');
+		if (rule) rule++;
+	} while (rule);
 
 	return nendps;
 }

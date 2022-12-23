@@ -18,8 +18,8 @@ typedef struct amp {
 #define AMP_PAUSED 0x2
 } Amp;
 
-static int in_cb(void *);
-static void out_cb(int, void *);
+static int64_t in_cb(void *);
+static void out_cb(int64_t, void *);
 
 int
 main()
@@ -88,7 +88,7 @@ main()
 	return 0;
 }
 
-static int
+static int64_t
 in_cb(void *user)
 {
 	Amp *amp;
@@ -103,7 +103,7 @@ in_cb(void *user)
 }
 
 static void
-out_cb(int val, void *user)
+out_cb(int64_t val, void *user)
 {
 	Amp *amp;
 

@@ -53,7 +53,7 @@ parsevert(struct vert *verts, size_t nverts, size_t lineno)
 
 /* assumes zeroed .visited and .nextopen */
 static size_t
-findreach(size_t target, struct vert *verts, size_t nverts)
+findreach(size_t target, struct vert *verts)
 {
 	struct vert *open, *edge;
 	size_t reach = 0, i;
@@ -110,6 +110,6 @@ main(int argc, char **argv)
 	while (parsevert(verts, NVERTS,++lineno))
 		;
 
-	printf("\ncount: %zu\n", findreach(target, verts, NVERTS));
+	printf("\ncount: %zu\n", findreach(target, verts));
 	return 0;
 }

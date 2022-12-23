@@ -106,7 +106,7 @@ ic_deref(Icvm *vm, Icarg *arg, int pos)
 		    arg->mode);
 	}
 
-	if (addr < 0 || addr >= LEN(vm->mem))
+	if (addr < 0 || (size_t)addr >= LEN(vm->mem))
 		errx(1, "pos %d: out of bounds: %"PRId64, pos, addr);
 	if (addr >= vm->maxmem)
 		vm->maxmem = addr;

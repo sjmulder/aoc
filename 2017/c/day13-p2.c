@@ -7,7 +7,8 @@ int
 main()
 {
 	struct { int depth, range; } ls[64];
-	int nls=0, delay=0, i;
+	int delay=0;
+	size_t nls=0, i;
 
 	while (1) {
 		if (nls >= LEN(ls)) {

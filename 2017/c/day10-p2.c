@@ -10,10 +10,10 @@
 #include <string.h>
 #include <ctype.h>
 
-static const char salt[] = {17, 31, 73, 47, 23};
+static const unsigned char salt[] = {17, 31, 73, 47, 23};
 
 static void
-initlist(char *list)
+initlist(unsigned char *list)
 {
 	int i;
 
@@ -85,7 +85,7 @@ printhash(unsigned char *hash)
 }
 
 int
-main(int argc, char **argv)
+main()
 {
 	unsigned char buf[BUFSZ], *input;
 	unsigned char list[LISTSZ], hash[NBLOCKS];
