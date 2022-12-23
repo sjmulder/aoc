@@ -14,7 +14,7 @@ bench: ${DAYS} ; $Q${BENCH_CMD}
 
 .for p in ${DAYS}
 INPUT.$p?=	${INPUT:U../../inputs/2022/${p:S/day//}-input.txt}
-RUN_CMD+=	./$p ${INPUT.$p};
+RUN_CMD+=	./$p <${INPUT.$p};
 BENCH_CMD+=	${BENCH} ./$p <${INPUT.$p} >/dev/null;
 .endfor
 
