@@ -12,7 +12,7 @@ PROGS=	${DAYS} ${VISS:S,$,-vis,} \
 	day21-dot day22-vis day23-vis
 
 CFLAGS+=	-O3 -Wall -Wextra
-CFLAGS+=	-g -ftrapv -Wconversion
+#CFLAGS+=	-g -ftrapv -Wconversion
 LDLIBS+=	-lm
 
 all: ${PROGS}
