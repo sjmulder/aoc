@@ -18,12 +18,45 @@ static const int D[4][2] = {{1,0}, {0,1}, {-1,0}, {0,-1}};
 static char G[GZ][GZ];
 static int gw,gh, cz, px,py, d=RIGHT;
 
-static void vis22_begin(void);
+static void vis22_begin(char *name);
 static void vis22_emit(void);
 static void vis22_end(void);
 
 static void
-move(int v)
+move_p1(int v)
+{
+	int x0,y0;
+
+	for (; v!=0; v--) {
+		x0=px; y0=py;
+
+		px += D[d][0];
+		py += D[d][1];
+
+		if (d == RIGHT && (px>=gw || G[py][px] == ' '))
+			for (px=0; G[py][px] == ' '; px++) ;
+		else if (d == DOWN && (py>=gh || G[py][px] == ' '))
+			for (py=0; G[py][px] == ' '; py++) ;
+		else if (d == LEFT && (px<0 || G[py][px] == ' '))
+			for (px=gw-1; G[py][px] == ' '; px--) ;
+		else if (d == UP && (py<0 || G[py][px] == ' '))
+			for (py=gh-1; G[py][px] == ' '; py--) ;
+
+		if (G[py][px] == '#') {
+			px=x0; py=y0;
+			return;
+		}
+
+		assert(px >= 0); assert(px < gw);
+		assert(py >= 0); assert(py < gh);
+		assert(G[py][px] == '.');
+
+		vis22_emit();
+	}
+}
+
+static void
+move_p2(int v)
 {
 	int x0,y0,d0;
 
@@ -33,16 +66,6 @@ move(int v)
 		px += D[d][0];
 		py += D[d][1];
 
-#if 0
-		if (d == RIGHT && (px>=gw || G[py][px] == ' '))
-			for (px=0; G[py][px] == ' '; px++) ;
-		else if (d == DOWN && (py>=gh || G[py][px] == ' '))
-			for (py=0; G[py][px] == ' '; py++) ;
-		else if (d == LEFT && (px<0 || G[py][px] == ' '))
-			for (px=gw-1; G[py][px] == ' '; px--) ;
-		else if (d == UP && (py<0 || G[py][px] == ' '))
-			for (py=gh-1; G[py][px] == ' '; py--) ;
-#else
 		if (d == RIGHT && (px>=gw || G[py][px] == ' '))
 			switch (py/cz) {
 			case 0:
@@ -125,7 +148,7 @@ move(int v)
 				d = UP;
 				break;
 			}
-#endif
+
 		if (G[py][px] == '#') {
 			px=x0; py=y0; d=d0;
 			return;
@@ -139,12 +162,32 @@ move(int v)
 	}
 }
 
+static int
+run(char *p, void (*move)(int), char *vis_name)
+{
+	px=0; py=0; d=RIGHT;
+	while (G[0][px] != '.') px++;
+
+	vis22_begin(vis_name);
+
+	while (*p) {
+		     if (*p == 'L') { d = (d+4-1) %4; p++; }
+		else if (*p == 'R') { d = (d+1)   %4; p++; }
+		else if (isdigit(*p)) move((int)strtol(p, &p, 10));
+		else break;
+	}
+
+	vis22_end();
+
+	return (py+1)*1000 + (px+1)*4 + d;
+}
+
 int
 main()
 {
 	static char buf[6144];
-	char *lf,*p;
-	int x,y;
+	char *lf;
+	int p1,p2, x,y;
 
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';
@@ -157,27 +200,17 @@ main()
 	assert(gw/3 == gh/4);
 	cz = gw/3;
 
-	p = fgets(buf, sizeof(buf), stdin);
+	fgets(buf, sizeof(buf), stdin);
 	assert(buf[0]);
 
 	for (y=0; y<gh; y++)
 	for (x=0; x<gh; x++)
 		if (!G[y][x]) G[y][x] = ' ';
 
-	while (G[0][px] != '.') px++;
+	p1 = run(buf, move_p1, "day22-p1.mp4");
+	p2 = run(buf, move_p2, "day22-p2.mp4");
 
-	vis22_begin();
-
-	while (*p) {
-		     if (*p == 'L') { d = (d+4-1) %4; p++; }
-		else if (*p == 'R') { d = (d+1)   %4; p++; }
-		else if (isdigit(*p)) move((int)strtol(p, &p, 10));
-		else break;
-	}
-
-	vis22_end();
-
-	printf("22: %d\n", (py+1)*1000 + (px+1)*4 + d);
+	printf("22: %d %d\n", p1, p2);
 	return 0;
 }
 
@@ -221,9 +254,12 @@ struct vis_grid P_vis = {
 };
 
 static void
-vis22_begin(void)
+vis22_begin(char *name)
 {
-	vis_begin(&vis, "day22.mp4", 60, gw*SCALE, gh*SCALE);
+	memset(P, 0, sizeof(P));
+	memset(&vis, 0, sizeof(vis));
+
+	vis_begin(&vis, name, 60, gw*SCALE, gh*SCALE);
 }
 
 static void
@@ -254,7 +290,7 @@ vis22_end(void)
 	vis_end(&vis);
 }
 #else
-static void vis22_begin(void) {}
+static void vis22_begin(char *name) { (void)name; }
 static void vis22_emit(void) {}
 static void vis22_end(void) {}
 #endif
