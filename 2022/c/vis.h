@@ -27,3 +27,5 @@ void vis_fill(
 void vis_draw_grid(struct vis *, struct vis_grid *);
 void vis_emit(struct vis *, size_t duration);
 void vis_end(struct vis *);
+
+void lerp_rainbow(float f, uint8_t *r, uint8_t *g, uint8_t *b);

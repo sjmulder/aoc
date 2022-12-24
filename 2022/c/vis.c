@@ -8,6 +8,8 @@
 #include <err.h>
 #include "vis.h"
 
+static int max(int a, int b) { return a>b ? a : b; }
+
 void
 vis_begin(
     struct vis *vis,
@@ -157,4 +159,14 @@ vis_end(struct vis *vis)
 		errx(1, "ffmpeg exited with status %d", status);
 
 	memset(vis, 0, sizeof(*vis));
+}
+
+void
+lerp_rainbow(float f, uint8_t *r, uint8_t *g, uint8_t *b)
+{
+	int v = (int)(f * 255*3);
+
+	*r = max(0, 255-abs(v-255*3)) + max(0, 255-v);
+	*g = max(0, 255-abs(v-255*1));
+	*b = max(0, 255-abs(v-255*2));
 }
