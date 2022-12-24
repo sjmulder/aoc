@@ -16,14 +16,14 @@
 enum { RIGHT, DOWN, LEFT, UP };
 static const int D[4][2] = {{1,0}, {0,1}, {-1,0}, {0,-1}};
 static char G[GZ][GZ];
-static int gw,gh, cz, px,py;
+static int gw,gh, cz, px,py, d=RIGHT;
 
 static void vis22_begin(void);
 static void vis22_emit(void);
 static void vis22_end(void);
 
 static void
-move(int d, int v)
+move(int v)
 {
 	int x0,y0,d0;
 
@@ -144,7 +144,7 @@ main()
 {
 	static char buf[6144];
 	char *lf,*p;
-	int d=RIGHT, x,y;
+	int x,y;
 
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';
@@ -171,7 +171,7 @@ main()
 	while (*p) {
 		     if (*p == 'L') { d = (d+4-1) %4; p++; }
 		else if (*p == 'R') { d = (d+1)   %4; p++; }
-		else if (isdigit(*p)) move(d, (int)strtol(p, &p, 10));
+		else if (isdigit(*p)) move((int)strtol(p, &p, 10));
 		else break;
 	}
 
