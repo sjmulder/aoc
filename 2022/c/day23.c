@@ -32,6 +32,8 @@ step(int round)
 	for (x=1; x<GSZ-1; x++) {
 		if (!grid[y][x]) continue;
 
+		grid[y][x] = 1;
+
 		if (!grid[y-1][x-1] &&
 		    !grid[y-1][x  ] &&
 		    !grid[y-1][x+1] &&
@@ -167,15 +169,15 @@ main()
 #include "vis.h"
 
 #define SCALE	5
-#define SLOW	15
+#define SLOW	2
 
 static struct vis vis;
 
 static struct vis_grid vis_grid = {
 	.data = (uint8_t *)grid,
 	.colors = {
-		[0] = { 64, 64, 64},
-		[1] = {255,255,255},
+		//[0] = { 64, 64, 64},
+		[1] = {128,128,128},
 		[2] = {196, 64, 64},
 		[3] = {255,255,  0}, 
 		[4] = { 64,196, 64},
@@ -183,14 +185,13 @@ static struct vis_grid vis_grid = {
 	},
 	.w = GSZ,
 	.h = GSZ,
-	.cell_sz = SCALE,
-	.border = 1
+	.cell_sz = SCALE
 };
 
 static void
 vis23_begin(void)
 {
-	vis_begin(&vis, "day23.mp4", 30, SCALE*GSZ, SCALE*GSZ);
+	vis_begin(&vis, "day23.mp4", 60, SCALE*GSZ, SCALE*GSZ);
 }
 
 static void
