@@ -2,9 +2,9 @@
 
 DAYS=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
 	day11 day12 day13 day14 day15 day16 day17 day18 day19 day20 \
-	day21 day22 day23
+	day21 day22 day23 day24
 
-VISS= 	day14 day18 day20 day22 day23
+VISS= 	day14 day18 day20 day22 day23 day24
 
 PROGS=	${DAYS} ${VISS:S,$,-vis,} \
 	day06-orig day07-orig day08-orig day12-vis day14-vis \
