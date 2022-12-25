@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -160,9 +161,14 @@ solve(struct state s)
 {
 #define QSZ (128*1024*1024)
 
-	static struct state queue[QSZ];
+	static struct state *queue;
 	struct state *min, tmp;
 	int nseen=0, nq=1, i;
+
+	if (queue) {
+		queue = malloc(sizeof(*queue) * QSZ);
+		assert(queue);
+	}
 
 	queue[0] = s;
 
