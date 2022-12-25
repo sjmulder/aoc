@@ -29,5 +29,7 @@ BENCH_CMD+=	printf "$p "; ${TIME} ./$p <${INPUT.$p} >/dev/null;
 run:   ${DAYS} ; $Q env ${ENV} ${SHELL} -c ${RUN_CMD:Q}
 bench: ${DAYS} ; $Q env ${ENV} ${SHELL} -c ${BENCH_CMD:Q}
 
+show-var: ; @echo ${${VARNAME}}
+
 .o:
 	${LINK.c} -o $@ $> ${LDLIBS}
