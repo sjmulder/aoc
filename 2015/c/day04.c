@@ -13,7 +13,8 @@
 #endif
 
 int
-main(int argc, char **argv) {
+main(int argc, char **argv)
+{
 	char s[64];
 	unsigned char d[16];
 	int p1=0, p2=0, i, len;

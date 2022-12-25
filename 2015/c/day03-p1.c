@@ -4,7 +4,9 @@
 #define GSZ		(16*1024)
 #define MAX(a,b)	((a)>(b)?(a):(b))
 
-int main() {
+int
+main()
+{
 	static int g[GSZ][GSZ];
 	int c, x=GSZ/2, y=GSZ/2, p1=1;
 
