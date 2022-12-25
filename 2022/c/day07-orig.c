@@ -113,6 +113,8 @@ read_input(void)
 	assert(nnodes);
 	assert(cwd);
 
+	memset(fields, 0, sizeof(fields));
+
 	while (fgets(buf, sizeof(buf), stdin)) {
 		if ((lf = strchr(buf, '\n')))
 			*lf = '\0';
