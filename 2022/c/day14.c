@@ -4,8 +4,9 @@
 #include "compat/util.h"
 
 #ifdef WITH_VIS
-# include <stdint.h>
-# include "vis.h"
+#include <stdint.h>
+#include <unistd.h>
+#include "vis.h"
 #endif
 
 #define HSZ	512

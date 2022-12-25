@@ -4,7 +4,8 @@
 #include "compat/stdint.h"
 
 #ifdef WITH_VIS
-# include "vis.h"
+#include <unistd.h>
+#include "vis.h"
 #endif
 
 #define GSZ	24

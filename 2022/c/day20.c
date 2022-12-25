@@ -7,7 +7,8 @@
 #include "compat/inttypes.h"
 
 #ifdef WITH_VIS
-# include "vis.h"
+#include <unistd.h>
+#include "vis.h"
 #endif
 
 static void vis20_begin(void);
