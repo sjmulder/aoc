@@ -33,3 +33,5 @@ show-var: ; @echo ${${VARNAME}}
 
 .o:
 	${LINK.c} -o $@ $> ${LDLIBS}
+
+.PHONY: run bench show-var
