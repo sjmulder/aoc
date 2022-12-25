@@ -55,7 +55,7 @@ run(int *mem, size_t len)
 	int pc = 0;
 
 	while (1) {
-		if (pc >= len)
+		if ((size_t)pc >= len)
 			errx(1, "pc out of bounds");
 		switch (mem[pc]) {
 		case OP_ADD:

@@ -17,7 +17,7 @@ main()
 	if (scanf("%d", &mem[pc++]) != 1)
 		errx(1, "no input");
 	while (scanf(",%d", &mem[pc]) == 1)
-		if (++pc >= LEN(mem))
+		if (++pc >= (int)LEN(mem))
 			errx(1, "out of mem");
 
 	mem[1] = 12;
@@ -25,7 +25,7 @@ main()
 
 	pc = 0;
 	while (1) {
-		if (pc >= LEN(mem))
+		if (pc >= (int)LEN(mem))
 			errx(1, "pc out of bounds");
 		switch (mem[pc]) {
 		case OP_ADD:
