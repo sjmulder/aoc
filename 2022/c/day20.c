@@ -35,8 +35,8 @@ run(int steps)
 	for (s=0; s<steps; s++)
 	for (i=0; i<n; i++) {
 		v = val[i];
-		for (f=0; id[f]!=i; f++) ;	/* from idx */
-		t = (((f + v%(n-1)) %n)+n)%n;	/* to idx */
+		for (f=0; id[f]!=i; f++) ;		/* from idx */
+		t = (int)(((f + v%(n-1)) %n +n)%n);	/* to idx */
 
 		if (t>f) {
 			if (v<0) t--;	/* shifts with array */

@@ -6,6 +6,7 @@
 #include <limits.h>
 #include <inttypes.h>
 #include <assert.h>
+#include "compat/util.h"
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
@@ -40,7 +41,7 @@ find_num(char *s)
 	return atoi(s);
 }
 
-static void __attribute__((unused))
+static void UNUSED
 dump(struct monkey *monkeys, size_t nmonkeys)
 {
 	size_t i,j;
