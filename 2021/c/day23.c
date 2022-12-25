@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <limits.h>
 #include <assert.h>
 
@@ -152,8 +153,10 @@ solve(struct state s, int reset)
 int
 main()
 {
-	struct state s={};
+	struct state s;
 	int n,i, p1=0,p2=0;
+
+	memset(&s, 0, sizeof(s));
 
 	n = scanf(" %*s %*s ###%c#%c#%c#%c### #%c#%c#%c#%c",
 	    &s.rooms[0][0], &s.rooms[1][0],

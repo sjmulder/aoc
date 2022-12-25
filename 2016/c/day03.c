@@ -17,7 +17,7 @@ main(void)
 {
 	char *line = NULL;
 	size_t sz;
-	unsigned long a, b, c, ab, ac, bc, n = 0;
+	unsigned long a, b, c, n = 0;
 
 	while (getline(&line, &sz, stdin) && *line) {
 		if (sscanf(line, " %lu %lu %lu", &a, &b, &c) != 3) {

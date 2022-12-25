@@ -13,7 +13,7 @@ static const struct {
 	char nm[7];
 	int nfs;
 } ops[] = {
-	{}, {"", 3}, {"NOT", 4}, {"AND", 5}, {"OR", 5},
+	{"", 0}, {"", 3}, {"NOT", 4}, {"AND", 5}, {"OR", 5},
 	{"LSHIFT", 5}, {"RSHIFT", 5}
 };
 
