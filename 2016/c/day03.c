@@ -25,10 +25,10 @@ main(void)
 			return 1;
 		}
 
-		if (!__builtin_add_overflow(a, b, &ab)
-				&& !__builtin_add_overflow(a, c, &ac)
-				&& !__builtin_add_overflow(b, c, &bc)
-				&& a < bc && b < ac && c < ab)
+		if ((a+b) >= a && (a+b) >= b &&
+		    (a+c) >= a && (a+c) >= c &&
+		    (b+c) >= b && (b+c) >= c &&
+		    a < (b+c) && b < (a+c) && c < (a+b))
 			n++;
 
 		free(line);
