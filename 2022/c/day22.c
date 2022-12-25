@@ -4,11 +4,11 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-#include <unistd.h>
 #include "compat/util.h"
 
 #ifdef WITH_VIS
-# include "vis.h"
+#include <unistd.h>
+#include "vis.h"
 #endif
 
 #define GZ	256
