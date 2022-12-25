@@ -16,7 +16,7 @@ static struct mon mons[2560], *root, *humn;
 size_t nm;
 
 static struct mon *
-by_name(char name[4])
+by_name(char name[5])
 {
 	size_t i;
 
