@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <inttypes.h>
 #include <assert.h>
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
@@ -144,7 +145,8 @@ run_part(
     struct monkey *monkeys, size_t nmonkeys,
     size_t nrounds, int div_rule, int mod_rule)
 {
-	size_t round, i,j, top1=0, top2=0;
+	size_t round, i,j;
+	uint64_t top1=0, top2=0;
 
 	for (round=0; round < nrounds; round++) {
 		for (i=0; i < nmonkeys; i++) {
@@ -174,8 +176,9 @@ int
 main()
 {
 	static struct monkey monkeys_p1[8], monkeys_p2[8];
-	size_t nmonkeys, i, p1,p2;
+	size_t nmonkeys, i;
 	int mod=1;
+	uint64_t p1,p2;
 
 	nmonkeys = read_monkeys(monkeys_p1, LEN(monkeys_p1));
 	//dump(monkeys_p1, nmonkeys);
@@ -188,7 +191,7 @@ main()
 	p1 = run_part(monkeys_p1, nmonkeys, 20, 3, mod);
 	p2 = run_part(monkeys_p2, nmonkeys, 10000, 1, mod);
 
-	printf("11: %zu %zu\n", p1, p2);
+	printf("11: %" PRIu64 " %" PRIu64 "\n", p1, p2);
 
 	return 0;
 }
