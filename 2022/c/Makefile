@@ -16,7 +16,7 @@ VIS+=	day21.dot day21.pdf
 .endif
 
 CFLAGS+=	-O3 -Wall -Wextra
-CFLAGS+=	-g -ftrapv -Wconversion
+#CFLAGS+=	-g -ftrapv -Wconversion
 LDLIBS+=	-lm
 
 all: ${PROGS}
