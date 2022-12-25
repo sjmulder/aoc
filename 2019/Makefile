@@ -1,7 +1,10 @@
 # day10 not yet ready
-SUBDIRS=	day01 day02 day03 day04 day06 day07 day08 day08-cs \
-		day08-fs intcode
+SUBDIRS=	day01 day02 day03 day04 day06 day07 day08 intcode
 TARGETS=	all clean
+
+.if "${WITH_DOTNET}" != "0"
+SUBDIRS+=	day08-cs day08-fs
+.endif
 
 all:
 
