@@ -50,7 +50,7 @@ eval(struct mon *m)
 	case '-': return eval(m->deps[0]) - eval(m->deps[1]);
 	case '*': return eval(m->deps[0]) * eval(m->deps[1]);
 	case '/': return eval(m->deps[0]) / eval(m->deps[1]);
-	default: assert(!"bad op");
+	default: assert(!"bad op"); return 0;
 	}
 }
 
@@ -69,7 +69,7 @@ solve(struct mon *m, struct mon *x, int64_t val)
 		case '-': return solve(d0, x, val + eval(d1));
 		case '*': return solve(d0, x, val / eval(d1));
 		case '/': return solve(d0, x, val * eval(d1));
-		default: assert(!"bad op");
+		default: assert(!"bad op"); return 0;
 		}
 	else			/* x in right operand */
 		switch (m->op) {
@@ -77,7 +77,7 @@ solve(struct mon *m, struct mon *x, int64_t val)
 		case '*': return solve(d1, x, val / eval(d0));
 		case '-': return solve(d1, x, eval(d0) - val);
 		case '/': return solve(d1, x, eval(d0) / val);
-		default: assert(!"bad op");
+		default: assert(!"bad op"); return 0;
 		}
 }
 
