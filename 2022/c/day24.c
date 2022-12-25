@@ -93,11 +93,8 @@ route(int t, int sx, int sy, int ex, int ey)
 
 		vis24_emit(t);
 
-		if (dist[ey][ex][t] != INF) {
-			printf("dist at %d,%d is %d\n", sx,sy,
-			    dist[sy][sx][t]);
+		if (dist[ey][ex][t] != INF)
 			break;
-		}
 	}
 
 	assert(t != TEND);
