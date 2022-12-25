@@ -1,3 +1,4 @@
+#!/bin/sh
 ./day01    <../../inputs/2015/01-input.txt &
 ./day02    <../../inputs/2015/02-input.txt &
 echo '03': $(./day03-p1 <../../inputs/2015/03-input.txt) \

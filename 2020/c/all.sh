@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 
 echo 01: `./day01 ../../inputs/2020/01-input.txt` &

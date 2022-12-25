@@ -1,3 +1,4 @@
+#!/bin/sh
 (cd day01 && dotnet run -v m --nologo -c Release --no-build) &
 (cd day02 && dotnet run -v m --nologo -c Release --no-build) &
 (cd day03 && dotnet run -v m --nologo -c Release --no-build) &

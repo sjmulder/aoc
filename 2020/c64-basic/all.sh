@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 ./day12-p1.bas
 ./day12-p2.bas

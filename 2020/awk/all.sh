@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 gawk -f ./day02.awk ../../inputs/2020/02-input.txt &
 gawk -f ./day03-p1.awk ../../inputs/2020/03-input.txt &

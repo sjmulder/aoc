@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 ./day02.exe <../../inputs/2020/02-input.txt &
 ./day03.exe ../../inputs/2020/03-input.txt &
