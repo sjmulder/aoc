@@ -68,7 +68,7 @@ tail_recurse:
 int
 main(int argc, char **argv)
 {
-	static char line1[256], line2[256], *s;
+	static char line1[256], line2[256];
 	int p1=0, dec1=1, dec2=2, i;
 
 	if (argc > 1)
@@ -86,8 +86,7 @@ main(int argc, char **argv)
 		dec2 += compare_lists(line1, "[[6]]") < 0;
 		dec2 += compare_lists(line2, "[[6]]") < 0;
 
-		s = fgets(line1, sizeof(line1), stdin);
-		assert(s);
+		(void)!fgets(line1, sizeof(line1), stdin);
 	}
 
 	printf("13: %d %d\n", p1, dec1 * dec2);
