@@ -74,10 +74,13 @@ recur(int bp[NRES][NRES], struct st st, int best)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	struct st st;
 	int i, p1=0, p2=1;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	while (6 == scanf(
 " Blueprint %*d:"

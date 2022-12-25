@@ -74,7 +74,7 @@ print_ranges(struct range *ranges, size_t len)
 #endif
 
 int
-main()
+main(int argc, char **argv)
 {
 	int beacons[64];	/* beacon x positions on test row */
 	struct range seen[64];	/* scanned ranges on test row */
@@ -84,6 +84,9 @@ main()
 	int sx,sy, bx,by, x,y, dist, vert;
 	int p1=0;
 	int64_t p2=0;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	/*
 	 * For part 1 we track what portions of the line are covered by

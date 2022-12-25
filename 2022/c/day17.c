@@ -106,12 +106,15 @@ hit_test(int pi, int px, int py)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static char jets[16*1024];
 	int top=GH, t, nr, dx, x,y, dtop;
 	int pi=0, px=2, py=GH-SH-SPAWNY;
 	int64_t p1=0, nstack=0, yskip=0, ncycles, dnstack;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	nr = (int)fread(jets, 1, sizeof(jets), stdin);
 	while (nr>0 && isspace(jets[nr-1]))

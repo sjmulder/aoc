@@ -2,11 +2,14 @@
 #include <stdint.h>
 
 int
-main()
+main(int argc, char **argv)
 {
 	int c;
 	int64_t acc=0, sum=0;
 	char buf[128], *b;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	while ((c = getchar()) != EOF)
 		switch(c) {

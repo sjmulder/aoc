@@ -183,11 +183,14 @@ run(char *p, void (*move)(int), char *vis_name)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static char buf[6144];
 	char *lf;
 	int p1,p2, x,y;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';

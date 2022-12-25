@@ -106,10 +106,13 @@ route(int t, int sx, int sy, int ex, int ey)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	char buf[GSZ], *lf;
 	int x,t, i, p1,p2;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		assert(gh < GSZ);

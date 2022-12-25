@@ -63,11 +63,14 @@ max_val(
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	char buf[128], name[5], exits[5][3];
 	int p1,p2, n, rate, idx;
 	size_t i,j,k;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	memset(dists, 0x0f, sizeof(dists)); /* large numbers */
 

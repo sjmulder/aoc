@@ -59,10 +59,13 @@ run(int steps)
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	int i;
 	int64_t p1,p2;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	while (scanf("%" PRId64, &val[n]) == 1) {
 		if (val[n] == 0) zero_id = n;

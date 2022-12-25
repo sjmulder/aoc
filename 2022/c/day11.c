@@ -173,12 +173,15 @@ run_part(
 }
 
 int
-main()
+main(int argc, char **argv)
 {
 	static struct monkey monkeys_p1[8], monkeys_p2[8];
 	size_t nmonkeys, i;
 	int mod=1;
 	uint64_t p1,p2;
+
+	if (argc > 1)
+		freopen(argv[1], "r", stdin);
 
 	nmonkeys = read_monkeys(monkeys_p1, LEN(monkeys_p1));
 	//dump(monkeys_p1, nmonkeys);
