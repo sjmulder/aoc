@@ -70,7 +70,7 @@ main(int argc, char **argv)
 	size_t i,j,k;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	memset(dists, 0x0f, sizeof(dists)); /* large numbers */
 

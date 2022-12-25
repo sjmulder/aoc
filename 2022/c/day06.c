@@ -45,7 +45,7 @@ main(int argc, char **argv)
 	int c;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	p1.ring = buf1; p1.sz = 4;
 	p2.ring = buf2; p2.sz = 14;

@@ -43,7 +43,7 @@ int
 main(int argc, char *argv[])
 {
 	static int job_fds[MAXJOBS];
-	int c, fds[2];
+	int c,n, fds[2];
 	int64_t nhits, p1,p2=0;
 
 	while ((c = getopt(argc, argv, "j:")) != -1)
@@ -55,8 +55,11 @@ main(int argc, char *argv[])
 	if (njobs < 1 || njobs > MAXJOBS)
 		errx(1, "bad -j");
 
-	scanf("target area: x=%"PRId64"..%"PRId64", "
+	n = scanf(
+	    "target area: x=%"PRId64"..%"PRId64", "
 	    "y=%"PRId64"..%"PRId64"", &l,&r,&b,&t);
+	if (n != 4)
+		errx(1, "bad input");
 
 	for (job=0; job<njobs; job++) {
 		if (pipe(fds) == -1)

@@ -20,7 +20,7 @@ main(int argc, char **argv)
 	size_t len, i;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	memset(notseen, 0, sizeof(notseen));
 

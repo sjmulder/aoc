@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 
 /*
  * Given my terrible mathematical insights I was quite proud to have
@@ -22,7 +23,8 @@ main()
 {
 	int l,r,b,t, vx0,vy0,vx,vy,x,y, p1,p2=0;
 
-	scanf("target area: x=%d..%d, y=%d..%d", &l,&r,&b,&t);
+	if (scanf("target area: x=%d..%d, y=%d..%d", &l,&r,&b,&t) != 4)
+		assert(!"bad input");
 
 	p1 = b * (b+1) /2;
 

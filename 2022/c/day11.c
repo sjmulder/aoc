@@ -182,7 +182,7 @@ main(int argc, char **argv)
 	uint64_t p1,p2;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	nmonkeys = read_monkeys(monkeys_p1, LEN(monkeys_p1));
 	//dump(monkeys_p1, nmonkeys);

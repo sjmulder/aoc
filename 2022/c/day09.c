@@ -12,7 +12,7 @@ main(int argc, char **argv)
 	int x[10],y[10], p1=0,p2=0, dx,dy, steps, i;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 	for (i=0; i<10; i++)
 		x[i] = y[i] = 256;
 

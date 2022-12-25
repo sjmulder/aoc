@@ -29,7 +29,7 @@ main(int argc, char **argv)
 	int nvisible=0, oob;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	for (; fgets(heights[h], SZ, stdin); h++) {
 		for (len=0;

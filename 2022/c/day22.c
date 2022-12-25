@@ -186,11 +186,11 @@ int
 main(int argc, char **argv)
 {
 	static char buf[6144];
-	char *lf;
+	char *lf, *s;
 	int p1,p2, x,y;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';
@@ -203,7 +203,8 @@ main(int argc, char **argv)
 	assert(gw/3 == gh/4);
 	cz = gw/3;
 
-	fgets(buf, sizeof(buf), stdin);
+	s = fgets(buf, sizeof(buf), stdin);
+	assert(s);
 	assert(buf[0]);
 
 	for (y=0; y<gh; y++)

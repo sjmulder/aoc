@@ -109,7 +109,7 @@ main(int argc, char **argv)
 	int x,t, i, p1,p2;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	while (fgets(buf, sizeof(buf), stdin)) {
 		assert(gh < GSZ);

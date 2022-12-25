@@ -89,7 +89,7 @@ main()
 {
 	int x,y,z, i, p1=0,p2=0, val;
 
-	//freopen("../data/18-input.txt", "r", stdin);
+	//(void)!freopen("../data/18-input.txt", "r", stdin);
 
 	while (scanf(" %d,%d,%d", &x,&y,&z) == 3) {
 		assert(x>=0); assert(x<GSZ);

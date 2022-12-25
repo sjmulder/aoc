@@ -7,7 +7,7 @@ main(int argc, char **argv)
 	int p1=0, p2=0;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	while (scanf(" %c %c", &a, &b) == 2) {
 		a -= 'A';

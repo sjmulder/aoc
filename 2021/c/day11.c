@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #define SZ	10
 #define FLASHED	('9'+2)
@@ -31,7 +32,8 @@ main()
 {
 	int i,r,c, p1=0, nflash=0;
 
-	fread(grid, 1, sizeof(grid), stdin);
+	if (fread(grid, 1, sizeof(grid), stdin) != 1)
+		assert(!"failed ot read input");
 
 	for (i=0; nflash != SZ*SZ; i++) {
 		nflash=0;

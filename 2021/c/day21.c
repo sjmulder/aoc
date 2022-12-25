@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
+#include <assert.h>
 
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
@@ -87,14 +88,17 @@ int
 main(void)
 {
 	struct state st;
-	int p1;
+	int p1, n;
 	struct p2 p2;
 
 	memset(&st, 0, sizeof(st));
 
-	scanf(" Player 1 starting position: %d"
-	      " Player 2 starting position: %d", &st.pos0, &st.pos1);
-	
+	n = scanf(
+	    " Player 1 starting position: %d"
+	    " Player 2 starting position: %d", &st.pos0, &st.pos1);
+	if (n != 2)
+		assert(!"bad input");
+
 	st.pos0--; /* 0 indexed */
 	st.pos1--;
 	

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #define SZ	10
 #define ON	('9'+2)
@@ -23,7 +24,8 @@ static void flash(int r, int c) {
 int main() {
 	int i,r,c, p1=0, nf=0;
 
-	fread(g, 1, sizeof(g), stdin);
+	if (fread(g, 1, sizeof(g), stdin) != 1)
+		assert(!"bad input");
 
 	for (i=0; nf != SZ*SZ; i++) {
 		nf=0;

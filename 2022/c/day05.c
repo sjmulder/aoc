@@ -86,7 +86,7 @@ main(int argc, char **argv)
 	int count, from, to;
 	
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	read_input(&p1);
 	memcpy(&p2, &p1, sizeof(p2));

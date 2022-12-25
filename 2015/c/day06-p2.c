@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
@@ -15,12 +16,13 @@ main()
 	while (scanf(" %7s", b) == 1) {
 		if (!strcmp(b, "toggle"))
 			op = TGL;
-		else {
-			scanf(" %7s", b);
+		else if (scanf(" %7s", b) == 1)
 			op = !strcmp(b, "on") ? ON : OFF;
-		}
+		else
+			assert(!"bad input");
 
-		scanf(" %d,%d %7s %d,%d", &x0, &y0, b, &x1, &y1);
+		if (scanf(" %d,%d %7s %d,%d", &x0,&y0,b,&x1,&y1) != 5)
+			assert(!"bad input");
 
 		for (x=x0; x<=x1; x++)
 		for (y=y0; y<=y1; y++)

@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
+#include <assert.h>
 
 /*
  * Data is kept as two maps: a count of letters and a count of
@@ -35,7 +36,9 @@ main()
 	uint64_t count, p1=0,p2;
 	uint8_t c1,c2,cnew;
 
-	scanf(" %49s", line);
+	if (scanf(" %49s", line) != 1)
+		assert(!"bad input");
+
 	for (i=0; line[i]; i++) {
 		line[i] -= 'A';
 		ccounts[line[i]]++;

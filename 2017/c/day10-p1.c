@@ -13,7 +13,7 @@ main()
 	for (i=0; i<N; i++)
 		list[i] = i;
 
-	while (scanf(" %d", &length) == 1) {
+	while (scanf(" %d ,", &length) == 1) {
 		for (i=0; i < length/2; i++) {
 			p = list + (pos+i) % N;
 			q = list + (pos+length-i-1) % N;
@@ -21,7 +21,6 @@ main()
 		}
 
 		pos += length + skip++;
-		scanf(" ,");
 	}
 
 	printf("%d\n", list[0] * list[1]);

@@ -58,7 +58,7 @@ main(int argc, char **argv)
 	int x,y, nchange, p2=INT_MAX;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	while (fgets(map[h], SZX, stdin)) {
 		if ((lf = strchr(map[h], '\n')))

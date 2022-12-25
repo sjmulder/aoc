@@ -10,7 +10,7 @@ main(int argc, char **argv)
 	int p1=0, x,y;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	for (clock = 0; clock < 6*40; clock++, op_time--) {
 		y = clock / 40;

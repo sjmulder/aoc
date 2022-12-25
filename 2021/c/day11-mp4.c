@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <assert.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <err.h>
@@ -119,7 +120,8 @@ main()
 {
 	int i,r,c, p1=0, nflash=0;
 
-	fread(grid, 1, sizeof(grid), stdin);
+	if (fread(grid, 1, sizeof(grid), stdin) == 1)
+		assert(!"bad input");
 
 	start_ffmpeg();
 	send_frame(0);

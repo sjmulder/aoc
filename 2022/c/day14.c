@@ -68,7 +68,7 @@ read_input(void)
 		y0 = y1;
 
 		if (!(is_first = (getchar() == '\n')))
-			scanf(" ->");
+			(void)!scanf(" ->");
 	}
 }
 
@@ -141,7 +141,7 @@ main(int argc, char **argv)
 	int p1=0,p2=0, hit_floor=0;
 
 	if (argc > 1)
-		freopen(argv[1], "r", stdin);
+		(void)!freopen(argv[1], "r", stdin);
 
 	read_input();
 	vis14_begin();
