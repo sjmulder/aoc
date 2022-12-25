@@ -8,6 +8,7 @@ CFLAGS+=	-Wno-implicit-function-declaration
 CFLAGS+=	-Wno-implicit-int
 CFLAGS+=	-Wno-misleading-indentation
 CFLAGS+=	-Wno-parentheses
+CFLAGS+=	-Wno-unknown-warning-option
 
 all: ${PROGS}
 
