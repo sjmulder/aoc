@@ -27,7 +27,10 @@ clean:
 	rm -rfv *.dSYM
 
 day07: day07.o stdio.o string.o
+day11: day11.o string.o
 day12: day12.o stdio.o
+day13: day13.o stdio.o
+day21: day21.o string.o
 
 day14-vis: day14-vis.o vis.o
 day18-vis: day18-vis.o vis.o
