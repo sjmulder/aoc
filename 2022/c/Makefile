@@ -42,7 +42,7 @@ day11.o: day11.c compat/stdint.h compat/string.h compat/inttypes.h \
 day12.o: day12.c compat/util.h
 day13.o: day13.c compat/stdio.h
 day14.o: day14.c compat/util.h
-day15.o: day15.c compat/util.h compat/stdint.h compat/inttypes.H
+day15.o: day15.c compat/util.h compat/stdint.h compat/inttypes.h
 day17.o: day17.c compat/stdint.h compat/inttypes.h
 day18.o: day18.c compat/stdint.h
 day19.o: day19.c compat/util.h
