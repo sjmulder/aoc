@@ -27,4 +27,5 @@ main(int argc, char **argv)
 	}
 
 	printf("02: %d %d\n", p1, p2);
+	return 0;
 }

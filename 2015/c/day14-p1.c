@@ -25,4 +25,5 @@ main(int argc, char **argv)
 	}
 
 	printf("%d\n", best);
+	return 0;
 }

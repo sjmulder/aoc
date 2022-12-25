@@ -16,4 +16,5 @@ main()
 		}
 
 	printf("%d\n", acc);
+	return 0;
 }

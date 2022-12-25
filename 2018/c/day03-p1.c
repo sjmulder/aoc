@@ -19,4 +19,5 @@ int main()
 				noverlap++;
 
 	printf("%d\n", noverlap);
+	return 0;
 }

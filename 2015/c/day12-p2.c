@@ -33,4 +33,4 @@ recur(char end)
 	return acc;
 }
 
-int main() { printf("%d\n", recur(-1)); }
+int main() { printf("%d\n", recur(-1)); return 0; }

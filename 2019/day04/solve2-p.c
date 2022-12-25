@@ -83,6 +83,7 @@ done_reading:
 		err(1, "wait");
 
 	printf("%d\n", nvalid);
+	return 0;
 }
 
 static int

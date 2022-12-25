@@ -29,6 +29,7 @@ main(int argc, char **argv)
 	}
 
 	printf("%d\n", nvalid);
+	return 0;
 }
 
 static void

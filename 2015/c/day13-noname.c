@@ -71,4 +71,6 @@ main()
 
 	printf("%d\n", solve()); count++;
 	printf("%d\n", solve());
+
+	return 0;
 }

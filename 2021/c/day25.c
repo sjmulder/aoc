@@ -55,4 +55,5 @@ main()
 	} while (dirty);
 
 	printf("25: %d\n", step);
+	return 0;
 }

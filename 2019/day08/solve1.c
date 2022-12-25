@@ -25,6 +25,7 @@ main()
 		}
 
 	printf("%d\n", count(bestl, '1') * count(bestl, '2'));
+	return 0;
 }
 
 static int

@@ -24,4 +24,6 @@ main()
 			putchar(layers[0][r*W+c] == '1' ? '#' : ' ');
 		putchar('\n');
 	}
+
+	return 0;
 }

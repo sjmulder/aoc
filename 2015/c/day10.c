@@ -38,4 +38,5 @@ main(int argc, char **argv)
 	}
 
 	printf("%zu\n", strlen(d));
+	return 0;
 }

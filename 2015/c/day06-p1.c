@@ -36,4 +36,5 @@ main()
 		p1 += g[y][x];
 
 	printf("%d\n", p1);
+	return 0;
 }

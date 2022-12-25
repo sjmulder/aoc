@@ -23,4 +23,5 @@ main()
 	}
 
 	printf("%d\n", p1);
+	return 0;
 }

@@ -40,4 +40,5 @@ main(int argc, char **argv)
 	}
 
 	printf("14: %d %d\n", maxdist, maxpts);
+	return 0;
 }

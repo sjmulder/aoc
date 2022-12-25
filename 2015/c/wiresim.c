@@ -182,4 +182,6 @@ main(int argc, char **argv)
 			printf("%s: %u\n", wires[i].nm,
 			    solve(&wires[i]));
 	}
+
+	return 0;
 }

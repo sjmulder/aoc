@@ -26,4 +26,5 @@ int main()
 		}
 
 	puts("no solution");
+	return 0;
 }

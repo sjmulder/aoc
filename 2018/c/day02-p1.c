@@ -32,6 +32,7 @@ main()
 		err(1, "fgets");
 	
 	printf("%d\n", n2 * n3);
+	return 0;
 }
 
 int

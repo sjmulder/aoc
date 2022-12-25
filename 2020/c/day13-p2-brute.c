@@ -97,4 +97,6 @@ main(int argc, char **argv)
 		;
 	if (errno != ECHILD)
 		err(1, "wait()");
+
+	return 0;
 }

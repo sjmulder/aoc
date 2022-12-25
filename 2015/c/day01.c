@@ -6,4 +6,5 @@ int main() {
 		if ((p1 += c=='(' ? 1 : c==')' ? -1 : 0) == -1 && !p2)
 			p2=i;
 	printf("01: %d %d\n", p1, p2);
+	return 0;
 }

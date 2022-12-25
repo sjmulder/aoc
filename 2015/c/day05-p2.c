@@ -26,4 +26,5 @@ main()
 	}
 
 	printf("%d\n", p2);
+	return 0;
 }
