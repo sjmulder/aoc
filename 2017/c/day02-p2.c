@@ -1,4 +1,6 @@
+#ifdef __clang__
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
+#endif
 
 #define _WITH_GETLINE
 #define LEN(a) (int)(sizeof(a)/sizeof(*a))
