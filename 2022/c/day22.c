@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include "compat/stdint.h"
 #include "compat/util.h"
 
 #ifdef WITH_VIS

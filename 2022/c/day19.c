@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include "compat/util.h"
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 #define NRES	4

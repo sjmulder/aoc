@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
 #include <memory.h>
 #include <assert.h>
+#include "compat/stdint.h"
+#include "compat/inttypes.h"
 
 #ifdef WITH_VIS
 # include "vis.h"

@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "compat/stdint.h"
 
 #ifdef WITH_VIS
 # include "vis.h"
