@@ -11,8 +11,12 @@ PROGS=	${DAYS} ${VIS_PROGS} \
 	day12-vis day06-orig day07-orig day08-orig \
 	day15-tests day18-recur day19-wip day21-dot
 
-VIS=	day14.mp4 day18.mp4 day20.mp4 day21.dot day21.pdf day22-p1.mp4 \
-	day22-p2.mp4 day23.mp4 day24.mp4
+VIS=	day14.mp4 day18.mp4 day20.mp4 day22-p1.mp4 day22-p2.mp4 \
+	day23.mp4 day24.mp4
+
+.if "${WITH_DOT}" != "0"
+VIS+=	day21.dot day21.pdf
+.endif
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
