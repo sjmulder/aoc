@@ -10,7 +10,7 @@
 
 struct bl { int x0,y0, dx,dy; };
 
-static int dist[GSZ][GSZ][TEND];	/* 'best distance' map */
+static int dist[GSZ][GSZ][2];		/* 'best distance' map */
 static uint8_t blocked[GSZ][GSZ][TEND];
 static struct bl bls[GSZ*GSZ];		/* blizzards */
 static int gw,gh, nbl;			/* size, blizzard count */
@@ -67,9 +67,9 @@ route(int t, int sx, int sy, int ex, int ey)
 
 	for (y=0; y<gh; y++)
 	for (x=0; x<gw; x++)
-		dist[y][x][t] = INF;
+		dist[y][x][t%2] = INF;
 	
-	dist[sy][sx][t] = t;
+	dist[sy][sx][t%2] = t;
 	
 	vis24_emit(t);
 
@@ -77,23 +77,23 @@ route(int t, int sx, int sy, int ex, int ey)
 		for (y=0; y<gh; y++)
 		for (x=0; x<gw; x++) {
 			if (blocked[y][x][t]) {
-				dist[y][x][t] = INF;
+				dist[y][x][t%2] = INF;
 				continue;
 			}
 
-			d = dist[y][x][t-1];
+			d = dist[y][x][(t+1)%2];
 
-			if (y>0)    d = min(d, dist[y-1][x][t-1]);
-			if (y<gh-1) d = min(d, dist[y+1][x][t-1]);
-			if (x>0)    d = min(d, dist[y][x-1][t-1]);
-			if (x<gw-1) d = min(d, dist[y][x+1][t-1]);
+			if (y>0)    d = min(d, dist[y-1][x][(t+1)%2]);
+			if (y<gh-1) d = min(d, dist[y+1][x][(t+1)%2]);
+			if (x>0)    d = min(d, dist[y][x-1][(t+1)%2]);
+			if (x<gw-1) d = min(d, dist[y][x+1][(t+1)%2]);
 
-			dist[y][x][t] = min(d+1, INF);
+			dist[y][x][t%2] = min(d+1, INF);
 		}
 
 		vis24_emit(t);
 
-		if (dist[ey][ex][t] != INF)
+		if (dist[ey][ex][t%2] != INF)
 			break;
 	}
 
@@ -175,10 +175,10 @@ vis24_emit(int t)
 	for (x=0; x<gw; x++) {
 		if (blocked[y][x][t])
 			r=g=b= 32;//255;
-		else if (dist[y][x][t] == INF)
+		else if (dist[y][x][t%2] == INF)
 			r=g=b= 0;
 		else {
-			f = (float)(dist[y][x][t] % 10) * 0.1f;
+			f = (float)(dist[y][x][t%2] % 10) * 0.1f;
 			lerp_rainbow(f, &r,&g,&b);
 		}
 
