@@ -1,21 +1,21 @@
 # Use BSD make (bmake)
 
-DAYS=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10 \
-	day11 day12 day13 day14 day15 day16 day17 day18 day19 day20 \
-	day21 day22 day23 day24 day25
+DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
+		day10 day11 day12 day13 day14 day15 day16 day17 day18 \
+		day19 day20 day21 day22 day23 day24 day25
 
 VIS_SUPPORT=	day14 day18 day20 day22 day23 day24
 VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
-PROGS=	${DAYS} ${VIS_PROGS} \
-	day12-vis day06-orig day07-orig day08-orig \
-	day15-tests day18-recur day19-wip day21-dot
+PROGS=		${DAYS} ${VIS_PROGS} \
+		day12-vis day06-orig day07-orig day08-orig \
+		day15-tests day18-recur day19-wip day21-dot
 
-VIS=	day14.mp4 day18.mp4 day20.mp4 day22-p1.mp4 day22-p2.mp4 \
-	day23.mp4 day24.mp4
+VIS=		day14.mp4 day18.mp4 day20.mp4 day22-p1.mp4 \
+		day22-p2.mp4 day23.mp4 day24.mp4
 
 .if "${WITH_DOT}" != "0"
-VIS+=	day21.dot day21.pdf
+VIS+=		day21.dot day21.pdf
 .endif
 
 CFLAGS+=	-O3 -Wall -Wextra
