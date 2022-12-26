@@ -37,15 +37,10 @@ route(int t, int sx, int sy, int ex, int ey)
 	for (t=t+1; t<TEND; t++) {
 		c = t%2; p = !c;
 
-		memset(blocked, 0, sizeof(blocked));
-
-		for (x=2; x<gw;   x++) blocked[0][x]    = 1;
-		for (x=0; x<gw-2; x++) blocked[gh-1][x] = 1;
-		for (y=0; y<gh;   y++) blocked[y][0]    = 1;
-		for (y=0; y<gh;   y++) blocked[y][gw-1] = 1;
+		for (i=0; i<nbl; i++)
+			blocked[bls[i].y][bls[i].x] = 0;
 
 		for (i=0; i<nbl; i++) {
-
 			bls[i].x += bls[i].dx;
 			bls[i].y += bls[i].dy;
 
@@ -57,7 +52,6 @@ route(int t, int sx, int sy, int ex, int ey)
 
 			blocked[bls[i].y][bls[i].x] = 1;
 		}
-
 
 		for (y=0; y<gh; y++)
 		for (x=0; x<gw; x++)
@@ -98,6 +92,7 @@ main(int argc, char **argv)
 
 		for (x=0; buf[x]; x++)
 			switch (buf[x]) {
+			case '#': blocked[gh][x] = 1; break;
 			case '^': add_bl(x, gh, 0,-1); break;
 			case 'v': add_bl(x, gh, 0, 1); break;
 			case '<': add_bl(x, gh,-1, 0); break;
