@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include "compat/util.h"
+#include "common.h"
 
 #ifdef WITH_VIS
 #include <stdint.h>

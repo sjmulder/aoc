@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+#include "common.h"
 
 /*
  * INCORRECT attempt at solving part 2 with recursion.

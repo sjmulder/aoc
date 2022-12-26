@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <assert.h>
-#include "compat/stdint.h"
-#include "compat/inttypes.h"
+#include "common.h"
 
 #ifdef WITH_VIS
 #include <unistd.h>

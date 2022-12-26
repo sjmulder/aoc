@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <assert.h>
+#include "common.h"
 
 #define SZ 128
 

@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+#include "common.h"
 
 static int sign(int x) { return x>0 ? 1 : x<0 ? -1 : 0; }
 

@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <assert.h>
+#include "common.h"
 
 #define NSTACKS	10
 #define MAXH	99

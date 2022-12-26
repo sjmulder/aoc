@@ -1,8 +1,4 @@
-#include <stdlib.h>
-#include <limits.h>
-#include <assert.h>
-#include "compat/stdio.h"
-#include "compat/string.h"
+#include "common.h"
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 

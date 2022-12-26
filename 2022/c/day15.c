@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include "compat/util.h"
-#include "compat/stdint.h"
-#include "compat/inttypes.h"
+#include "common.h"
 
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 

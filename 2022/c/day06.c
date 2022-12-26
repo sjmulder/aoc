@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "common.h"
 
 /*
  * We keep a ring buffer of the last N characters (4 for part 1,

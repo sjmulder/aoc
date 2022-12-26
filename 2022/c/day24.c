@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <limits.h>
-#include <assert.h>
-#include "compat/stdint.h"
+#include "common.h"
 
 #define GSZ	128
 #define TEND	4096

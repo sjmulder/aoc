@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <limits.h>
+#include "common.h"
 #include <errno.h>
-#include <assert.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <err.h>

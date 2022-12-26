@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <assert.h>
+#include "common.h"
 
-#define UNUSED	__attribute__((unused))
 #define LEN(a)	(sizeof(a)/sizeof(*(a)))
 
 /*

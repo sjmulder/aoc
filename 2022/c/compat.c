@@ -1,12 +1,24 @@
+#include "common.h"
+
+#ifdef NO_SNPRINTF
+int
+snprintf(char *s, size_t sz, const char *fmt, ...)
+{
+	va_list ap;
+	int ret;
+
+	va_start(ap, fmt);
+	ret = vsprintf(s, fmt, ap);
+	assert(ret < sz);
+	va_end(ap);
+
+	return ret;
+}
+#endif
 #include <stddef.h>
 
-#ifdef __TURBOC__
-# include "compat/string.h"
-#else
-# include "../compat/string.h"
-#endif
 
-#ifdef COMPAT_STRSEP
+#ifdef NO_STRSEP
 char *
 strsep(char **stringp, const char *delim)
 {

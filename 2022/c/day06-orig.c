@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "common.h"
 
 static int
 step(char *ring, int sz, int pos, char c)

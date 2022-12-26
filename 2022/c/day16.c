@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include "common.h"
 
 static char names[64][3];
 static int flows[64], is_open[64], dists[64][64];
