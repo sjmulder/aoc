@@ -42,8 +42,8 @@ day18.mp4:    day18-vis ; ./day18-vis <../../inputs/2022/18-input.txt
 day20.mp4:    day20-vis ; ./day20-vis <../../inputs/2022/20-input.txt
 day21.dot:    day21-dot ; ./day21-dot <../../inputs/2022/21-input.txt >$@
 day21.pdf:    day21.dot ; dot -T pdf $< >$@
-day22-p1.mp4: day24-vis ; ./day22-vis <../../inputs/2022/22-input.txt
-day22-p2.mp4: day24-vis ; ./day22-vis <../../inputs/2022/22-input.txt
+day22-p1.mp4: day22-vis ; ./day22-vis <../../inputs/2022/22-input.txt
+day22-p2.mp4: day22-vis ; ./day22-vis <../../inputs/2022/22-input.txt
 day23.mp4:    day23-vis ; ./day23-vis <../../inputs/2022/23-input.txt
 day24.mp4:    day24-vis ; ./day24-vis <../../inputs/2022/24-input.txt
 
