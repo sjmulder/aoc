@@ -3,10 +3,10 @@
 #define GSZ	128
 #define TEND	4096
 
-struct bl { int x0,y0, dx,dy; };
+struct bl { int x,y, dx,dy; };
 
 static uint8_t reach[GSZ][GSZ][2];	/* reachable at t%2? */
-static uint8_t blocked[GSZ][GSZ][TEND];
+static uint8_t blocked[GSZ][GSZ];	/* blocked at t? */
 static struct bl bls[GSZ*GSZ];		/* blizzards */
 static int gw,gh, nbl;			/* size, blizzard count */
 
@@ -15,48 +15,19 @@ static void vis24_emit(int t);
 static void vis24_end(void);
 
 static void
-add_bl(int x0, int y0, int dx, int dy)
+add_bl(int x, int y, int dx, int dy)
 {
-	bls[nbl].x0 = x0;
-	bls[nbl].y0 = y0;
+	bls[nbl].x = x;
+	bls[nbl].y = y;
 	bls[nbl].dx = dx;
 	bls[nbl].dy = dy;
 	nbl++;
 }
 
-static void
-add_wall(int x, int y)
-{
-	int t;
-
-	for (t=0; t<TEND; t++)
-		blocked[y][x][t] = 1;
-}
-
-static void
-trace_bl(struct bl *bl)
-{
-
-	int x,y,t;
-
-	x = bl->x0;
-	y = bl->y0;
-
-	for (t=0; t<TEND; t++) {
-		blocked[y][x][t] = 1;
-
-		x += bl->dx;
-		y += bl->dy;
-
-		if (!x) x = gw-2; else if (x==gw-1) x = 1;
-		if (!y) y = gh-2; else if (y==gh-1) y = 1;
-	}
-}
-
 static int
 route(int t, int sx, int sy, int ex, int ey)
 {
-	int x,y, c,p;		/* c,p: cur, prev t%2 */
+	int x,y, c,p, i;	/* c,p: cur, prev t%2 */
 
 	memset(reach, 0, sizeof(reach));
 	reach[sy][sx][t%2] = 1;
@@ -66,9 +37,31 @@ route(int t, int sx, int sy, int ex, int ey)
 	for (t=t+1; t<TEND; t++) {
 		c = t%2; p = !c;
 
+		memset(blocked, 0, sizeof(blocked));
+
+		for (x=2; x<gw;   x++) blocked[0][x]    = 1;
+		for (x=0; x<gw-2; x++) blocked[gh-1][x] = 1;
+		for (y=0; y<gh;   y++) blocked[y][0]    = 1;
+		for (y=0; y<gh;   y++) blocked[y][gw-1] = 1;
+
+		for (i=0; i<nbl; i++) {
+
+			bls[i].x += bls[i].dx;
+			bls[i].y += bls[i].dy;
+
+			if (!bls[i].x) bls[i].x = gw-2;
+			if (!bls[i].y) bls[i].y = gh-2;
+
+			if (bls[i].x==gw-1) bls[i].x = 1;
+			if (bls[i].y==gh-1) bls[i].y = 1;
+
+			blocked[bls[i].y][bls[i].x] = 1;
+		}
+
+
 		for (y=0; y<gh; y++)
 		for (x=0; x<gw; x++)
-			reach[y][x][c] = !blocked[y][x][t] && (
+			reach[y][x][c] = !blocked[y][x] && (
 			    reach[y][x][p] ||
 			    (y>0    && reach[y-1][x][p]) ||
 			    (y<gh-1 && reach[y+1][x][p]) ||
@@ -90,7 +83,7 @@ int
 main(int argc, char **argv)
 {
 	char buf[GSZ], *lf;
-	int x,t, i, p1,p2;
+	int x,t, p1,p2;
 
 	if (argc > 1)
 		(void)!freopen(argv[1], "r", stdin);
@@ -105,7 +98,6 @@ main(int argc, char **argv)
 
 		for (x=0; buf[x]; x++)
 			switch (buf[x]) {
-			case '#': add_wall(x, gh); break;
 			case '^': add_bl(x, gh, 0,-1); break;
 			case 'v': add_bl(x, gh, 0, 1); break;
 			case '<': add_bl(x, gh,-1, 0); break;
@@ -114,9 +106,6 @@ main(int argc, char **argv)
 		gh++;
 	}
 
-	for (i=0; i<nbl; i++)
-		trace_bl(&bls[i]);
-	
 	vis24_begin();
 	vis24_emit(0);
 
@@ -157,7 +146,7 @@ vis24_emit(int t)
 
 	for (y=0; y<gh; y++)
 	for (x=0; x<gw; x++) {
-		if (blocked[y][x][t])
+		if (blocked[y][x])
 			r=g=b= 32;//255;
 		else if (!reach[y][x][t%2])
 			r=g=b= 0;
