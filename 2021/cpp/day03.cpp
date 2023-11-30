@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cstdint>
 
 template<typename T>
 static constexpr T
@@ -14,7 +15,7 @@ from_binary(std::string_view s)
 }
 
 static size_t
-sort_bybitval(std::vector<uint16_t> ns, int len, int bit, bool set)
+sort_bybitval(std::vector<std::uint16_t> ns, int len, int bit, bool set)
 {
 	size_t c = 0;
 
@@ -25,8 +26,9 @@ sort_bybitval(std::vector<uint16_t> ns, int len, int bit, bool set)
 	return c;
 }
 
-static uint16_t
-get_measurement(std::vector<uint16_t> ns, int nbits, bool use_epsilon)
+static std::uint16_t
+get_measurement(std::vector<std::uint16_t> ns, int nbits,
+    bool use_epsilon)
 {
 	auto len = ns.size();
 
@@ -44,15 +46,15 @@ get_measurement(std::vector<uint16_t> ns, int nbits, bool use_epsilon)
 int
 main()
 {
-	std::vector<uint16_t> nums;
+	std::vector<std::uint16_t> nums;
 	size_t nbits=0;
-	uint16_t gamma=0, epsilon, oxy, co2;
+	std::uint16_t gamma=0, epsilon, oxy, co2;
 
 	std::string binary;
 	while (std::cin >> binary) {
 		if (!nbits)
 			nbits = binary.size();
-		nums.push_back(from_binary<uint16_t>(binary));
+		nums.push_back(from_binary<std::uint16_t>(binary));
 	}
 
 	for (size_t bit=0; bit<nbits; bit++) {
