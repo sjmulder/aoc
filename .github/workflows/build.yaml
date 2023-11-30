@@ -16,8 +16,11 @@ jobs:
     - run: bmake -j $(sysctl -n hw.ncpu)
 
   vs:
+    strategy:
+      matrix:
+        platform: [x86, x64, ARM]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - uses: microsoft/setup-msbuild@v1.1
-    - run: msbuild aoc.sln
+    - run: msbuild aoc.sln /p:Platform=${{ matrix.platform }}
