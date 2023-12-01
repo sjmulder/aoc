@@ -11,6 +11,8 @@ UNAME!=		uname
 .if "${UNAME}" == "Darwin"
 TIME?=		time
 SHELL=		zsh
+.elif "${UNAME}" == "OpenBSD"
+TIME?=		time
 .endif
 
 Q?=		@
