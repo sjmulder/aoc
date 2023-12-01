@@ -1,8 +1,5 @@
-all:
+all:   ; @true
+run:   ; @./all.sh
+clean: ; @true
 
-run:
-	@./all.sh
-
-clean:
-
-.PHONY: all run
+.PHONY: all run clean
