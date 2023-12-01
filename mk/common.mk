@@ -22,7 +22,11 @@ TIMEFMT?=	" %E  %M Kb  %F+%R faults"
 ENV+=		TIMEFMT=${TIMEFMT}
 
 .for p in ${DAYS}
-INPUT.$p?=	${INPUT:U../../inputs/${YEAR}/${p:S/day//}-input.txt}
+. if "${INPUT}" != ""
+INPUT.$p?=	${INPUT}
+. else
+INPUT.$p?=	../../inputs/${YEAR}/${p:S/day//}-input.txt
+. endif
 
 RUN_CMD+=	./$p <${INPUT.$p};
 BENCH_CMD+=	printf "$p "; ${TIME} ./$p <${INPUT.$p} >/dev/null;
