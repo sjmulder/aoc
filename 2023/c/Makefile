@@ -13,7 +13,9 @@ all: ${PROGS}
 clean:
 	rm -f ${PROGS} *.o
 
-${PROGS}: common.h
+day01: day01.c common.h
+
+day01-orig: day01-orig.c common.h
 
 .PHONY: all clean
 
