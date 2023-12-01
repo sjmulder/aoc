@@ -2,7 +2,7 @@
 
 YEAR=		2023
 DAYS=		day01
-PROGS=		${DAYS} day01-bychar
+PROGS=		${DAYS} day01-orig
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
