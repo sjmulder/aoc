@@ -1,11 +1,10 @@
 #include "common.h"
 
-static const char * const nm[] = {"zero", "one", "two", "three",
-    "four", "five", "six", "seven", "eight", "nine"};
-
 int
 main(int argc, char **argv)
 {
+	static const char * const nm[] = {"zero", "one", "two", "three",
+	    "four", "five", "six", "seven", "eight", "nine"};
 	char buf[64], *s;
 	int p1=0,p2=0, p1f,p1l, p2f,p2l, d;
 
@@ -34,6 +33,5 @@ main(int argc, char **argv)
 	}
 
 	printf("%d %d\n", p1, p2);
-
 	return 0;
 }
