@@ -1,52 +1,36 @@
 #include "common.h"
 
-static const char * const names[] = {
-	"zero", "one", "two", "three", "four",
-	"five", "six", "seven", "eight", "nine"
-};
-
-static int
-parse_digit(const char *s, int part)
-{
-	int i;
-
-	if (*s >= '0' && *s <= '9')
-		return *s-'0';
-
-	if (part)
-		for (i=0; i<10; i++)
-			if (!strncmp(s, names[i], strlen(names[i])))
-				return i;
-	
-	return -1;
-}
-
-static int
-get_value(const char *s, int part)
-{
-	int digit, first=-1, last=-1;
-
-	for (; *s; s++)
-		if ((digit = parse_digit(s, part)) != -1) {
-			if (first == -1) first = digit;
-			last = digit;
-		}
-
-	return first*10 + last;
-}
+static const char * const nm[] = {"zero", "one", "two", "three",
+    "four", "five", "six", "seven", "eight", "nine"};
 
 int
 main(int argc, char **argv)
 {
-	char buf[64];
-	int p1=0, p2=0;
+	char buf[64], *s;
+	int p1=0,p2=0, p1f,p1l, p2f,p2l, d;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 	
 	while (fgets(buf, sizeof(buf), stdin)) {
-		p1 += get_value(buf, 0);
-		p2 += get_value(buf, 1);
+		p1f = p1l = p2f = p2l = -1;
+
+		for (s=buf; *s; s++)
+			if (*s >= '0' && *s <= '9') {
+				d = *s-'0';
+				if (p1f == -1) p1f = d;
+				if (p2f == -1) p2f = d;
+				p1l = p2l = d;
+			} else for (d=0; d<10; d++) {
+				if (strncmp(s, nm[d], strlen(nm[d])))
+					continue;
+				if (p2f == -1) p2f = d;
+				p2l = d;
+				break;
+			}
+
+		p1 += p1f*10 + p1l;
+		p2 += p2f*10 + p2l;
 	}
 
 	printf("%d %d\n", p1, p2);
