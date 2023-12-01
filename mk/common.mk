@@ -14,7 +14,7 @@ SHELL=		zsh
 .endif
 
 Q?=		@
-TIME?=		time -f ${TIMEFMT}
+TIME?=		/usr/bin/time -f ${TIMEFMT}
 TIMEFMT?=	" %E  %M Kb  %F+%R faults"
 
 ENV+=		TIMEFMT=${TIMEFMT}
