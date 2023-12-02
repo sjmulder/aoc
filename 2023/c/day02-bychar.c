@@ -3,8 +3,7 @@
 int
 main(int argc, char **argv)
 {
-	int c;
-	int p1=0,p2=0, id=1,num=0, r=0,g=0,b=0;
+	int p1=0,p2=0, id=1,num=0, r=0,g=0,b=0, c;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
