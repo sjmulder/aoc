@@ -1,6 +1,6 @@
 YEAR=		2023
-DAYS=		day01
-PROGS=		${DAYS}
+DAYS=		day01 day02
+PROGS=		${DAYS} day02-narrow
 
 CC=		clang
 CFLAGS+=	-Wall -Wextra -O3
