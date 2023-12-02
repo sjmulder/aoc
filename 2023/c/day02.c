@@ -3,15 +3,14 @@
 int
 main(int argc, char **argv)
 {
-	char line[256], *sr,*sid,*srd,*s;
+	char ln[256], *sr,*srd,*s;
 	int p1=0,p2=0, id, r,g,b;
 
 	if (argc > 1)
 	       DISCARD(freopen(argv[1], "r", stdin));
 
-	while ((sr = fgets(line, sizeof(line), stdin))) {
-		sid = strsep(&sr, ":");
-		sscanf(sid, "Game %d", &id);
+	for (id=1; (sr = fgets(ln, sizeof(ln), stdin)); id++) {
+		strsep(&sr, ":");
 		r = g = b = 0;
 
 		while ((srd = strsep(&sr, ";")))
