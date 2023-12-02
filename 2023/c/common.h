@@ -8,6 +8,7 @@
 #include <assert.h>
 
 #define DISCARD(x)	((void)!(x))
+#define MAX(a,b)	((a)>(b)?(a):(b))
 
 #if defined(__TURBOC__)
 # define UNUSED
