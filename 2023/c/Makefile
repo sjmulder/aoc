@@ -2,7 +2,7 @@
 
 YEAR=		2023
 DAYS=		day01 day02
-PROGS=		${DAYS} day01-orig
+PROGS=		${DAYS} day01-orig day02-bychar
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
@@ -37,7 +37,8 @@ day23: day23.c common.h
 day24: day24.c common.h
 day25: day25.c common.h
 
-day01-orig: day01-orig.c common.h
+day01-orig:   day01-orig.c   common.h
+day02-bychar: day02-bychar.c common.h
 
 .PHONY: all clean
 
