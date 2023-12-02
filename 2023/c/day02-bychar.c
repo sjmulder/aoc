@@ -18,7 +18,6 @@ main(int argc, char **argv)
 			p1 += (r<=12 && g<=13 && b<=14) * id;
 			p2 += r*g*b;
 			r=g=b=0; id++;
-
 		}
 
 	printf("%d %d\n", p1, p2);

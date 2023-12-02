@@ -19,7 +19,7 @@ main(int argc, char **argv)
 			if (strchr(s, 'd')) r = MAX(r, atoi(s)); else
 			if (strchr(s, 'g')) g = MAX(g, atoi(s)); else
 			if (strchr(s, 'b')) b = MAX(b, atoi(s));
-	
+
 		p1 += (r <= 12 && g <= 13 && b <= 14) * id;
 		p2 += r * g * b;
 	}
