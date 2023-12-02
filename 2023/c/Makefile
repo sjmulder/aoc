@@ -1,7 +1,7 @@
 # Use BSD make (bmake)
 
 YEAR=		2023
-DAYS=		day01
+DAYS=		day01 day02
 PROGS=		${DAYS} day01-orig
 
 CFLAGS+=	-O3 -Wall -Wextra
