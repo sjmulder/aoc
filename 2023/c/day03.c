@@ -55,17 +55,17 @@ main(int argc, char **argv)
 
 		n = 0; r = 1;
 
-		if (N[y][x-1]) { n++; r += N[y][x-1]; }
-		if (N[y][x+1]) { n++; r += N[y][x+1]; }
+		if (N[y][x-1]) { n++; r *= N[y][x-1]; }
+		if (N[y][x+1]) { n++; r *= N[y][x+1]; }
 
-		if (N[y-1][x]) { n++; r += N[y-1][x]; } else {
-			if (N[y-1][x-1]) { n++; r += N[y-1][x-1]; }
-			if (N[y-1][x+1]) { n++; r += N[y-1][x+1]; }
+		if (N[y-1][x]) { n++; r *= N[y-1][x]; } else {
+			if (N[y-1][x-1]) { n++; r *= N[y-1][x-1]; }
+			if (N[y-1][x+1]) { n++; r *= N[y-1][x+1]; }
 		}
 
-		if (N[y+1][x]) { n++; r += N[y+1][x]; } else {
-			if (N[y+1][x-1]) { n++; r += N[y+1][x-1]; }
-			if (N[y+1][x+1]) { n++; r += N[y+1][x+1]; }
+		if (N[y+1][x]) { n++; r *= N[y+1][x]; } else {
+			if (N[y+1][x-1]) { n++; r *= N[y+1][x-1]; }
+			if (N[y+1][x+1]) { n++; r *= N[y+1][x+1]; }
 		}
 
 		if (n == 2)
