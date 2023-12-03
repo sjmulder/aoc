@@ -8,7 +8,6 @@ static int N[GSZ][GSZ];
 int
 main(int argc, char **argv)
 {
-
 	int p1=0,p2=0, h=0, x,y, dx,dy, n=0,sym=0,r;
 
 	if (argc > 1)
