@@ -9,6 +9,8 @@
 
 #define DISCARD(x)	((void)!(x))
 #define MAX(a,b)	((a)>(b)?(a):(b))
+#define MIN(a,b)	((a)<(b)?(a):(b))
+#define LEN(a)		(sizeof(a)/sizeof(*(a)))
 
 #if defined(__TURBOC__)
 # define UNUSED
