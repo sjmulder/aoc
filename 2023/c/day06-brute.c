@@ -8,7 +8,7 @@ parse_line(int64_t nums[4], int64_t *bignum)
 
 	fgets(line, sizeof(line), stdin);
 
-	sscanf(line, "%*s %"PRIi64" %"PRIi64" %"PRIi64" %"PRIi64,
+	sscanf(line, "%*s %"SCNi64" %"SCNi64" %"SCNi64" %"SCNi64,
 	    &nums[0], &nums[1], &nums[2], &nums[3]);
 
 	for (*bignum = 0, s = line; *s; s++)
