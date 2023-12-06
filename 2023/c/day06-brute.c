@@ -19,18 +19,22 @@ parse_line(int64_t nums[4], int64_t *bignum)
 static int64_t
 solve(int64_t *times, int64_t *recs, size_t n)
 {
-	/* original brute force version in day06-brute.c */
-
 	size_t i;
-	double t,r, root;
-	int64_t acc=1, lo,hi;
+	int64_t acc=1, best,nbetter, tp,d;
 
 	for (i=0; i<n && times[i]; i++) {
-		t = times[i], r = recs[i];
-		root = sqrt(t*t - 4*r);
-		lo = (int64_t)ceil((t-root)/2);
-		hi = (int64_t)floor((t+root)/2);
-		acc *= hi-lo+1;
+		best = nbetter = 0;
+
+		for (tp=1; tp < times[i]; tp++) {
+			d = tp * (times[i]-tp);
+			if (d > recs[i])
+				nbetter++;
+			else if (d < best)
+				break;
+			best = d;
+		}
+
+		acc *= nbetter;
 	}
 
 	return acc;

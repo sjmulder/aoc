@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <math.h>
 #include <memory.h>
 #include <limits.h>
 #include <ctype.h>
