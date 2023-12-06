@@ -1,2 +1,5 @@
  - replace use of getline() with fgets()
  - warning on Ubuntu 22.04
+
+2023:
+ - day 6 has closed form solution
