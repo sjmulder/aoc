@@ -71,6 +71,6 @@ main(int argc, char **argv)
 			p2 += r;
 	}
 
-	printf("%d %d\n", p1, p2);
+	printf("03: %d %d\n", p1, p2);
 	return 0;
 }

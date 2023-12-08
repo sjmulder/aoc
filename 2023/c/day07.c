@@ -105,6 +105,6 @@ main(int argc, char **argv)
 	cur_part=0; p1 = solve();
 	cur_part=1; p2 = solve();
 
-	printf("%d %d\n", p1, p2);
+	printf("07: %d %d\n", p1, p2);
 	return 0;
 }

@@ -110,6 +110,6 @@ main(int argc, char **argv)
 	for (i=0; i<nseeds-1; i += 2)
 		p2 = MIN(p2, recur(0, mk_range(seeds[i], seeds[i+1])));
 
-	printf("%"PRIi64" %"PRIi64"\n", p1, p2);
+	printf("05: %"PRIi64" %"PRIi64"\n", p1, p2);
 	return 0;
 }

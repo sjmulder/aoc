@@ -46,6 +46,6 @@ main(int argc, char **argv)
 				nmatched[i] = 0;
 			}
 
-	printf("%d %d\n", p1, p2);
+	printf("01: %d %d\n", p1, p2);
 	return 0;
 }

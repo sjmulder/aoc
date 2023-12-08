@@ -23,6 +23,6 @@ main(int argc, char **argv)
 		p2 += r * g * b;
 	}
 
-	printf("%d %d\n", p1, p2);
+	printf("02: %d %d\n", p1, p2);
 	return 0;
 }

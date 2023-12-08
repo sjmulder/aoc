@@ -72,6 +72,6 @@ main(int argc, char **argv)
 				;
 		}
 
-	printf("%"PRIi64" %"PRIi64"\n", p1, p2);
+	printf("08: %"PRIi64" %"PRIi64"\n", p1, p2);
 	return 0;
 }

@@ -50,6 +50,6 @@ main(int argc, char **argv)
 	p1 = solve(times, recs, 4);
 	p2 = solve(&bigtime, &bigrec, 1);
 
-	printf("%"PRIi64" %"PRIi64"\n", p1, p2);
+	printf("06: %"PRIi64" %"PRIi64"\n", p1, p2);
 	return 0;
 }

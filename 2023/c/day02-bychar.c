@@ -20,6 +20,6 @@ main(int argc, char **argv)
 			r=g=b=0; id++;
 		}
 
-	printf("%d %d\n", p1, p2);
+	printf("02: %d %d\n", p1, p2);
 	return 0;
 }

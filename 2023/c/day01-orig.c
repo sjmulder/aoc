@@ -32,6 +32,6 @@ main(int argc, char **argv)
 		p2 += p2f*10 + p2l;
 	}
 
-	printf("%d %d\n", p1, p2);
+	printf("01: %d %d\n", p1, p2);
 	return 0;
 }
