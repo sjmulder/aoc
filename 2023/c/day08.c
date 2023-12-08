@@ -42,7 +42,6 @@ main(int argc, char **argv)
 {
 	char name[4], left[4], right[4];
 	size_t pos;
-	int nt;
 	int64_t p1=0,p2=0, steps,inc;
 
 	if (argc > 1)
@@ -50,11 +49,7 @@ main(int argc, char **argv)
 	
 	fgets(dirs, sizeof(dirs), stdin);
 
-	while (1) {
-		nt = fscanf(stdin, " %3s = (%3s, %3s)",
-		    name, left, right);
-		if (nt != 3)
-			break;
+	while (scanf(" %3s = (%3s, %3s)", name, left, right) == 3) {
 		pos = get_name_idx(name);
 		map[pos][0] = get_name_idx(left);
 		map[pos][1] = get_name_idx(right);
