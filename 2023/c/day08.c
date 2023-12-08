@@ -21,9 +21,8 @@ get_name_idx(const char *name)
 
 /* returns no. steps to first terminal */
 static int
-count_steps(size_t start, int part)
+count_steps(size_t pos, int part)
 {
-	size_t pos=start;
 	int step=0;
 	char *dir;
 
