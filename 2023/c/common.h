@@ -53,6 +53,6 @@ typedef unsigned __int64 uint64_t;
 int snprintf(char *s, size_t sz, const char *fmt, ...);
 #endif
 
-#ifdef COMPAT_STRSEP
+#ifdef NO_STRSEP
 char *strsep(char **stringp, const char *delim);
 #endif
