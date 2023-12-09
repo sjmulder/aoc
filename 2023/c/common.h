@@ -35,8 +35,10 @@
 #ifndef NO_INTTYPES
 # include <inttypes.h>
 #else
+# define PRIi64 "I64i"
 # define PRId64 "I64d"
 # define PRIu64 "I64u"
+# define SCNi64 "I64i"
 # define SCNd64 "I64d"
 # define SCNu64 "I64u"
 #endif
