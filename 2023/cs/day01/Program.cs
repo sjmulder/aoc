@@ -37,4 +37,4 @@ var (p1, p2) = File.ReadLines("../../../inputs/2023/01-input.txt")
     .Select(line => (GetValue(line, 0), GetValue(line, 1)))
     .Sum();
 
-Console.WriteLine($"{p1} {p2}");
+Console.WriteLine($"01: {p1} {p2}");
