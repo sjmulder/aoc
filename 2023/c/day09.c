@@ -19,7 +19,7 @@ main(int argc, char **argv)
 			a[0][n] = atol(tok);
 		}
 
-		/* geenrate rows until all 0, 'd' is depth */
+		/* generate rows until all 0, 'd' is depth */
 		for (d=1, nz=1; nz && d<n; d++)
 		for (i=0, nz=0; i<n-d; i++)
 			nz |= (a[d][i] = a[d-1][i+1] - a[d-1][i]);
