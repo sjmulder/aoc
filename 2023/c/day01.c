@@ -10,8 +10,9 @@ main(int argc, char **argv)
          *
 	 * We do that by keeping, for each word, a running tally of how
 	 * many letters we've matched so far. E.g. if we're 2 chars into
-	 * a match for "one" and 0 chars into a match for "eight", an 'e'
-	 * would advance the match for both (to 3 and 1 respectively).
+	 * a match for "one" and 0 chars into a match for "eight", an
+	 * 'e' would advance the match for both (to 3 and 1
+	 * respectively).
 	 */
 
 	static const char names[][8] = {"zero", "one", "two", "three",
