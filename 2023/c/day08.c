@@ -3,7 +3,7 @@
 static char dirs[512];
 static char names[1024][4];
 static size_t map[1024][2];	/* left and right */
-static size_t nnames; 
+static size_t nnames, zzz;
 
 static ssize_t
 get_name_idx(const char *name)
@@ -27,7 +27,7 @@ count_steps(size_t pos, int part)
 	char *dir;
 
 	for (dir=dirs; ; dir++, step++) {
-		if ((!part && !strcmp(names[pos], "ZZZ")) ||
+		if ((!part && pos == zzz) ||
 		    ( part && names[pos][2] == 'Z'))
 			return step;
 		if (*dir != 'R' && *dir != 'L')
@@ -54,6 +54,7 @@ main(int argc, char **argv)
 		map[pos][1] = get_name_idx(right);
 	}
 
+	zzz = get_name_idx("ZZZ");
 	p1 = count_steps(get_name_idx("AAA"), 0);
 
 	/*
