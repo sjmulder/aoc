@@ -1,6 +1,6 @@
 # For use with Turbo C 2.01:
 #   set path=%path%;c:\tc
-#   make -f makefile.tc
+#   make -fmakefile.tc
 
 # No day09: requires a 512*512 static array
 # No day11: requires int64
