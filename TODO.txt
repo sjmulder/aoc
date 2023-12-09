@@ -1,4 +1,3 @@
  - replace use of getline() with fgets()
  - warning on Ubuntu 22.04
- - 2023 day05 seems to hang on VC6/XP
  - why PRIi64 vs PRId64 etc?

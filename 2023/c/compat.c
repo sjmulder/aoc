@@ -54,7 +54,7 @@ strtoll(const char *s, const char **endp, int base)
 		s++;
 	if (*s == '-')
 		{ neg = 1; s++; }
-	while (isdigit(*s))
+	for (; isdigit(*s); s++)
 		n = n*10 + (*s - '0');
 
 	if (endp)
