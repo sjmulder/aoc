@@ -1,4 +1,4 @@
-SUBDIRS=	c c-golf
+SUBDIRS=	c c-golf python
 
 .if "${WITH_DOTNET}" != "0"
 SUBDIRS+=	cs
