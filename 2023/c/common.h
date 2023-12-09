@@ -43,8 +43,11 @@
 # define SCNu64 "I64u"
 #endif
 
-#ifndef NO_STDINT
+#if !defined(NO_STDINT)
 # include <stdint.h>
+#elif defined(__TURBOC__)
+typedef signed char int8_t;
+typedef unsigned char uint8_t;
 #else
 #define INT64_MAX 0x7FFFFFFFFFFFFFFF
 typedef __int8 int8_t;
