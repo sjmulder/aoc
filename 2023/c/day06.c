@@ -26,7 +26,8 @@ solve(int64_t *times, int64_t *recs, size_t n)
 	int64_t acc=1, lo,hi;
 
 	for (i=0; i<n && times[i]; i++) {
-		t = times[i], r = recs[i];
+		t = (double)times[i];
+		r = (double)recs[i];
 		root = sqrt(t*t - 4*r);
 		lo = (int64_t)ceil((t-root)/2);
 		hi = (int64_t)floor((t+root)/2);
