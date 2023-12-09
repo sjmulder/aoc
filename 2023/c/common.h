@@ -46,6 +46,7 @@
 #ifndef NO_STDINT
 # include <stdint.h>
 #else
+#define INT64_MAX 0x7FFFFFFFFFFFFFFF
 typedef __int8 int8_t;
 typedef __int64 int64_t;
 typedef unsigned __int8 uint8_t;
