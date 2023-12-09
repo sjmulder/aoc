@@ -8,7 +8,7 @@ static struct mapent maps[8][32];
 static size_t nseeds, ntypes;
 
 static struct range
-mk_range(size_t off, size_t len)
+mk_range(int64_t off, int64_t len)
 {
 	struct range r;
 	r.off = off;

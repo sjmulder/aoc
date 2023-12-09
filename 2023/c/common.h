@@ -24,6 +24,7 @@
 # define NO_STDINT
 # define NO_INTTYPES
 # define NO_STRSEP
+# define NO_STRTOLL
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 # undef max
 # undef min
@@ -34,8 +35,10 @@
 #ifndef NO_INTTYPES
 # include <inttypes.h>
 #else
+# define PRIi64 "I64i"
 # define PRId64 "I64d"
 # define PRIu64 "I64u"
+# define SCNi64 "I64i"
 # define SCNd64 "I64d"
 # define SCNu64 "I64u"
 #endif
@@ -43,6 +46,7 @@
 #ifndef NO_STDINT
 # include <stdint.h>
 #else
+#define INT64_MAX 0x7FFFFFFFFFFFFFFF
 typedef __int8 int8_t;
 typedef __int64 int64_t;
 typedef unsigned __int8 uint8_t;
@@ -53,6 +57,10 @@ typedef unsigned __int64 uint64_t;
 int snprintf(char *s, size_t sz, const char *fmt, ...);
 #endif
 
-#ifdef COMPAT_STRSEP
+#ifdef NO_STRSEP
 char *strsep(char **stringp, const char *delim);
+#endif
+
+#ifdef NO_STRTOLL
+int64_t strtoll(const char *s, const char **endp, int base);
 #endif

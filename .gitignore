@@ -8,6 +8,7 @@ day*.mp4
 bin/
 obj/
 Debug/
+*_Debug/
 Release/
 xcuserdata/
 build/
