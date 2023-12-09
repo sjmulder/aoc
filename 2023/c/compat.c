@@ -40,3 +40,28 @@ strsep(char **stringp, const char *delim)
 	return s;
 }
 #endif
+
+#ifdef NO_STRTOLL
+int64_t
+strtoll(const char *s, const char **endp, int base)
+{
+	int64_t n=0;
+	int neg=0;
+
+	assert(base == 10);
+
+	while (isspace(*s))
+		s++;
+	if (*s == '-')
+		{ neg = 1; s++; }
+	while (isdigit(*s))
+		n = n*10 + (*s - '0');
+
+	if (endp)
+		*endp = s;
+	if (neg)
+		n = -n;
+
+	return n;
+}
+#endif
