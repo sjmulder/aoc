@@ -5,7 +5,7 @@ static char names[1024][4];
 static size_t map[1024][2];	/* left and right */
 static size_t nnames, zzz;
 
-static ssize_t
+static size_t
 get_name_idx(const char *name)
 {
 	size_t i;
