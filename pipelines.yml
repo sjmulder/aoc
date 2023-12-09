@@ -49,3 +49,5 @@ jobs:
     displayName: Build 2020
   - script: cd 2022\c\vc6 & msdev aoc2022.dsw /make all release
     displayName: Build 2022
+  - script: cd 2023\c\vc6 & msdev aoc2023.dsw /make all release
+    displayName: Build 2023
