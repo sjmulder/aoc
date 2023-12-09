@@ -4,7 +4,8 @@ int
 main(int argc, char **argv)
 {
 	char ln[256], *sr,*srd,*s;
-	int p1=0,p2=0, id, r,g,b;
+	long p1=0,p2=0;	/* long for 16 bit platforms */
+	int id, r,g,b;
 
 	if (argc > 1)
 	       DISCARD(freopen(argv[1], "r", stdin));
@@ -23,6 +24,6 @@ main(int argc, char **argv)
 		p2 += r * g * b;
 	}
 
-	printf("02: %d %d\n", p1, p2);
+	printf("02: %ld %ld\n", p1, p2);
 	return 0;
 }

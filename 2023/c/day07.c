@@ -68,10 +68,11 @@ get_type(char *cards)
 	return 0;
 }
 
-static int
+/* long for 16 bit platforms */
+static long
 solve(void)
 {
-	int score=0;
+	long score=0;
 	size_t i;
 
 	/* precompute, avoids repeatedly doing it in cmp_hand */
@@ -81,7 +82,7 @@ solve(void)
 	qsort(hands, nhands, sizeof(*hands), cmp_hand);
 
 	for (i=0; i<nhands; i++)
-		score += hands[i].bet * (int)(i+1);
+		score += hands[i].bet * (long)(i+1);
 
 	return score;
 }
@@ -89,7 +90,8 @@ solve(void)
 int
 main(int argc, char **argv)
 {
-	int p1,p2, nt;
+	long p1,p2;	/* long for 16 bit platforms */
+	int nt;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -105,6 +107,6 @@ main(int argc, char **argv)
 	cur_part=0; p1 = solve();
 	cur_part=1; p2 = solve();
 
-	printf("07: %d %d\n", p1, p2);
+	printf("07: %ld %ld\n", p1, p2);
 	return 0;
 }

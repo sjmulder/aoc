@@ -4,8 +4,9 @@ int
 main(int argc, char **argv)
 {
 	char line[128], *rest, *tok;
-	int nextra[200]={0}, nums[10], nnums;
-	int p1=0,p2=0, id,val,nmatch, i;
+	long nextra[200]={0}, p1=0,p2=0; /* long for 16 bit platforms */
+	int nums[10], nnums;
+	int id,val,nmatch, i;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -30,6 +31,6 @@ main(int argc, char **argv)
 		p2 += nextra[id]+1;
 	}
 
-	printf("04: %d %d\n", p1, p2);
+	printf("04: %ld %ld\n", p1, p2);
 	return 0;
 }
