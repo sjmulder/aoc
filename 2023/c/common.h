@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include <math.h>
-#include <memory.h>
 #include <limits.h>
 #include <ctype.h>
 #include <assert.h>
@@ -17,6 +16,7 @@
 # define UNUSED
 # define NO_STDINT
 # define NO_INTTYPES
+# define NO_MEMORY
 # define NO_SNPRINTF
 # define NO_STRSEP
 #elif defined(_MSC_VER) && _MSC_VER <= 1200
@@ -51,6 +51,10 @@ typedef __int8 int8_t;
 typedef __int64 int64_t;
 typedef unsigned __int8 uint8_t;
 typedef unsigned __int64 uint64_t;
+#endif
+
+#ifndef NO_MEMORY
+# include <memory.h>
 #endif
 
 #ifdef NO_SNPRINTF
