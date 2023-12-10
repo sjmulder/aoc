@@ -4,6 +4,9 @@
 
 enum { NORTH, EAST, SOUTH, WEST };
 
+/* indexed by entry->exit dir */
+static const char shapes[4][5] = {"|F.7", "J-7.", ".L|J", "L.F-"};
+
 static char input[GSZ][GSZ];
 static char visited[GSZ][GSZ];
 static char area[GSZ][GSZ];	/* of NW corner of x,y */
@@ -89,21 +92,8 @@ trace_loop(void)
 		assert(x > 0); assert(x < GSZ-1);
 	}
 
-	input[sy][sx] =
-	    dir == NORTH && dir0 == NORTH ? '|' :
-	    dir == NORTH && dir0 == EAST  ? 'F' :
-	    dir == NORTH && dir0 == WEST  ? '7' :
-	    dir == EAST  && dir0 == NORTH ? 'J' :
-	    dir == EAST  && dir0 == EAST  ? '-' :
-	    dir == EAST  && dir0 == SOUTH ? '7' :
-	    dir == SOUTH && dir0 == EAST  ? 'L' :
-	    dir == SOUTH && dir0 == SOUTH ? '|' :
-	    dir == SOUTH && dir0 == WEST  ? 'J' :
-	    dir == WEST  && dir0 == NORTH ? 'L' :
-	    dir == WEST  && dir0 == SOUTH ? 'F' :
-	    dir == WEST  && dir0 == WEST  ? '-' : 0;
-
-	assert(input[sy][sx]);
+	input[sy][sx] = shapes[dir][dir0];
+	assert(input[sy][sx] != '.');
 
 	area[sy][sx] = 1;
 
