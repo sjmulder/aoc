@@ -29,10 +29,8 @@ parse(void)
 	for (y=1; y<GSZ-1; y++) {
 		if (!fgets(&input[y][1], LEN(*input)-2, stdin))
 			break;
-		if (!start && (start = strchr(&input[y][1], 'S'))) {
-			sy = y;
-			sx = start - &input[y][0];
-		}
+		if (!start && (start = strchr(&input[y][1], 'S')))
+			{ sy = y; sx = start - &input[y][0]; }
 	}
 }
 
