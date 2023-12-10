@@ -34,7 +34,7 @@ main(int argc, char **argv)
 			{ sy = y; sx = start - &map[y][0]; }
 	}
 
-	assert(sx); x=sx
+	assert(sx); x=sx;
 	assert(sy); y=sy;
 
 	dir0 = dir =
