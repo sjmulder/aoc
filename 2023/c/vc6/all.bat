@@ -7,4 +7,4 @@
 @Release\day07.exe ..\..\..\inputs\2023\07-input.txt
 @Release\day08.exe ..\..\..\inputs\2023\08-input.txt
 @Release\day09.exe ..\..\..\inputs\2023\09-input.txt
-
+@Release\day10.exe ..\..\..\inputs\2023\10-input.txt
