@@ -9,7 +9,6 @@ static const char shapes[4][5] = {"|F.7", "J-7.", ".L|J", "L.F-"};
 
 static char input[GSZ][GSZ];
 static char visited[GSZ][GSZ];
-static char area[GSZ][GSZ];	/* of NW corner of x,y */
 static int sx, sy;		/* start */
 
 /*
@@ -41,10 +40,6 @@ parse(void)
  * Follows the pipe from the start position, marking all tiles of the
  * loop in visited[], replacing (sx,sy) with the appropriate piece, and
  * returns the length of the loop.
- *
- * The area coloring is seeded by marking the NW corner of the starting
- * location as color 1 in area[] and an adjecent tile on the other side
- * of pipe as 2.
  */
 static int
 trace_loop(void)
@@ -95,72 +90,20 @@ trace_loop(void)
 	input[sy][sx] = shapes[dir][dir0];
 	assert(input[sy][sx] != '.');
 
-	area[sy][sx] = 1;
-
-	switch (input[sy][sx]) {
-	case 'L': area[sy][sx+1] = 2; break;
-	case '7': area[sy+1][sx] = 2; break;
-	default:  area[sy+1][sx+1] = 2; break;
-	}
-
 	return dist;
 }
 
 static int
-blocks_horiz(int x, int y)
+count_inside(void)
 {
-	return visited[y][x] && strchr("J|L", input[y][x]);
-}
+	int n=0, in, x,y;
 
-static int
-blocks_vert(int x, int y)
-{
-	return visited[y][x] && strchr("J-7", input[y][x]);
-}
-
-/*
- * Iteratively propagate the coloring in area[] to adjecent tiles that
- * are not blocked by the loop.
- *
- * Since the loop could be going through a tile and split its area, we
- * keep track of the area of the NW corner of tiles. This alos allows
- * the coloring to propagate between '||' etc.
- */
-static void
-flood(void)
-{
-	int x,y, dirty=1;
-
-	while (dirty)
-	for (y=1, dirty=0; y<GSZ-1; y++)
-	for (x=1; x<GSZ-1; x++)
-		if (area[y][x])
-			;
-		else if (area[y-1][x] && !blocks_vert(x, y-1))
-			{ dirty=1; area[y][x] = area[y-1][x]; }
-		else if (area[y+1][x] && !blocks_vert(x, y))
-			{ dirty=1; area[y][x] = area[y+1][x]; }
-		else if (area[y][x-1] && !blocks_horiz(x-1, y))
-			{ dirty=1; area[y][x] = area[y][x-1]; }
-		else if (area[y][x+1] && !blocks_horiz(x, y))
-			{ dirty=1; area[y][x] = area[y][x+1]; }
-}
-
-/*
- * Count tiles that are fully contained in the given area, that is, all
- * four corners are the same color.
- */
-static int
-count_area(int id)
-{
-	int n=0, x,y;
-
-	for (y=1; y<GSZ-1; y++)
-	for (x=1; x<GSZ-1; x++)
-		n += id == area[y][x] &&
-		     id == area[y][x+1] &&
-		     id == area[y+1][x] &&
-		     id == area[y+1][x+1];
+	for (y=0; y<GSZ; y++)
+	for (x=0, in=0; x<GSZ; x++)
+		if (!visited[y][x])
+			n += in;
+		else if (strchr("J|L", input[y][x]))
+			in = !in;
 
 	return n;
 }
@@ -173,8 +116,9 @@ main(int argc, char **argv)
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 
-	parse(); p1 = trace_loop() / 2;
-	flood(); p2 = count_area(area[1][2] == 1 ? 2 : 1);
+	parse();
+	p1 = trace_loop() / 2;
+	p2 = count_inside();
 
 	printf("10: %d %d\n", p1, p2);
 	return 0;
