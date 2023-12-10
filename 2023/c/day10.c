@@ -7,6 +7,16 @@ enum { NORTH, EAST, SOUTH, WEST };
 /* indexed by entry->exit dir */
 static const char shapes[4][5] = {"|F.7", "J-7.", ".L|J", "L.F-"};
 
+/* indexed by char, cur dir */
+static const int moves[256][4] = {
+    ['|'] = {NORTH,     0, SOUTH,     0},
+    ['-'] = {    0,  EAST,     0,  WEST},
+    ['L'] = {    0,     0,  EAST, NORTH},
+    ['J'] = {    0, NORTH,  WEST,     0},
+    ['7'] = { WEST, SOUTH,     0,     0},
+    ['F'] = { EAST,     0,     0, SOUTH}
+};
+
 static char input[GSZ][GSZ];
 static char visited[GSZ][GSZ];
 static int sx, sy;		/* start */
@@ -42,47 +52,22 @@ parse(void)
 static int
 trace_loop(void)
 {
-	int dist=0, x,y, dir, dir0;
+	int dist=0, x=sx,y=sy, dir,dir0;
 
-	x = sx;
-	y = sy;
-	visited[y][x] = 1;
+	dir0 = dir =
+	    strchr("7|F", input[y-1][x]) ? NORTH :
+	    strchr("J|L", input[y+1][x]) ? SOUTH :
+	    strchr("L-F", input[y][x-1]) ? WEST :
+	    strchr("J-7", input[y][x+1]) ? EAST : -1;
+	assert(dir != -1);
 
-	if (strchr("7|F", input[y-1][x]))
-		{ y--; dir0 = dir = NORTH; }
-	else if (strchr("J|L", input[y+1][x]))
-		{ y++; dir0 = dir = SOUTH; }
-	else if (strchr("L-F", input[y][x-1]))
-		{ x--; dir0 = dir = WEST; }
-	else if (strchr("J-7", input[y][x+1]))
-		{ x++; dir0 = dir = EAST; }
-	else
-		assert(!"no route from start");
-
-	for (dist=1; input[y][x] != 'S'; dist++) {
+	for (; !visited[y][x]; dist++) {
 		visited[y][x] = 1;
-
-		if ((dir == NORTH && input[y][x] == '|') ||
-		    (dir == WEST  && input[y][x] == 'L') ||
-		    (dir == EAST  && input[y][x] == 'J'))
-			{ y--; dir = NORTH; }
-		else if ((dir == SOUTH && input[y][x] == '|') ||
-		         (dir == WEST  && input[y][x] == 'F') ||
-		         (dir == EAST  && input[y][x] == '7'))
-			{ y++; dir = SOUTH; }
-		else if ((dir == NORTH && input[y][x] == '7') ||
-		         (dir == SOUTH && input[y][x] == 'J') ||
-		         (dir == WEST  && input[y][x] == '-'))
-			{ x--; dir = WEST; }
-		else if ((dir == NORTH && input[y][x] == 'F') ||
-		         (dir == SOUTH && input[y][x] == 'L') ||
-		         (dir == EAST  && input[y][x] == '-'))
-			{ x++; dir = EAST; }
-		else
-			assert(!"no route");
-
+		x += dir==EAST  ? 1 : dir==WEST  ? -1 : 0;
+		y += dir==SOUTH ? 1 : dir==NORTH ? -1 : 0;
 		assert(y > 0); assert(y < GSZ-1);
 		assert(x > 0); assert(x < GSZ-1);
+		dir = moves[(uint8_t)input[y][x]][dir];
 	}
 
 	input[sy][sx] = shapes[dir][dir0];
