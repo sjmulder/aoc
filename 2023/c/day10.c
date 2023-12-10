@@ -1,7 +1,6 @@
 #include "common.h"
 
 #define GSZ	148
-#define DUMPSZ	GSZ
 
 enum { NORTH, EAST, SOUTH, WEST };
 
