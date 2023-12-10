@@ -51,7 +51,7 @@ main(int argc, char **argv)
 
 	for (dist=0; !visited[y][x]; dist++) {
 		visited[y][x] = 1;
-		x += dir==EE ? 1 : dir==WW  ? -1 : 0;
+		x += dir==EE ? 1 : dir==WW ? -1 : 0;
 		y += dir==SS ? 1 : dir==NN ? -1 : 0;
 		assert(y > 0); assert(y < GSZ-1);
 		assert(x > 0); assert(x < GSZ-1);
