@@ -1,5 +1,10 @@
 #include "common.h"
 
+/*
+ * Updated, much shorter solution using edge counting for part 2. For
+ * original solution with flood fill area coloring, see day10-flood.c
+ */
+
 #define GSZ 148
 
 enum {NN, EE, SS, WW};
