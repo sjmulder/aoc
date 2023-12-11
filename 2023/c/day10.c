@@ -10,12 +10,13 @@
 enum {NN, EE, SS, WW};
 
 /* indexed by entry->exit dir */
-static const char shapes[4][5] = {"|F.7", "J-7.", ".L|J", "L.F-"};
+static const char shapemap[4][5] = {"|F.7", "J-7.", ".L|J", "L.F-"};
 
-/* indexed by char, cur dir */
-static const int moves[256][4] = {
-    ['|'] = {NN,0,SS,0}, ['-'] = {0,EE,0,WW}, ['L'] = {0,0,EE,NN},
-    ['J'] = {0,NN,WW,0}, ['7'] = {WW,SS,0,0}, ['F'] = {EE,0,0,SS}
+/* moves indexed by shape idx, cur dir */
+static const char shapes[] = "|-LJ7F";
+static const int moves[6][4] = {
+    {NN,0,SS,0}, {0,EE,0,WW}, {0,0,EE,NN},
+    {0,NN,WW,0}, {WW,SS,0,0}, {EE,0,0,SS}
 };
 
 int
@@ -24,7 +25,7 @@ main(int argc, char **argv)
 	static char map[GSZ][GSZ];
 	static char visited[GSZ][GSZ];
 	int dist,nin=0, sx=0,sy=0, x,y, dir,dir0, in;
-	char *start=NULL;
+	char *start=NULL, *s;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -55,10 +56,11 @@ main(int argc, char **argv)
 		y += dir==SS ? 1 : dir==NN ? -1 : 0;
 		assert(y > 0); assert(y < GSZ-1);
 		assert(x > 0); assert(x < GSZ-1);
-		dir = moves[(uint8_t)map[y][x]][dir];
+		if ((s = strchr(shapes, map[y][x])))
+			dir = moves[s-shapes][dir];
 	}
 
-	map[sy][sx] = shapes[dir][dir0];
+	map[sy][sx] = shapemap[dir][dir0];
 	assert(map[sy][sx] != '.');
 
 	for (y=0, nin=0; y<GSZ; y++)
