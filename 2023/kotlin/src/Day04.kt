@@ -4,9 +4,7 @@ import kotlin.math.pow
 fun main(args: Array<String>) {
     val matches = File(args.getOrNull(0) ?: "../../inputs/2023/04-input.txt")
         .readLines()
-        .map { line -> line
-            .split(':')[1]
-            .split('|')
+        .map { line -> line.split(':')[1].split('|')
             .map { s -> s.split(' ')
                 .filter { it.isNotEmpty() }
                 .map { it.toInt() }
@@ -17,11 +15,9 @@ fun main(args: Array<String>) {
 
     val counts = mutableMapOf<Int, Int>()
 
-    matches.withIndex().forEach { (idx, n) ->
+    matches.withIndex().forEach { (i, n) ->
         (0..<n).forEach {
-            counts[idx+1+it] =
-                (counts[idx+1+it] ?: 0) +
-                (counts[idx] ?: 0) + 1
+            counts[i+1+it] = (counts[i+1+it] ?: 0) + (counts[i] ?: 0) + 1
         }
     }
 
