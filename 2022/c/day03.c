@@ -18,7 +18,7 @@ main(int argc, char **argv)
 	size_t len, i;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(!freopen(argv[1], "r", stdin));
 
 	memset(notseen, 0, sizeof(notseen));
 

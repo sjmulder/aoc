@@ -112,7 +112,7 @@ main(int argc, char **argv)
 	int64_t p1,p2;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	read_input();
 	p1 = eval(root);

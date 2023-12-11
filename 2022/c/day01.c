@@ -7,7 +7,7 @@ main(int argc, char **argv)
 	int cals, sum=0, top[3];
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 	
 	memset(top, 0, sizeof(top));
 

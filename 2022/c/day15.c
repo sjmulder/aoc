@@ -80,7 +80,7 @@ main(int argc, char **argv)
 	int64_t p2=0;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	/*
 	 * For part 1 we track what portions of the line are covered by

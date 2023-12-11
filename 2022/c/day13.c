@@ -68,7 +68,7 @@ main(int argc, char **argv)
 	int p1=0, dec1=1, dec2=2, i;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (i=0; ; i++) {
 		if (!(fgets(line1, sizeof(line1), stdin))) break;

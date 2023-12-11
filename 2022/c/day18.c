@@ -64,7 +64,7 @@ main(int argc, char **argv)
 	int p1=0,p2=0, x,y,z, u,v,w, nchanged=0;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	while (scanf(" %d,%d,%d", &x,&y,&z) == 3) {
 		assert(!oob3(x,y,z));

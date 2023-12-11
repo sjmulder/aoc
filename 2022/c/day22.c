@@ -184,7 +184,7 @@ main(int argc, char **argv)
 	int p1,p2, x,y;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';

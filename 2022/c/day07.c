@@ -30,7 +30,7 @@ main(int argc, char **argv)
 	int p1=0, p2=INT_MAX, p2_target;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 	
 	nodes[0].is_dir = 1;
 	cwd = &nodes[0];

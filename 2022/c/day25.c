@@ -8,7 +8,7 @@ main(int argc, char **argv)
 	char buf[128], *b;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	while ((c = getchar()) != EOF)
 		switch(c) {

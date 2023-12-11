@@ -76,7 +76,7 @@ main(int argc, char **argv)
 	int i, p1=0, p2=1;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	while (6 == scanf(
 " Blueprint %*d:"

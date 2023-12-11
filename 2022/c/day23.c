@@ -140,7 +140,7 @@ main(int argc, char **argv)
 	int x,y, i, p1;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (y=PAD; fgets(&grid[y][PAD], GSZ-PAD, stdin); y++)
 		assert(y < GSZ);

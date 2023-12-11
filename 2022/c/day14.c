@@ -139,7 +139,7 @@ main(int argc, char **argv)
 	int p1=0,p2=0, hit_floor=0;
 
 	if (argc > 1)
-		(void)!freopen(argv[1], "r", stdin);
+		DISCARD(freopen(argv[1], "r", stdin));
 
 	read_input();
 	vis14_begin();
