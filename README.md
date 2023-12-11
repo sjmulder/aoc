@@ -13,6 +13,7 @@ Advent of Code
     C (DOS)     ** *  * *
     C#          *
     Python      ** *
+    Kotlin      *
 
 **2022**
 
