@@ -2,7 +2,7 @@
 
 YEAR=		2023
 DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
-		day10
+		day10 day11
 PROGS=		${DAYS} day01-orig day02-bychar day06-brute day10-flood
 
 CFLAGS+=	-O3 -Wall -Wextra
