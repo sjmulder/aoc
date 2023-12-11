@@ -27,5 +27,5 @@ fun main(args: Array<String>) {
     val lines = File(args.getOrNull(0) ?: "../../inputs/2023/01-input.txt").readLines()
     val p1 = lines.sumOf { toValue(it, false) }
     val p2 = lines.sumOf { toValue(it, true) }
-    print("01: $p1 $p2")
+    println("01: $p1 $p2")
 }

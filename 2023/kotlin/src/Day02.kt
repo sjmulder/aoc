@@ -31,5 +31,5 @@ fun main(args: Array<String>) {
             rounds.maxOf { it.getOrDefault("blue", 0) }
         }
 
-    print("02: $p1 $p2")
+    println("02: $p1 $p2")
 }
