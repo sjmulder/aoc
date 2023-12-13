@@ -16,10 +16,8 @@ main(int argc, char **argv)
 			if (!g[h][0] || g[h][0]=='\n') break;
 		}
 
-		assert(h);
-		w = strlen(g[0]);
-		if (w && g[0][w-1] == '\n') w--;
-		assert(w);
+		assert(h>0); w = strlen(g[0])-1;
+		assert(w>0);
 
 		for (x=1; x<w; x++) {
 			nmis = 0;
