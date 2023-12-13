@@ -7,6 +7,8 @@
 #include <ctype.h>
 #include <assert.h>
 
+#define DISCARD(x)	((void)!(x))
+
 #if defined(__TURBOC__)
 # define UNUSED
 # define NO_STDINT
