@@ -103,18 +103,17 @@ main(int argc, char **argv)
 	for (nleft = 1*1000*1000*1000; nleft; nleft--) {
 		shift_all();
 
-		if (period)
-			continue;
+		if (!period) {
+			assert(nhist < (int)LEN(hist));
+			hist[nhist++] = hash_grid();
 
-		assert(nhist < (int)LEN(hist));
-		hist[nhist++] = hash_grid();
-
-		for (i=0; i<nhist-1; i++)
-			if (hist[i] == hist[nhist-1]) {
-				period = nhist-1 - i;
-				nleft = nleft % period;
-				break;
-			}
+			for (i=0; i<nhist-1; i++)
+				if (hist[i] == hist[nhist-1]) {
+					period = nhist-1 - i;
+					nleft = nleft % period;
+					break;
+				}
+		}
 	}
 
 	p2 = score_grid();
