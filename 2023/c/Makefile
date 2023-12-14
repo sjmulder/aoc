@@ -7,7 +7,8 @@ VIS_SUPPORT=	day14
 VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
 PROGS=		${DAYS} ${VIS_PROGS} \
-		day01-orig day02-bychar day06-brute day10-flood
+		day01-orig day02-bychar day06-brute day10-flood \
+		softint-test
 
 VIS=		day14.mp4
 
@@ -16,6 +17,9 @@ CFLAGS+=	-O3 -Wall -Wextra
 LDLIBS+=	-lm
 
 all: ${PROGS}
+
+check: all
+	./softint-test
 
 vis: ${VIS}
 
@@ -58,6 +62,11 @@ $p-vis: $p.c vis.c vis.h
 
 day14.mp4: day14-vis ; ./day14-vis <${INPUT.day14}
 
-.PHONY: all clean vis
+softint-test: softint-test.o softint.o
+
+softint.o: softint.c softint.h
+softint-test.o: softint-test.c softint.h
+
+.PHONY: all clean check vis
 
 .include "../../mk/common.mk"
