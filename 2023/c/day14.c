@@ -1,5 +1,9 @@
 #include "common.h"
 
+static void vis14_begin(void);
+static void vis14_emit(void);
+static void vis14_end(void);
+
 static char g[101][102];
 static int w,h;
 
@@ -40,6 +44,7 @@ shift_north(void)
 		if (g[i][x]=='.' && g[j][x]=='O') {
 			g[i][x] = 'O';
 			g[j][x] = '.';
+			vis14_emit();
 		}
 	}
 }
@@ -58,6 +63,7 @@ shift_all(void)
 		if (g[y][i]=='.' && g[y][j]=='O') {
 			g[y][i] = 'O';
 			g[y][j] = '.';
+			vis14_emit();
 		}
 	}
 
@@ -68,6 +74,7 @@ shift_all(void)
 		if (g[i][x]=='.' && g[j][x]=='O') {
 			g[i][x] = 'O';
 			g[j][x] = '.';
+			vis14_emit();
 		}
 	}
 
@@ -78,6 +85,7 @@ shift_all(void)
 		if (g[y][i]=='.' && g[y][j]=='O') {
 			g[y][i] = 'O';
 			g[y][j] = '.';
+			vis14_emit();
 		}
 	}
 }
@@ -96,6 +104,9 @@ main(int argc, char **argv)
 	
 	assert(h>0); w = strlen(g[0])-1;
 	assert(w>0);
+
+	vis14_begin();
+	vis14_emit();
 
 	shift_north();
 	p1 = score_grid();
@@ -118,6 +129,60 @@ main(int argc, char **argv)
 
 	p2 = score_grid();
 
+	vis14_end();
+
 	printf("14: %d %d\n", p1, p2);
 	return 0;
 }
+
+#ifdef WITH_VIS
+# include <unistd.h>
+# include "vis.h"
+
+# define SCALE		4
+# define NFRAME		3720
+
+static struct vis vis;
+static struct vis_grid vis_grid = {
+	.data = (uint8_t *)g,
+	.colors = {
+		['#'] = {192, 64, 64},
+		['O'] = { 64,196, 64}
+	},
+	.w = LEN(*g),
+	.h = LEN(g),
+	.cell_sz = SCALE
+};
+
+static void
+vis14_begin(void)
+{
+	vis_begin(&vis, "day14.mp4", 60,
+	    SCALE * vis_grid.w,
+	    SCALE * vis_grid.h);
+}
+
+static void
+vis14_emit(void)
+{
+	static int speed=5, next, frame;
+
+	if (frame < NFRAME && !next--) {
+		frame++;
+		next = speed;
+		vis_draw_grid(&vis, &vis_grid);
+		vis_emit(&vis, 1);
+	}
+}
+
+static void
+vis14_end(void)
+{
+	vis_emit(&vis, 30);
+	vis_end(&vis);
+}
+#else
+static void vis14_begin(void) {}
+static void vis14_emit(void) {}
+static void vis14_end(void) {}
+#endif

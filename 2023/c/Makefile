@@ -3,13 +3,21 @@
 YEAR=		2023
 DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
 		day10 day11 day12 day13 day14
-PROGS=		${DAYS} day01-orig day02-bychar day06-brute day10-flood
+VIS_SUPPORT=	day14
+VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
+
+PROGS=		${DAYS} ${VIS_PROGS} \
+		day01-orig day02-bychar day06-brute day10-flood
+
+VIS=		day14.mp4
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
 LDLIBS+=	-lm
 
 all: ${PROGS}
+
+vis: ${VIS}
 
 clean:
 	rm -f ${PROGS} *.o
@@ -43,6 +51,13 @@ day02-bychar: day02-bychar.c common.h
 day06-brute:  day06-brute.c  common.h
 day10-flood:  day10-flood.c  common.h
 
-.PHONY: all clean
+.for p in ${VIS_SUPPORT}
+$p-vis: $p.c vis.c vis.h
+	${LINK.c} -DWITH_VIS=1 -o $p-vis $p.c vis.c ${LDLIBS}
+.endfor
+
+day14.mp4: day14-vis ; ./day14-vis <${INPUT.day14}
+
+.PHONY: all clean vis
 
 .include "../../mk/common.mk"
