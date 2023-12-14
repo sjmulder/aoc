@@ -13,12 +13,12 @@ static int sx, sy;		/* start */
  * Loads the grid into input[] at offset (1,1), leaving line endings and
  * nul terminators in place, and finds starting location (sx,sy).
  *
- * The (1,1) offset is so we can safely do x-1 etc everywhere.
+ * The (1,1) offset is so that we can safely do x-1 etc. everywhere.
  */
 static void
 parse(void)
 {
-	int y=1;
+	int y;
 	char *start=NULL;
 
 	/* otherwise strchr() will match the 0 bytes */
@@ -40,13 +40,13 @@ parse(void)
  * returns the length of the loop.
  *
  * The area coloring is seeded by marking the NW corner of the starting
- * location as color 1 in area[] and an adjecent tile on the other side
+ * location as color 1 in area[] and an adjacent tile on the other side
  * of pipe as 2.
  */
 static int
 trace_loop(void)
 {
-	int dist=0, x,y, dir, dir0;
+	int dist, x,y, dir, dir0;
 
 	x = sx;
 	y = sy;
@@ -129,12 +129,12 @@ blocks_vert(int x, int y)
 }
 
 /*
- * Iteratively propagate the coloring in area[] to adjecent tiles that
+ * Iteratively propagate the coloring in area[] to adjacent tiles that
  * are not blocked by the loop.
  *
  * Since the loop could be going through a tile and split its area, we
- * keep track of the area of the NW corner of tiles. This alos allows
- * the coloring to propagate between '||' etc.
+ * keep track of the area of the NW corner of tiles. This allows the
+ * coloring to propagate between '||' etc.
  */
 static void
 flood(void)

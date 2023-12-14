@@ -17,7 +17,7 @@ main(int argc, char **argv)
 
 	static const char names[][8] = {"zero", "one", "two", "three",
 	    "four", "five", "six", "seven", "eight", "nine"};
-	long p1=0,p2=0;	/* long for 16 bit platforms */
+	long p1=0,p2=0;	/* long for 16-bit platforms */
 	int p1_first=-1, p1_last=-1;
 	int p2_first=-1, p2_last=-1, i,c;
 	int nmatched[10] = {0};

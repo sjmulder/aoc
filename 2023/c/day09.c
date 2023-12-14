@@ -4,10 +4,10 @@ int
 main(int argc, char **argv)
 {
 	static char line[128];
-	static long a[24][24];		/* long for 16 bit platforms */
+	static long a[24][24];		/* long for 16-bit platforms */
 	size_t n,d,i;
 	char *tok, *rest;
-	long p1=0,p2=0, acc1,acc2;	/* long for 16 bit platforms */
+	long p1=0,p2=0, acc1,acc2;	/* long for 16-bit platforms */
 	int nz;
 
 	if (argc > 1)

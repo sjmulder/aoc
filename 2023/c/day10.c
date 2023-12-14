@@ -24,7 +24,7 @@ main(int argc, char **argv)
 {
 	static char map[GSZ][GSZ];
 	static char visited[GSZ][GSZ];
-	int dist,nin=0, sx=0,sy=0, x,y, dir,dir0, in;
+	int dist,nin, sx=0,sy=0, x,y, dir,dir0, in;
 	char *start=NULL, *s;
 
 	if (argc > 1)

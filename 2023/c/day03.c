@@ -7,7 +7,7 @@ main(int argc, char **argv)
 {
 	static char G[GSZ][GSZ];
 	static int N[GSZ][GSZ];
-	int p1=0,p2=0, h=0, x,y, dx,dy, n=0,sym=0,r;
+	int p1=0,p2=0, h, x,y, dx,dy, n=0,sym=0,r;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -39,9 +39,9 @@ main(int argc, char **argv)
 
 	/*
 	 * Pass 2: solve part 2 by finding all '*', then counting and
-	 * multiplying adjecent numbers.
+	 * multiplying adjacent numbers.
 	 *
-	 * Horizontal adjecency is trivial but vertical/diagonal has
+	 * Horizontal adjacency is trivial but vertical/diagonal has
 	 * two situations: if there's a digit directly North of the '+',
 	 * it must be a single number: NW and NE would connect to it.
 	 * If N isn't a digit, digits in NW and NE belong to separate

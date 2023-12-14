@@ -41,7 +41,7 @@ main(int argc, char **argv)
 {
 	char name[4], left[4], right[4];
 	size_t pos;
-	int64_t p1=0,p2=0, steps,inc;
+	int64_t p1,p2=0, steps,inc;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));

@@ -68,7 +68,7 @@ get_type(char *cards)
 	return 0;
 }
 
-/* long for 16 bit platforms */
+/* long for 16-bit platforms */
 static long
 solve(void)
 {
@@ -90,7 +90,7 @@ solve(void)
 int
 main(int argc, char **argv)
 {
-	long p1,p2;	/* long for 16 bit platforms */
+	long p1,p2;	/* long for 16-bit platforms */
 	int nt;
 
 	if (argc > 1)

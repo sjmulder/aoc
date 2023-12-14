@@ -4,7 +4,7 @@ int
 main(int argc, char **argv)
 {
 	char line[128], *rest, *tok;
-	long nextra[200]={0}, p1=0,p2=0; /* long for 16 bit platforms */
+	long nextra[200]={0}, p1=0,p2=0; /* long for 16-bit platforms */
 	int nums[10], nnums;
 	int id,val,nmatch, i;
 

@@ -86,7 +86,7 @@ int
 main(int argc, char **argv)
 {
 	static int hist[256];	/* hashes */
-	int p1=0,p2=0, nhist=0,period=0, nleft, i;
+	int p1,p2, nhist=0,period=0, nleft, i;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -107,7 +107,7 @@ main(int argc, char **argv)
 			assert(nhist < (int)LEN(hist));
 			hist[nhist++] = hash_grid();
 
-			for (i=0; i<nhist-1; i++)
+			for (i=0; i < nhist-1; i++)
 				if (hist[i] == hist[nhist-1]) {
 					period = nhist-1 - i;
 					nleft = nleft % period;

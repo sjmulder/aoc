@@ -4,7 +4,7 @@ int
 main(int argc, char **argv)
 {
 	char ln[256], *sr,*srd,*s;
-	long p1=0,p2=0;	/* long for 16 bit platforms */
+	long p1=0,p2=0;	/* long for 16-bit platforms */
 	int id, r,g,b;
 
 	if (argc > 1)
