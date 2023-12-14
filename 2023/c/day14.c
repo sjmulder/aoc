@@ -138,9 +138,9 @@ main(int argc, char **argv)
 #ifdef WITH_VIS
 # include <unistd.h>
 # include "vis.h"
-
-# define SCALE		4
-# define NFRAME		3720
+# define SCALE	4
+# define FRSKIP	5
+# define NFRAME	3720
 
 static struct vis vis;
 static struct vis_grid vis_grid = {
@@ -165,11 +165,10 @@ vis14_begin(void)
 static void
 vis14_emit(void)
 {
-	static int speed=5, next, frame;
+	static int next, frame;
 
-	if (frame < NFRAME && !next--) {
-		frame++;
-		next = speed;
+	if (!next-- && frame++ < NFRAME) {
+		next = FRSKIP;
 		vis_draw_grid(&vis, &vis_grid);
 		vis_emit(&vis, 1);
 	}
