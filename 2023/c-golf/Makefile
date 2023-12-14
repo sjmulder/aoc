@@ -1,5 +1,5 @@
 YEAR=		2023
-DAYS=		day01 day02
+DAYS=		day01 day02 day13
 PROGS=		${DAYS}
 
 CC=		clang
