@@ -37,16 +37,19 @@ shift_north(void)
 {
 	int x,i,j;
 
+	/*
+	 * Walk two cursors i and j through each column x. The i cursor
+	 * looks for the first . where an O can go. The j cursor looks
+	 * ahead for O's. When j finds a # we start again beyond it.
+	 */
+
 	for (x=0; x<w; x++)
-	for (i=j=0; i<h; i++) {
-		for (j = MAX(i+1,j); j<h && g[j][x]=='.'; j++)
-			;
-		if (g[i][x]=='.' && g[j][x]=='O') {
-			g[i][x] = 'O';
-			g[j][x] = '.';
-			vis14_emit();
-		}
-	}
+	for (i=0, j=1; i<h && j<h; )
+		if (j <= i) j = i+1;
+		else if (g[j][x] == '#') i = j+1;
+		else if (g[j][x] != 'O') j++;
+		else if (g[i][x] != '.') i++;
+		else { g[i++][x] = 'O'; g[j++][x] = '.'; vis14_emit(); }
 }
 
 static void
@@ -55,39 +58,30 @@ shift_all(void)
 	int x,y,i,j;
 
 	shift_north();
-
-	for (y=0; y<h; y++)
-	for (i=j=0; i<w; i++) {
-		for (j = MAX(i+1,j); j<w && g[y][j]=='.'; j++)
-			;
-		if (g[y][i]=='.' && g[y][j]=='O') {
-			g[y][i] = 'O';
-			g[y][j] = '.';
-			vis14_emit();
-		}
-	}
-
+	
+	for (y=0; y<w; y++)
+	for (i=0, j=1; i<w && j<w; )
+		if (j <= i) j = i+1;
+		else if (g[y][j] == '#') i = j+1;
+		else if (g[y][j] != 'O') j++;
+		else if (g[y][i] != '.') i++;
+		else { g[y][i++] = 'O'; g[y][j++] = '.'; vis14_emit(); }
+	
 	for (x=0; x<w; x++)
-	for (i=j=h-1; i>=0; i--) {
-		for (j = MIN(i-1,j); j>=0 && g[j][x]=='.'; j--)
-			;
-		if (g[i][x]=='.' && g[j][x]=='O') {
-			g[i][x] = 'O';
-			g[j][x] = '.';
-			vis14_emit();
-		}
-	}
+	for (i=h-1, j=h-2; i>=0 && j>=0; )
+		if (j >= i) j = i-1;
+		else if (g[j][x] == '#') i = j-1;
+		else if (g[j][x] != 'O') j--;
+		else if (g[i][x] != '.') i--;
+		else { g[i--][x] = 'O'; g[j--][x] = '.'; vis14_emit(); }
 
-	for (y=0; y<h; y++)
-	for (i=j=w-1; i>=0; i--) {
-		for (j = MIN(i-1,j); j>=0 && g[y][j]=='.'; j--)
-			;
-		if (g[y][i]=='.' && g[y][j]=='O') {
-			g[y][i] = 'O';
-			g[y][j] = '.';
-			vis14_emit();
-		}
-	}
+	for (y=0; y<w; y++)
+	for (i=w-1, j=w-2; i>=0 && j>=0; )
+		if (j >= i) j = i-1;
+		else if (g[y][j] == '#') i = j-1;
+		else if (g[y][j] != 'O') j--;
+		else if (g[y][i] != '.') i--;
+		else { g[y][i--] = 'O'; g[y][j--] = '.'; vis14_emit(); }
 }
 
 int
@@ -127,9 +121,8 @@ main(int argc, char **argv)
 		}
 	}
 
-	p2 = score_grid();
-
 	vis14_end();
+	p2 = score_grid();
 
 	printf("14: %d %d\n", p1, p2);
 	return 0;
