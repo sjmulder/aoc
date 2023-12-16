@@ -13,10 +13,10 @@ boxes = defaultdict(dict)
 
 for s in sys.stdin.read().strip().split(","):
   p1 += hasher(s)
-  lbl = re.search("\w+", s).group()
+  lbl = re.search("\\w+", s).group()
   box = hasher(lbl)
   if "=" in s:
-    boxes[box][lbl] = int(re.search("\d+", s).group()) 
+    boxes[box][lbl] = int(re.search("\\d+", s).group())
   elif "-" in s and lbl in boxes[box]:
     del boxes[box][lbl]
 
