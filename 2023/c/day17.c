@@ -1,66 +1,95 @@
 #include "common.h"
 
-#define GW	148
-#define GH	148
-#define NSTEPS	11
+#define GW 148
+#define GH 148
+#define ND 4
+#define NS 11
 
 enum { NN, EE, SS, WW };
 
+struct node { int x,y,d,s; };
+
 static char map[GH][GW];
-static int costs[GH][GW][4][NSTEPS]; /* y,x,dist,steps */
+static int costs[GH][GW][ND][NS]; /* y,x,dist,ss */
 static int w,h;
 
 static int
-step_flood(int minstep, int maxstep)
+is_valid(struct node a, struct node b, int smin, int smax)
 {
-	int x,y, dir, step;
-	int x2,y2, dir2, step2;
-	int nchange=0, cost;
+	return
+	    b.x >= 0 && b.x < w &&
+	    b.y >= 0 && b.y < h &&
+	    abs(b.d-a.d) != 2 &&
+	    (a.s >= smin || a.d == b.d) &&
+	     b.s <= smax;
+}
 
-	for (y=0; y<h; y++)
-	for (x=0; x<w; x++)
-	for (dir=0; dir<4; dir++)
-	for (dir2=0; dir2<4; dir2++)	/* new direction */
-	for (step=0; step<=maxstep; step++) {
-		if (!(x==0 && y==0 && dir==EE && step==0) &&
-		    !costs[y][x][dir][step])
-			continue;			/* no reach */
-		if (abs(dir2-dir) == 2) continue;	/* no 180 */
-		step2 = dir==dir2 ? step+1 : 1;
-		if (step<minstep && dir!=dir2) continue;/* short */
-		if (step2>maxstep) continue;		/* far */
-		x2 = dir2==EE ? x+1 : dir2==WW ? x-1 : x;
-		y2 = dir2==SS ? y+1 : dir2==NN ? y-1 : y;
-		if (x2 < 0 || x2 >= w) continue;	/* OOB */
-		if (y2 < 0 || y2 >= h) continue;	/* OOB */
+static struct node
+node_from(struct node a, int d)
+{
+	struct node b;
 
-		cost = costs[y][x][dir][step] + map[y2][x2]-'0';
+	b.x = d==EE ? a.x+1 : d==WW ? a.x-1 : a.x;
+	b.y = d==SS ? a.y+1 : d==NN ? a.y-1 : a.y;
+	b.d = d;
+	b.s = d==a.d ? a.s+1 : 1;
 
-		if (costs[y2][x2][dir2][step2] == 0 ||
-		    costs[y2][x2][dir2][step2] > cost) {
-			costs[y2][x2][dir2][step2]  = cost;
+	return b;
+}
+
+static int
+get_cost(struct node n)
+{
+	int cost;
+
+	cost = costs[n.y][n.x][n.d][n.s];
+
+	return cost || (n.x==0 && n.y==0 && n.d==EE && n.s==0)
+	    ? cost : INT_MAX;
+}
+
+static void
+set_cost(struct node n, int cost)
+{
+	costs[n.y][n.x][n.d][n.s] = cost;
+}
+
+static int
+step_flood(int smin, int smax)
+{
+	struct node a, b;
+	int nchange=0, cost, d;
+
+	for (a.y=0; a.y<h; a.y++)
+	for (a.x=0; a.x<w; a.x++)
+	for (a.d=0; a.d<ND; a.d++)
+	for (a.s=0; a.s <= smax; a.s++)
+	for (d=0; d<ND; d++)
+		if ((cost = get_cost(a)) != INT_MAX &&
+		    is_valid(a, (b = node_from(a, d)), smin, smax) &&
+		    (cost += map[b.y][b.x]-'0') < get_cost(b)) {
+			set_cost(b, cost);
 			nchange++;
 		}
-	}
 
 	return nchange;
 }
 
 static int
-solve(int stmin, int stmax)
+solve(int smin, int smax)
 {
-	int best=INT_MAX, dir,st;
+	int best=INT_MAX, d,st;
 
 	memset(costs, 0, sizeof(costs));
 
-	while (step_flood(stmin, stmax))
+	while (step_flood(smin, smax))
 		;
 
-	for (dir=0; dir<4; dir++)
-	for (st=stmin; st<stmax; st++)
-		if (costs[h-1][w-1][dir][st] &&
-		    costs[h-1][w-1][dir][st] < best)
-			best = costs[h-1][w-1][dir][st];
+	for (d=0; d<ND; d++)
+	for (st=smin; st<smax; st++)
+		if (costs[h-1][w-1][d][st] &&
+		    costs[h-1][w-1][d][st] < best)
+			best = costs[h-1][w-1][d][st];
 
 	return best;
 }
