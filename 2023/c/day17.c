@@ -58,19 +58,25 @@ static int
 step_flood(int smin, int smax)
 {
 	struct node a, b;
-	int nchange=0, cost, d;
+	int nchange=0, a_cost, b_cost, d;
 
 	for (a.y=0; a.y<h; a.y++)
 	for (a.x=0; a.x<w; a.x++)
 	for (a.d=0; a.d<ND; a.d++)
-	for (a.s=0; a.s <= smax; a.s++)
-	for (d=0; d<ND; d++)
-		if ((cost = get_cost(a)) != INT_MAX &&
-		    is_valid(a, (b = node_from(a, d)), smin, smax) &&
-		    (cost += map[b.y][b.x]-'0') < get_cost(b)) {
-			set_cost(b, cost);
-			nchange++;
+	for (a.s=0; a.s <= smax; a.s++) {
+		if ((a_cost = get_cost(a)) == INT_MAX)
+			continue;
+		for (d=0; d<ND; d++) {
+			b = node_from(a, d);
+			b_cost = a_cost + map[b.y][b.x]-'0';
+
+			if (is_valid(a, b, smin, smax) &&
+			    b_cost < get_cost(b)) {
+				set_cost(b, b_cost);
+				nchange++;
+			}
 		}
+	}
 
 	return nchange;
 }
