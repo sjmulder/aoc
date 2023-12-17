@@ -10,8 +10,9 @@ enum { NN, EE, SS, WW };
 struct node { int x,y,d,s; };
 
 static char map[GH][GW];
-static int costs[GH][GW][ND][NS]; /* y,x,dist,ss */
-static int w,h;
+static int costs[GH][GW][ND][NS];	/* y,x,dist,ss */
+static int ages[GH][GW][ND][NS];
+static int w,h, cur_age;
 
 static int
 is_valid(struct node a, struct node b, int smin, int smax)
@@ -63,20 +64,22 @@ step_flood(int smin, int smax)
 	for (a.y=0; a.y<h; a.y++)
 	for (a.x=0; a.x<w; a.x++)
 	for (a.d=0; a.d<ND; a.d++)
-	for (a.s=0; a.s <= smax; a.s++) {
-		if ((a_cost = get_cost(a)) == INT_MAX)
-			continue;
-		for (d=0; d<ND; d++) {
-			b = node_from(a, d);
-			b_cost = a_cost + map[b.y][b.x]-'0';
+	for (a.s=0; a.s <= smax; a.s++)
+		if (ages[a.y][a.x][a.d][a.s] >= cur_age-1)
+		if ((a_cost = get_cost(a)) != INT_MAX)
+			for (d=0; d<ND; d++) {
+				b = node_from(a, d);
+				b_cost = a_cost + map[b.y][b.x]-'0';
 
-			if (is_valid(a, b, smin, smax) &&
-			    b_cost < get_cost(b)) {
-				set_cost(b, b_cost);
-				nchange++;
+				if (is_valid(a, b, smin, smax))
+				if (b_cost < get_cost(b)) {
+					set_cost(b, b_cost);
+					ages[b.y][b.x][b.d][b.s] = cur_age;
+					nchange++;
+				}
 			}
-		}
-	}
+
+	cur_age++;
 
 	return nchange;
 }
@@ -87,6 +90,8 @@ solve(int smin, int smax)
 	int best=INT_MAX, d,st;
 
 	memset(costs, 0, sizeof(costs));
+	memset(ages, 0, sizeof(ages));
+	cur_age = 0;
 
 	while (step_flood(smin, smax))
 		;
