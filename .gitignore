@@ -30,5 +30,8 @@ out/
 *.exe
 *.swp
 *.core
+*.suo
+*.sdf
+*.opensdf
 ~$*
 _built
