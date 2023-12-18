@@ -2,12 +2,12 @@
 
 YEAR=		2023
 DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
-		day10 day11 day12 day13 day14 day15 day16 day17
+		day10 day11 day12 day13 day14 day15 day16 day17 day18
 VIS_SUPPORT=	day14
 VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
 PROGS=		${DAYS} ${VIS_PROGS} \
-		day01-orig day02-bychar day06-brute day10-flood
+		day01-orig day02-bychar day06-brute day10-flood day18-p1
 
 VIS=		day14.mp4
 
@@ -50,6 +50,7 @@ day01-orig:   day01-orig.c   common.h
 day02-bychar: day02-bychar.c common.h
 day06-brute:  day06-brute.c  common.h
 day10-flood:  day10-flood.c  common.h
+day18-p1:     day18-p1.c     common.h
 
 .for p in ${VIS_SUPPORT}
 $p-vis: $p.c vis.c vis.h
