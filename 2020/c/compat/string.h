@@ -2,6 +2,7 @@
 
 #ifdef _WIN32
 # define COMPAT_STRSEP
+# define snprintf _snprintf
 #endif
 
 #ifdef COMPAT_STRSEP

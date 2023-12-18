@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 #include "compat/stdio.h"
+#include "compat/string.h"
 
 #define LEN(a) ((int)(sizeof(a)/sizeof(*(a))))
 
