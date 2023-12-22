@@ -15,7 +15,7 @@ static int sz;
  * The total number of tiles covered in t is (t+1)^2 - accounting for
  * the checkerboard reachability pattern. With the part 1 and 2
  * questions, this exactly covers a certain square amount of diamonds
- * (nida*nida).
+ * (ndia*ndia).
  *
  * Finding out which types of diamonds and in what state (odd/even) is
  * the tricky bit, e.g. the state alternates between the repeating grids
