@@ -8,7 +8,8 @@ VIS_SUPPORT=	day14
 VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
 PROGS=		${DAYS} ${VIS_PROGS} \
-		day01-orig day02-bychar day06-brute day10-flood day18-p1
+		day01-orig day02-bychar day06-brute day10-flood day18-p1 \
+		day21-multi
 
 VIS=		day14.mp4
 
