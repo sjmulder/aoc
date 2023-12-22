@@ -7,7 +7,7 @@
  * Simple grid-based implementation except the grid is repeated MULTI
  * times. Used to test and compare the 'mathematical' solution used for
  * part 2. Also prints a pretty grid.
- *
+ */
 int
 main(int argc, char **argv)
 {
