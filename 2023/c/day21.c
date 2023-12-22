@@ -37,6 +37,6 @@ main(int argc, char **argv)
 	for (x=1; x<GSZ-1; x++)
 		p1 += reach[y][x][t&1];
 
-	printf("21: %d\n", p1);
+	printf("21: %d <TODO>\n", p1);
 	return 0;
 }
