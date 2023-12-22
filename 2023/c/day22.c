@@ -4,34 +4,28 @@
 #define YSZ 10
 #define ZSZ 400
 
-struct shape { int x1,y1,z1, x2,y2,z2; };
+struct block { int x1,y1,z1, x2,y2,z2; };
 
-struct brick {
-	struct shape shape;
-	struct brick *above[5]; int nabove;
-	struct brick *below[5]; int nbelow;
-};
-
-static struct brick bricks[1600];
-static struct brick *grid[ZSZ][YSZ][XSZ];
-static int nbricks;
+static struct block blocks[1600];
+static struct block *grid[ZSZ][YSZ][XSZ];
+static int nblocks;
 
 static void
-paint(struct shape *r, struct brick *brick)
+paint(struct block *b, struct block *val)
 {
 	int x,y,z;
 
-	for (z=r->z1; z<=r->z2; z++)
-	for (y=r->y1; y<=r->y2; y++)
-	for (x=r->x1; x<=r->x2; x++)
-		grid[z][y][x] = brick;
+	for (z=b->z1; z<=b->z2; z++)
+	for (y=b->y1; y<=b->y2; y++)
+	for (x=b->x1; x<=b->x2; x++)
+		grid[z][y][x] = val;
 }
 
 static int
-scan(struct shape *r, struct brick **hits, int sz)
+scan(struct block *b, struct block **hits, int sz)
 {
-	static struct brick *buf[5];
-	struct brick *hit;
+	static struct block *buf[5];
+	struct block *hit;
 	int nhits=0, x,y,z, i;
 
 	if (!hits) {
@@ -39,9 +33,9 @@ scan(struct shape *r, struct brick **hits, int sz)
 		sz = (int)LEN(buf);
 	}
 
-	for (z=r->z1; z<=r->z2; z++)
-	for (y=r->y1; y<=r->y2; y++)
-	for (x=r->x1; x<=r->x2; x++) {
+	for (z=b->z1; z<=b->z2; z++)
+	for (y=b->y1; y<=b->y2; y++)
+	for (x=b->x1; x<=b->x2; x++) {
 		if (!(hit = grid[z][y][x]))
 			continue;
 		for (i=0; i<nhits && hit != hits[i]; i++)
@@ -56,38 +50,24 @@ scan(struct shape *r, struct brick **hits, int sz)
 }
 
 static void
-rescan(struct brick *brick)
-{
-	struct shape above, below;
-
-	above = brick->shape;
-	above.z1 = above.z2 = above.z2+1;
-	brick->nabove = scan(&above, brick->above,
-	    (int)LEN(brick->above));
-
-	below = brick->shape;
-	below.z1 = below.z2 = below.z1-1;
-	brick->nbelow = scan(&below, brick->below,
-	    (int)LEN(brick->below));
-}
-
-static void
 gravitas(void)
 {
+	struct block below;
 	int dirty, i;
 
 	for (dirty=1; dirty; )
-	for (dirty=0, i=0; i<nbricks; i++) {
-		rescan(&bricks[i]);
-
-		if (!bricks[i].shape.z1)
+	for (dirty=0, i=0; i<nblocks; i++) {
+		if (!blocks[i].z1)
 			continue;
 
-		if (!bricks[i].nbelow) {
-			paint(&bricks[i].shape, NULL);
-			bricks[i].shape.z1--;
-			bricks[i].shape.z2--;
-			paint(&bricks[i].shape, &bricks[i]);
+		below = blocks[i];
+		below.z1 = below.z2 = below.z1-1;
+
+		if (!scan(&below, NULL, 0)) {
+			paint(&blocks[i], NULL);
+			blocks[i].z1--;
+			blocks[i].z2--;
+			paint(&blocks[i], &blocks[i]);
 			dirty = 1;
 		}
 	}
@@ -96,13 +76,24 @@ gravitas(void)
 static int
 jenga(void)
 {
-	int count=0, i,j;
+	static struct block *hits[5];
+	struct block above, below;
+	int count=0, deps, nabove, i,j;
 
-	for (i=0; i<nbricks; i++) {
-		for (j=0; j<bricks[i].nabove; j++)
-			if (bricks[i].above[j]->nbelow < 2)
-				break;
-		count += j == bricks[i].nabove;
+	for (i=0; i<nblocks; i++) {
+		above = blocks[i];
+		above.z1 = above.z2 = above.z2+1;
+		nabove = scan(&above, hits, (int)LEN(hits));
+		deps = 0;
+
+		for (j=0; j<nabove; j++) {
+			below = *hits[j];
+			below.z1 = below.z2 = below.z1-1;
+			deps += scan(&below, NULL, 0) < 2;
+		}
+
+		if (!deps)
+			count++;
 	}
 
 	return count;
@@ -111,33 +102,33 @@ jenga(void)
 int
 main(int argc, char **argv)
 {
-	struct shape *r;
+	struct block *b;
 	int p1, ntok;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 	
-	for (; ; nbricks++) {
-		assert(nbricks < (int)LEN(bricks));
-		r = &bricks[nbricks].shape;
+	for (; ; nblocks++) {
+		assert(nblocks < (int)LEN(blocks));
+		b = &blocks[nblocks];
 		ntok = scanf("%d,%d,%d~%d,%d,%d",
-		    &r->x1, &r->y1, &r->z1,
-		    &r->x2, &r->y2, &r->z2);
+		    &b->x1, &b->y1, &b->z1,
+		    &b->x2, &b->y2, &b->z2);
 		if (ntok < 6)
 			break;
 
-		assert(r->x1 <= r->x2);
-		assert(r->y1 <= r->y2);
-		assert(r->z1 <= r->z2);
+		assert(b->x1 <= b->x2);
+		assert(b->y1 <= b->y2);
+		assert(b->z1 <= b->z2);
 
-		assert(r->x1 >= 0); assert(r->x1 < XSZ);
-		assert(r->x2 >= 0); assert(r->x2 < XSZ);
-		assert(r->y1 >= 0); assert(r->y1 < YSZ);
-		assert(r->y2 >= 0); assert(r->y2 < YSZ);
-		assert(r->z1 >= 0); assert(r->z1 < ZSZ);
-		assert(r->z2 >= 0); assert(r->z2 < ZSZ);
+		assert(b->x1 >= 0); assert(b->x1 < XSZ);
+		assert(b->x2 >= 0); assert(b->x2 < XSZ);
+		assert(b->y1 >= 0); assert(b->y1 < YSZ);
+		assert(b->y2 >= 0); assert(b->y2 < YSZ);
+		assert(b->z1 >= 0); assert(b->z1 < ZSZ);
+		assert(b->z2 >= 0); assert(b->z2 < ZSZ);
 
-		paint(r, &bricks[nbricks]);
+		paint(b, b);
 	}
 
 	gravitas();
