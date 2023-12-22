@@ -55,7 +55,7 @@ eval(const char *label, int op, int lens)
 			snprintf(
 			    box->slots[i].label,
 			    sizeof(box->slots[i].label),
-			    "%s", label);
+			    "%.7s", label);
 			box->slots[i].lens = lens;
 			box->nslots++;
 		}
