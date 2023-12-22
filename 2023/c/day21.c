@@ -1,10 +1,9 @@
 #include "common.h"
 
 #define GSZ 135
-#define TSZ 65	/* time dimension */
 
 static char map[GSZ][GSZ];
-static uint8_t reach[GSZ][GSZ][TSZ];
+static uint8_t reach[GSZ][GSZ][2];	/* time dim. %2 */
 
 int
 main(int argc, char **argv)
@@ -26,17 +25,17 @@ main(int argc, char **argv)
 			break;
 		}
 
-	for (t=1; t<=64; t++)
+	for (t=0; t<64; t++)
 	for (y=1; y<GSZ-1; y++)
 	for (x=1; x<GSZ-1; x++)
-		reach[y][x][t] =
+		reach[y][x][(t+1)&1] =
 		    (map[y][x] == '.' || map[y][x] == 'S') &&
-		    (reach[y][x-1][t-1] || reach[y-1][x][t-1] ||
-		     reach[y][x+1][t-1] || reach[y+1][x][t-1]);
+		    (reach[y][x-1][t&1] || reach[y-1][x][t&1] ||
+		     reach[y][x+1][t&1] || reach[y+1][x][t&1]);
 
 	for (y=1; y<GSZ-1; y++)
 	for (x=1; x<GSZ-1; x++)
-		p1 += reach[y][x][t-1];
+		p1 += reach[y][x][t&1];
 
 	printf("21: %d\n", p1);
 	return 0;
