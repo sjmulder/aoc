@@ -8,7 +8,7 @@ static uint8_t reach[GSZ][GSZ][2];	/* time dim. %2 */
 int
 main(int argc, char **argv)
 {
-	int p1=0, w,h, x,y,t;
+	int p1=0, x,y,t;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
