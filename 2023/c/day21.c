@@ -2,12 +2,11 @@
 
 #define GSZ 135
 
-static char map[GSZ][GSZ];
-static uint8_t reach[GSZ][GSZ][2];	/* time dim. %2 */
-
 int
 main(int argc, char **argv)
 {
+	static char map[GSZ][GSZ];
+	static uint8_t reach[GSZ][GSZ][2];	/* time dim. %2 */
 	int p1=0, x,y,t;
 
 	if (argc > 1)
