@@ -15,9 +15,6 @@ main(int argc, char **argv)
 		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (y=1; fgets(map[y]+1, sizeof(map[y])-2, stdin); y++) {
-		printf("char at end: 0x%02x. string: %s\n",
-		    map[y][strlen(map[y]+1)],
-		    map[y]+1);
 		assert(map[y][strlen(map[y]+1)] == '\n');
 		assert(y+1 < GSZ-1);
 	}
