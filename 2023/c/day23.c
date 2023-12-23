@@ -22,10 +22,10 @@ choose_dir(int x, int y, int dir0, int climb)	/* -1 if none */
 	assert(y >= 0); assert(y < h);
 
 	for (dir=dir0; dir<4; dir++)
-		if ((climb || dir!=NN || map[y][x]!='^') &&
-		    (climb || dir!=EE || map[y][x]!='>') &&
-		    (climb || dir!=SS || map[y][x]!='v') &&
-		    (climb || dir!=WW || map[y][x]!='<') &&
+		if ((climb || dir==NN || map[y][x]!='^') &&
+		    (climb || dir==EE || map[y][x]!='>') &&
+		    (climb || dir==SS || map[y][x]!='v') &&
+		    (climb || dir==WW || map[y][x]!='<') &&
 		    (x2 = x+dirs[dir][0]) >= 0 && x2<w &&
 		    (y2 = y+dirs[dir][1]) >= 0 && y2<h &&
 		    map[y2][x2] != '#' && !visited[y2][x2])
