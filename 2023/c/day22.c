@@ -82,8 +82,8 @@ static int
 jenga(void)
 {
 	static struct block *hits[5];
-	int count=0;
 	size_t nabove, i,j;
+	int count=0;
 
 	for (i=0; i<nbricks; i++) {
 		nabove = scan(above(bricks[i]), hits, (int)LEN(hits));
@@ -120,12 +120,12 @@ disintegrate(struct block *b, uint8_t *gone)
 	}
 }
 
-static uint64_t
+static int
 godzilla(void)
 {
 	static uint8_t gone[LEN(bricks)];
 	size_t i,j;
-	uint64_t ngone=0;
+	int ngone=0;
 
 	for (i=0; i<nbricks; i++) {
 		memset(gone, 0, sizeof(gone));
@@ -142,8 +142,7 @@ int
 main(int argc, char **argv)
 {
 	struct block *b;
-	int p1, ntok;
-	uint64_t p2;
+	int p1,p2, ntok;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -175,6 +174,6 @@ main(int argc, char **argv)
 	p1 = jenga();
 	p2 = godzilla();
 
-	printf("22: %d %"PRIu64"\n", p1, p2);
+	printf("22: %d %d\n", p1, p2);
 	return 0;
 }
