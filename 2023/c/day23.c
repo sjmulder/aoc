@@ -2,6 +2,13 @@
 
 #define GSZ 143
 
+/*
+ * Implemented with a junction graph. Some assumptions:
+ *  - No dead ens
+ *  - No rooms (only corridors and junctions)
+ *  - Slopes only at junction exits
+ */
+
 enum { NN, EE, SS, WW };
 
 struct node;
