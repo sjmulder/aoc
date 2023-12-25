@@ -8,10 +8,14 @@ VIS_SUPPORT=	day14
 VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
 PROGS=		${DAYS} ${VIS_PROGS} \
-		day01-orig day02-bychar day06-brute day10-flood day18-p1 \
-		day21-multi
+		day01-orig day02-bychar day06-brute day10-flood \
+		day18-p1 day21-multi
 
 VIS=		day14.mp4
+
+.if "${WITH_DOT}" != "0"
+VIS+=		day20.dot day20.pdf
+.endif
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
@@ -53,6 +57,7 @@ day02-bychar: day02-bychar.c common.h
 day06-brute:  day06-brute.c  common.h
 day10-flood:  day10-flood.c  common.h
 day18-p1:     day18-p1.c     common.h
+day20-dot:    day20-dot.c    common.h
 
 .for p in ${VIS_SUPPORT}
 $p-vis: $p.c vis.c vis.h
@@ -60,6 +65,8 @@ $p-vis: $p.c vis.c vis.h
 .endfor
 
 day14.mp4: day14-vis ; ./day14-vis <${INPUT.day14}
+day20.dot: day20-dot ; ./day20-dot <${INPUT.day20} >$@
+day20.pdf: day20.dot ; dot -T pdf day20.dot >$@
 
 .PHONY: all clean vis
 
