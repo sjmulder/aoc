@@ -7,7 +7,7 @@ struct sig {
 };
 
 struct mod {
-	char type, name[3];
+	char type, name[12];
 	int8_t in_vals[16];	/* '%' only */
 	int8_t out_val;		/* '&' only */
 	uint16_t out_mod[8];
@@ -15,23 +15,23 @@ struct mod {
 	uint8_t nin, nout;
 };
 
-static struct mod mods[32*32], *mod_br;
+static struct mod mods[32*32], *broadcaster;
 static struct sig sigs[128];	/* ring buffer */
-static size_t nsigs, sig0;
+static size_t nmods, nsigs, sig0;
 
 static struct mod *
 get_mod(const char *name)
 {
 	struct mod *mod;
-	uint16_t id;
+	size_t i;
 
-	assert(name[0]);
-	id = (uint16_t)name[0] %32 *32 + (uint16_t)name[1] %32;
-	assert(id < LEN(mods));
+	for (i=0; i<nmods; i++)
+		if (!strcmp(mods[i].name, name))
+			return &mods[i];
 
-	mod = &mods[id];
-	if (!mod->name[0])
-		snprintf(mod->name, sizeof(mod->name), "%s", name);
+	assert(nmods < LEN(mods));
+	mod = &mods[nmods++];
+	snprintf(mod->name, sizeof(mod->name), "%s", name);
 
 	return mod;
 }
@@ -78,7 +78,8 @@ parse(void)
 		}
 	}
 
-	mod_br = get_mod("br"); assert(mod_br->nout);
+	broadcaster = get_mod("broadcaster");
+	assert(broadcaster->nout);
 }
 
 static void
@@ -146,7 +147,7 @@ main(int argc, char **argv)
 
 	for (i=0; i < 1000; i++) {
 		nlo++; /* the button press */
-		emit_sigs(mod_br, 0);
+		emit_sigs(broadcaster, 0);
 
 		while (handle_sig(&nlo, &nhi))
 			;
