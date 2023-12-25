@@ -79,7 +79,7 @@ Score card
     C (DOS)     ** *  * *
     C++                      *
     C#          *
-    Python      ****          *
+    Python      ****          *         *
     Kotlin      ****
     manually                       2
 
