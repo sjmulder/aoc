@@ -9,7 +9,7 @@ VIS_PROGS=	${VIS_SUPPORT:S/$/-vis/}
 
 PROGS=		${DAYS} ${VIS_PROGS} \
 		day01-orig day02-bychar day06-brute day10-flood \
-		day18-p1 day21-multi
+		day18-p1 day21-multi day25-wish
 
 VIS=		day14.mp4
 
@@ -50,7 +50,6 @@ day21: day21.c common.h
 day22: day22.c common.h
 day23: day23.c common.h
 day24: day24.c common.h
-day25: day25.c common.h
 
 day01-orig:   day01-orig.c   common.h
 day02-bychar: day02-bychar.c common.h
@@ -58,6 +57,7 @@ day06-brute:  day06-brute.c  common.h
 day10-flood:  day10-flood.c  common.h
 day18-p1:     day18-p1.c     common.h
 day20-dot:    day20-dot.c    common.h
+day25-wish:   day25-wish.c   common.h
 
 .for p in ${VIS_SUPPORT}
 $p-vis: $p.c vis.c vis.h
