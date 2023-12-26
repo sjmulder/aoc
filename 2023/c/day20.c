@@ -149,6 +149,42 @@ next_of_type(struct mod *mod, char type)
 	return 0;
 }
 
+/*
+ * The input has a particular structure: the broadcaster connects to
+ * 4 subcircuits that are a chain of flip-flops, some of which connect
+ * to a NAND gate.
+ *
+ *   broadcaster -> %a>%b>%c>%d..
+ *                   v     v  v
+ *                      &foo     -> ..
+ *
+ * Since each flip-flop in series has double the period of the one
+ * before, they function like a binary counter. In the example above,
+ * %a fires every step, %b every 2 steps, %c every 4 and %d every 8.
+ *
+ * The connections of the flip-flops to the NAND essentially encode
+ * a target value for the counter: in the example above, binary 1101
+ * (note the order, LSB first vs. MSB first).
+ *
+ * The NAND gates are connected back to some of the flip flops so that
+ * they all reset to 0, so the counter is reset and the period remains
+ * stable.
+ *
+ * finally the sub-circuit NAND gates connect to the final gate through
+ * another NAND gate and one serving as an inverter:
+ *
+ *   &foo \
+ *   &bar -> &z -> &inv -> %rx
+ *   &baz /
+ *
+ * So as soon as all NAND gates fire at the same time a HIGH is sent
+ * to &inv which sends a LOW to %rx, the end state for part 2.
+ *
+ * The final question then is when do all sub-circuit NAND gates fire at
+ * the same time? That's when their cycles line up, which is their LCM.
+ * Those cycles conveniently happen to be prime in the input, so we can
+ * just multiply them.
+ */
 static int64_t
 part2(void)
 {
