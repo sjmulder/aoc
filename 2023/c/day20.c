@@ -135,9 +135,47 @@ handle_sig(int *nlo, int *nhi)
 	return 1;
 }
 
+static struct mod *
+next_of_type(struct mod *mod, char type)
+{
+	int i;
+
+	assert(mod);
+
+	for (i=0; i < mod->nout; i++)
+		if (mods[mod->out_mod[i]].type == type)
+			return &mods[mod->out_mod[i]];
+
+	return 0;
+}
+
+static int64_t
+part2(void)
+{
+	struct mod *bc, *cur;
+	int64_t acc=1, period;
+	int i, pos;
+
+	bc = get_mod("broadcaster");
+
+	for (i=0; i < bc->nout; i++) {
+		period = pos = 0;
+		cur = &mods[bc->out_mod[i]];
+
+		do {
+			period |= !!next_of_type(cur, '&') << (pos++);
+		} while ((cur = next_of_type(cur, '%')));
+
+		acc *= period;
+	}
+
+	return acc;
+}
+
 int
 main(int argc, char **argv)
 {
+	int64_t p2;
 	int nlo=0,nhi=0, i;
 
 	if (argc > 1)
@@ -153,6 +191,8 @@ main(int argc, char **argv)
 			;
 	}
 
-	printf("20: %d <TODO>\n", nlo*nhi);
+	p2 = part2();
+
+	printf("20: %d %"PRId64"\n", nlo*nhi, p2);
 	return 0;
 }
