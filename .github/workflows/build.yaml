@@ -4,7 +4,7 @@ jobs:
   linux:
     strategy:
       matrix:
-        host: [ubuntu-20.04, ubuntu-latest]  # oldest and latest
+        host: [ubuntu-20.04, ubuntu-24.04]  # oldest and latest
     runs-on: ${{ matrix.host }}
     steps:
     - uses: actions/checkout@v3
@@ -14,7 +14,7 @@ jobs:
   macos:
     strategy:
       matrix:
-        host: [macos-13, macos-latest]       # Intel and ARM
+        host: [macos-13, macos-14]          # Intel and ARM
     runs-on: ${{ matrix.host }}
     steps:
     - uses: actions/checkout@v3
