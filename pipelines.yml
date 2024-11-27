@@ -4,7 +4,8 @@ jobs:
   displayName: Linux
   strategy:
     matrix:
-      ubuntu2204: { host: ubuntu-22.04 }
+      ubuntu-2004: { host: ubuntu-20.04 }
+      ubuntu-2404: { host: ubuntu-24.04 }
   pool:
     vmImage: $(host)
   steps:
@@ -17,11 +18,8 @@ jobs:
 
 - job: macos
   displayName: macOS
-  strategy:
-    matrix:
-      macos12: { host: macOS-12 }
   pool:
-    vmImage: $(host)
+    vmImage: macOS-14  # no ARM agent on Azure yet
   steps:
   - task: UseDotNet@2
     displayName: Use .NET 6
