@@ -100,8 +100,9 @@ main(int argc, char **argv)
 		for (j=0; j<nruns; j++)
 			runs[i*nruns+j] = runs[j];
 
-		p1 += count_configs(chars, strlen(chars), runs, nruns);
-		p2 += count_configs(chars2, strlen(chars2), runs,
+		p1 += count_configs(chars, (int)strlen(chars), runs,
+		    nruns);
+		p2 += count_configs(chars2, (int)strlen(chars2), runs,
 		    nruns*5);
 	}
 

@@ -96,7 +96,7 @@ main(int argc, char **argv)
 	for (h=0; fgets(g[h], LEN(*g), stdin); h++)
 		assert(h+1 < (int)LEN(g));
 	
-	assert(h>0); w = strlen(g[0])-1;
+	assert(h>0); w = (int)strlen(g[0])-1;
 	assert(w>0);
 
 	vis14_begin();

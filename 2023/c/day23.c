@@ -146,7 +146,7 @@ main(int argc, char **argv)
 		assert(y+1 < GSZ);
 
 	h = y;
-	w = strlen(map[0])-1;
+	w = (int)strlen(map[0])-1;
 
 	assert(h > 2);
 	assert(w > 2);

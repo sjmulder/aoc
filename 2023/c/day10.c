@@ -37,7 +37,7 @@ main(int argc, char **argv)
 		if (!fgets(&map[y][1], LEN(*map)-2, stdin))
 			break;
 		if (!start && (start = strchr(&map[y][1], 'S')))
-			{ sy = y; sx = start - &map[y][0]; }
+			{ sy = y; sx = (int)(start - &map[y][0]); }
 	}
 
 	assert(sx); x=sx;

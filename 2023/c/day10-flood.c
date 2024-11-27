@@ -29,7 +29,7 @@ parse(void)
 			break;
 		if (!start && (start = strchr(&input[y][1], 'S'))) {
 			sy = y;
-			sx = start - &input[y][0];
+			sx = (int)(start - &input[y][0]);
 		}
 	}
 }

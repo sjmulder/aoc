@@ -72,7 +72,7 @@ parse(void)
 			assert(mod->nout < LEN(mod->out_mod));
 			assert(dst->nin < LEN(dst->in_vals));
 
-			mod->out_mod[mod->nout] = dst - mods;
+			mod->out_mod[mod->nout] = (int)(dst - mods);
 			mod->out_slot[mod->nout] = dst->nin++;
 			mod->nout++;
 		}

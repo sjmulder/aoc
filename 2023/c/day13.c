@@ -16,7 +16,7 @@ main(int argc, char **argv)
 			if (!g[h][0] || g[h][0]=='\n') break;
 		}
 
-		assert(h>0); w = strlen(g[0])-1;
+		assert(h>0); w = (int)strlen(g[0])-1;
 		assert(w>0);
 
 		for (x=1; x<w; x++) {
