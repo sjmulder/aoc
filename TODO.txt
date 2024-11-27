@@ -2,3 +2,4 @@
  - warning on Ubuntu 22.04
  - why PRIi64 vs PRId64 etc?
  - Windows ARM build failing due to missing SDK or such
+ - Windows x86 build failing due to use v120 toolset
