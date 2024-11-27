@@ -34,8 +34,8 @@ jobs:
   strategy:
     matrix:
       x64: { platform: x64 }
-      #x86: { platform: x86 }  # broken due to missing v120 toolset
-      #arm: { platform: ARM }  # broken due to missing SDK
+      x86: { platform: x86 }
+      arm: { platform: ARM }
   pool:
     vmImage: windows-2022
   steps:

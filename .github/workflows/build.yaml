@@ -24,10 +24,7 @@ jobs:
   vs:
     strategy:
       matrix:
-        platform:
-        - x64
-        #- x86   # broken due to missing v120 toolset
-        #- ARM   # broken due to missing SDK
+        platform: [x86, x64, ARM]
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
