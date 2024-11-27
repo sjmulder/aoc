@@ -25,9 +25,9 @@ jobs:
   displayName: "Visual Studio"
   strategy:
     matrix:
-      x86: { platform: x86 }
       x64: { platform: x64 }
-      arm: { platform: ARM }
+      #x86: { platform: x86 }  # broken due to missing v120 toolset
+      #arm: { platform: ARM }  # broken due to missing SDK
   pool:
     vmImage: windows-2022
   steps:
