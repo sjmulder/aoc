@@ -1,22 +1,32 @@
 jobs:
 
-- job: unix
-  displayName: Unix
+- job: linux
+  displayName: Linux
   strategy:
     matrix:
-      macos:
-        vmImage: macOS-12
-        install: brew install
-      ubuntu:
-        vmImage: ubuntu-22.04
-        install: sudo apt install -y
+      ubuntu2204: { host: ubuntu-22.04 }
   pool:
-    vmImage: $(vmImage)
+    vmImage: $(host)
+  steps:
+  - task: UseDotNet@2
+    inputs: { version: 6.x }
+  - script: sudo apt install -y bmake
+    displayName: Install packages
+  - script: bmake
+    displayName: Build
+
+- job: macos
+  displayName: macOS
+  strategy:
+    matrix:
+      macos12: { host: macOS-12 }
+  pool:
+    vmImage: $(host)
   steps:
   - task: UseDotNet@2
     displayName: Use .NET 6
     inputs: { version: 6.x }
-  - script: $(install) bmake
+  - script: brew install bmake
     displayName: Install packages
   - script: bmake
     displayName: Build
