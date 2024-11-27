@@ -12,7 +12,7 @@ jobs:
     inputs: { version: 6.x }
   - script: sudo apt install -y bmake
     displayName: Install packages
-  - script: bmake
+  - script: bmake -j $(nproc)
     displayName: Build
 
 - job: macos
@@ -28,7 +28,7 @@ jobs:
     inputs: { version: 6.x }
   - script: brew install bmake
     displayName: Install packages
-  - script: bmake
+  - script: bmake -j $(sysctl -n hw.ncpu)
     displayName: Build
 
 - job: vs
