@@ -11,7 +11,7 @@ jobs:
   steps:
   - task: UseDotNet@2
     inputs: { version: 6.x }
-  - script: sudo apt install -y bmake
+  - script: sudo apt install -y bmake mono-devel
     displayName: Install packages
   - script: bmake -j $(nproc)
     displayName: Build
