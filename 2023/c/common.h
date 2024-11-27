@@ -28,7 +28,7 @@
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 # undef max
 # undef min
-#elif defined(_MSC_VER) && _MSC_VER <= 1800
+#elif defined(_MSC_VER) && _MSC_VER <= 1942
 # define NO_STRSEP
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 #else

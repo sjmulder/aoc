@@ -16,3 +16,9 @@
 & "./bin/$args/day16.exe" ../../../inputs/2023/16-input.txt
 & "./bin/$args/day17.exe" ../../../inputs/2023/17-input.txt
 & "./bin/$args/day18.exe" ../../../inputs/2023/18-input.txt
+& "./bin/$args/day19.exe" ../../../inputs/2023/19-input.txt
+& "./bin/$args/day20.exe" ../../../inputs/2023/20-input.txt
+& "./bin/$args/day21.exe" ../../../inputs/2023/21-input.txt
+& "./bin/$args/day22.exe" ../../../inputs/2023/22-input.txt
+& "./bin/$args/day23.exe" ../../../inputs/2023/23-input.txt
+& "./bin/$args/day24.exe" ../../../inputs/2023/24-input.txt
