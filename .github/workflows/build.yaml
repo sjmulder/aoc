@@ -2,7 +2,10 @@ on: push
 
 jobs:
   linux:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: [ubuntu-20.04, ubuntu-latest]  # oldest and latest
+    runs-on: ${{ matrix.host }}
     steps:
     - uses: actions/checkout@v3
     - run: sudo apt-get install -y bmake
@@ -11,7 +14,7 @@ jobs:
   macos:
     strategy:
       matrix:
-        host: [macos-13, macos-latest]  # Intel and ARM
+        host: [macos-13, macos-latest]       # Intel and ARM
     runs-on: ${{ matrix.host }}
     steps:
     - uses: actions/checkout@v3
