@@ -9,7 +9,10 @@ jobs:
     - run: bmake -j $(nproc)
 
   macos:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        host: [macos-13, macos-latest]  # Intel and ARM
+    runs-on: ${{ matrix.host }}
     steps:
     - uses: actions/checkout@v3
     - run: brew install bmake
