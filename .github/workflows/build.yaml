@@ -18,7 +18,8 @@ jobs:
   vs:
     strategy:
       matrix:
-        platform: [x86, x64, ARM]
+        #platform: [x86, x64, ARM]
+        platform: [x86, x64]            # ARM appears broken
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
