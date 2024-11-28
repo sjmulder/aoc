@@ -135,7 +135,7 @@ godzilla(void)
 			ngone += gone[j];
 	}
 
-	return ngone - nbricks;	/* don't count fist bricks */
+	return (int)(ngone - nbricks);	/* don't count fist bricks */
 }
 
 int

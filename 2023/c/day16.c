@@ -61,7 +61,7 @@ main(int argc, char **argv)
 	for (; fgets(map[h], sizeof(*map), stdin); h++)
 		assert(h+1 < (int)LEN(map));
 	
-	assert(h>0); w = strlen(map[0])-1;
+	assert(h>0); w = (int)strlen(map[0])-1;
 	assert(w>0);
 
 	p1 = score(0, 0, EE);

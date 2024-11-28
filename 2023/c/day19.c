@@ -55,6 +55,7 @@ eval(int id, struct partrange p)
 		}
 	
 	assert(!"out of exprs");
+	abort();
 }
 
 static int
@@ -77,7 +78,10 @@ to_var(const char *name)
 	if (name[0] == 'x') return 0; else
 	if (name[0] == 'm') return 1; else
 	if (name[0] == 'a') return 2; else
-	if (name[0] == 's') return 3; else assert(!"bad var");
+	if (name[0] == 's') return 3; else {
+		assert(!"bad var");
+		abort();
+	}
 }
 
 static struct expr

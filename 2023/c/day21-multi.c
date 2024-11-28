@@ -20,7 +20,7 @@ main(int argc, char **argv)
 		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (y=0; fgets(map[y], sizeof(map[y]), stdin); y++) {
-		len = strlen(map[y]);
+		len = (int)strlen(map[y]);
 		assert(len);
 		assert(map[y][len-1] == '\n');
 		assert(y+1 < GSZ/MULTI);
@@ -71,11 +71,11 @@ main(int argc, char **argv)
 			if (x && !(x % sz))
 				putchar('|');
 
-			if (reach[y][x][0]) printf("\e[31mo"); else
-			if (reach[y][x][1]) printf("\e[32mx"); else
+			if (reach[y][x][0]) printf("\033[31mo"); else
+			if (reach[y][x][1]) printf("\033[32mx"); else
 				putchar(map[y][x]);
 
-			printf("\e[0m");
+			printf("\033[0m");
 		}
 		putchar('\n');
 	}

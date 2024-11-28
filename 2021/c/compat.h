@@ -1,5 +1,7 @@
 #if defined(_MSC_VER)
 # define noreturn __declspec(noreturn)
+# define NO_STRSEP
+# define NO_ERR
 #elif defined(__GNUC__)
 # define noreturn __attribute__((noreturn))
 #else

@@ -113,7 +113,7 @@ main(int argc, char **argv)
 	for (; fgets(map[h], GW, stdin); h++)
 		assert(h+1 < GH);
 	
-	assert(h>0); w = strlen(map[0])-1;
+	assert(h>0); w = (int)strlen(map[0])-1;
 	assert(w>0);
 
 	p1 = solve(0, 3);
