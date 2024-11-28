@@ -34,7 +34,7 @@ eval(struct mon *m)
 	case '-': return eval(m->deps[0]) - eval(m->deps[1]);
 	case '*': return eval(m->deps[0]) * eval(m->deps[1]);
 	case '/': return eval(m->deps[0]) / eval(m->deps[1]);
-	default: assert(!"bad op");
+	default: assert(!"bad op"); abort();
 	}
 }
 
