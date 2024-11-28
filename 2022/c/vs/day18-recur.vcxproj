@@ -392,7 +392,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="common.vcxproj">
-      <Project>{a76c8ee3-af52-48b0-9ca8-b0758e0a65a4}</Project>
+      <Project>{8b29afa0-744b-47e3-b5f9-bd2e7bcc68b4}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
