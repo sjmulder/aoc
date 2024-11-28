@@ -23,6 +23,12 @@
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 # undef max
 # undef min
+#elif defined(_MSC_VER) && _MSC_VER <= 1942
+# define UNUSED
+# define NO_STRSEP
+# define snprintf _snprintf	/* note: returns 1 on overflow */
+# undef max
+# undef min
 #else
 # define UNUSED __attribute__((unused))
 #endif
@@ -49,6 +55,6 @@ typedef unsigned __int64 uint64_t;
 int snprintf(char *s, size_t sz, const char *fmt, ...);
 #endif
 
-#ifdef COMPAT_STRSEP
+#ifdef NO_STRSEP
 char *strsep(char **stringp, const char *delim);
 #endif

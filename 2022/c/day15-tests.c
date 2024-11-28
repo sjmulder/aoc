@@ -64,9 +64,10 @@ dump_ranges(struct range *ranges, size_t len)
 int
 main()
 {
-	struct range ranges[10]={}, range;
+	struct range ranges[10], range;
 	size_t nranges=0;
 
+	memset(ranges, 0, sizeof(ranges));
 	dump_ranges(ranges, nranges);
 
 	range.start = 5;
