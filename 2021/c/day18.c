@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <err.h>
+#include "compat.h"
 
 #define LEN(a) ((int)((sizeof(a)/sizeof(*(a)))))
 

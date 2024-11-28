@@ -159,7 +159,7 @@ main()
 {
 	static const cube p1box = {-50,-50,-50, 50,50,50};
 	static cube cubes[2][SZ];
-	int num[2]={}, cur=0, i;
+	int num[2]={0,0}, cur=0, i;
 	uint64_t p1=0,p2=0;
 	cube step;
 	char instr[4];
