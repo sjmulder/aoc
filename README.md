@@ -58,6 +58,7 @@ default:
  * `WITH_MONO=0` for .NET 4 with Mono (`mcs`)
  * `WITH_CPP17=0` for code using C++17 features
  * `WITH_DOT=0` for visualisations using `dot` form Graphviz
+ * `WITH_GOLF=0` for the code golf solutions (requiring old C standards)
 
 The following flags *enable* languages that are disabled by default:
 
