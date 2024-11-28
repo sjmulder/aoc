@@ -72,7 +72,7 @@ main(int argc, char **argv)
 {
 	int beacons[64];	/* beacon x positions on test row */
 	struct range seen[64];	/* scanned ranges on test row */
-	struct sensor sensors[64], *sr;
+	struct sensor sensors[64], *sr=NULL;
 	struct range range;
 	size_t nbeacons=0, nseen=0, nsensors=0, i,j;
 	int sx,sy, bx,by, x,y, dist, vert;
