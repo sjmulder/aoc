@@ -76,7 +76,7 @@ int
 main(int argc, char **argv)
 {
 	char line[64], chars2[128], *rest, *tok, *chars;
-	int id, runs[40], nruns, i,j;
+	int runs[40], nruns, i,j;
 	int64_t p1=0,p2=0;
 
 	if (argc > 1)
@@ -86,7 +86,7 @@ main(int argc, char **argv)
 	test();
 #endif
 
-	for (id=0; (rest = fgets(line, sizeof(line), stdin)); id++) {
+	while ((rest = fgets(line, sizeof(line), stdin))) {
 		chars = strsep(&rest, " ");
 		snprintf(chars2, sizeof(chars2), "%s?%s?%s?%s?%s",
 		    chars, chars, chars, chars, chars);
