@@ -18,8 +18,8 @@ main(int argc, const char **argv)
 	for (na=0; scanf("%d %d", &a[0][na], &a[1][na]) == 2; na++)
 		assert(na+1 < (int)LEN(a[0]));
 
-	qsort(a[0], na, sizeof(*a[0]), cmp_int);
-	qsort(a[1], na, sizeof(*a[1]), cmp_int);
+	qsort(a[0], (size_t)na, sizeof(*a[0]), cmp_int);
+	qsort(a[1], (size_t)na, sizeof(*a[1]), cmp_int);
 
 	for (i=0; i<na; i++) {
 		for (c=j=0; j<na; j++) c += a[0][i] == a[1][j];
