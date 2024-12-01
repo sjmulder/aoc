@@ -16,7 +16,7 @@ main(int argc, const char **argv)
 		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (na=0; scanf("%d %d", &a[0][na], &a[1][na]) == 2; na++)
-		assert(na < (int)LEN(a[0]));
+		assert(na+1 < (int)LEN(a[0]));
 
 	qsort(a[0], na, sizeof(*a[0]), cmp_int);
 	qsort(a[1], na, sizeof(*a[1]), cmp_int);
