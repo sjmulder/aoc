@@ -72,6 +72,12 @@ Standard build variables are mostly honored, e.g. `CC` and `CFLAGS`.
 
 Score card
 ----------
+**2024**
+
+                         1---------2-----
+                1234567890123456789012345
+    C           *
+
 **2023**
 
                          1---------2-----
