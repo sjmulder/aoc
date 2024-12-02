@@ -1,4 +1,4 @@
-SUBDIRS?=	2015 2020 2021 2022
+SUBDIRS?=
 TARGETS?=	all clean run
 
 .for subdir in ${SUBDIRS}
