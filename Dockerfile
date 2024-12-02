@@ -10,7 +10,7 @@ RUN curl -LO https://packages.microsoft.com/config/debian/12/packages-microsoft-
 
 RUN apt-get update && \
     apt-get install -y bmake build-essential clang libssl-dev \
-      mono-devel dotnet-sdk-6.0 && \
+      mono-devel dotnet-sdk-8.0 && \
     apt-get clean
 
 WORKDIR /work
