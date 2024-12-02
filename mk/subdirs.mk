@@ -1,5 +1,5 @@
 SUBDIRS?=
-TARGETS?=	all clean run
+TARGETS?=	all clean run bench
 
 .for subdir in ${SUBDIRS}
 . for target in ${TARGETS}
