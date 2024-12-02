@@ -9,10 +9,8 @@ issafe(int *lvs, int n, int skip)
 		if (i == skip)
 			{ ns = 1; continue; }
 		if (i-ns > 0)
-			safe = safe &&
-			    lvs[i] != prev &&
-			    lvs[i] > prev-4 &&
-			    lvs[i] < prev+4;
+			safe = safe && lvs[i] != prev &&
+			    lvs[i] > prev-4 && lvs[i] < prev+4;
 		if (i-ns == 1)
 			asc = lvs[i] > prev;
 		if (i-ns > 1)
