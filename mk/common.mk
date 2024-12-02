@@ -25,7 +25,7 @@ ENV+=		TIMEFMT=${TIMEFMT}
 . if "${INPUT}" != ""
 INPUT.$p?=	${INPUT}
 . else
-INPUT.$p?=	../../inputs/${YEAR}/${p:S/day//:S/.py//}-input.txt
+INPUT.$p?=	../../inputs/${YEAR}/${p:S/day//:S/.py//:S/.js//}-input.txt
 . endif
 
 RUN_CMD+=	./$p <${INPUT.$p};
