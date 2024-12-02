@@ -1,9 +1,10 @@
 # Use BSD make (bmake)
 
 YEAR=		2024
-DAYS=		day01
+DAYS=		day01 day02
 
-PROGS=		${DAYS}
+PROGS=		${DAYS} \
+		day02-orig
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
@@ -14,6 +15,9 @@ clean:
 	rm -f ${PROGS} *.o
 
 day01: day01.c common.h
+day02: day02.c common.h
+
+day02-orig: day02-orig.c common.h
 
 .PHONY: all clean
 
