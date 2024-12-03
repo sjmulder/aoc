@@ -18,4 +18,4 @@ const p2 = U.countBy(rows, row =>
     isSafe(row) || U.someBy(U.indices(row),
         i => isSafe([...row.slice(0, i), ...row.slice(i+1)])));
 
-console.log("01:", p1, p2);
+console.log("02:", p1, p2);
