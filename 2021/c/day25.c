@@ -10,7 +10,7 @@ main()
 	int w,h=0, x,y, step=0,dirty,wrap;
 
 	while (h < SZ && scanf(" %139s", grid[h]) == 1) h++;
-	w = strlen(grid[0]);
+	w = (int)strlen(grid[0]);
 
 	do {
 		step++; dirty=0;

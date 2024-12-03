@@ -64,7 +64,7 @@ main(int argc, char **argv)
 	}
 
 	assert(h);
-	w = strlen(map[0]);
+	w = (int)strlen(map[0]);
 
 	for (y=0; y<h; y++)
 	for (x=0; x<w; x++) {

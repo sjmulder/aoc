@@ -189,7 +189,7 @@ main(int argc, char **argv)
 	while (fgets(G[gh], GZ, stdin)) {
 		if ((lf = strchr(G[gh], '\n'))) *lf = '\0';
 		if (!strlen(G[gh])) break;
-		if (!gw) gw = strlen(G[gh]);
+		if (!gw) gw = (int)strlen(G[gh]);
 		gh++;
 		assert(gh < GZ);
 	}

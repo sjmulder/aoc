@@ -15,7 +15,7 @@ read_input(struct state *s)
 	int len, pos, i,j,k;
 
 	while (fgets(buf, sizeof(buf), stdin)) {
-		len = strlen(buf);
+		len = (int)strlen(buf);
 		for (pos = 1; pos < len; pos += 4) {
 			i = pos/4;
 			assert(i < NSTACKS);

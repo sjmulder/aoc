@@ -8,7 +8,7 @@ int min(int a, int b) { return a<b ? a : b; }
 int max(int a, int b) { return a>b ? a : b; }
 
 /* creates if not exists */
-static int
+static size_t
 lookup_name(const char name[3])
 {
 	size_t i;
@@ -81,7 +81,7 @@ main(int argc, char **argv)
 		    name, &rate,
 		    exits[0], exits[1], exits[2], exits[3], exits[4]);
 
-		idx = lookup_name(name);
+		idx = (int)lookup_name(name);
 		flows[idx] = rate;
 		for (i=2; i < (size_t)n; i++)
 			dists[idx][lookup_name(exits[i-2])] = 1;
@@ -93,7 +93,7 @@ main(int argc, char **argv)
 	for (j=0; j < nvalves; j++)
 		dists[i][j] = min(dists[i][j], dists[i][k]+dists[k][j]);
 
-	idx = lookup_name("AA");
+	idx = (int)lookup_name("AA");
 	p1 = max_val(idx, 30, 0, 0);
 	p2 = max_val(idx, 26, idx, 26),
 

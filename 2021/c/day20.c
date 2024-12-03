@@ -61,7 +61,7 @@ main()
 	if (scanf(" %512s", table) != 1)
 		assert(!"bad input");
 
-	len = strlen(table);
+	len = (int)strlen(table);
 	for (i=0; i<len; i++)
 		table[i] = table[i]=='#';
 
