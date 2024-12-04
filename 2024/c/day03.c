@@ -40,4 +40,5 @@ main(int argc, char **argv)
 		else p++;
 
 	printf("03: %d %d\n", p1, p2);
+	return 0;
 }

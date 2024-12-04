@@ -29,4 +29,5 @@ main(int argc, const char **argv)
 	}
 
 	printf("02: %d\n", p1);
+	return 0;
 }
