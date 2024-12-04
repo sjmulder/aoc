@@ -40,9 +40,9 @@ jobs:
     vmImage: windows-2022
   steps:
   - task: VSBuild@1
-    displayName: Build
+    displayName: Visual C++
     inputs:
-      solution: aoc.sln
+      solution: aoc-vc.sln
       platform: $(platform)
       configuration: Release
 
