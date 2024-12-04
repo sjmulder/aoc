@@ -11,3 +11,14 @@
 @Release\day11.exe ..\..\..\inputs\2023\11-input.txt
 @Release\day12.exe ..\..\..\inputs\2023\12-input.txt
 @Release\day13.exe ..\..\..\inputs\2023\13-input.txt
+@Release\day14.exe ..\..\..\inputs\2023\14-input.txt
+@Release\day15.exe ..\..\..\inputs\2023\15-input.txt
+@Release\day16.exe ..\..\..\inputs\2023\16-input.txt
+@Release\day17.exe ..\..\..\inputs\2023\17-input.txt
+@Release\day18.exe ..\..\..\inputs\2023\18-input.txt
+@Release\day19.exe ..\..\..\inputs\2023\19-input.txt
+@Release\day20.exe ..\..\..\inputs\2023\20-input.txt
+@Release\day21.exe ..\..\..\inputs\2023\21-input.txt
+@Release\day22.exe ..\..\..\inputs\2023\22-input.txt
+@Release\day23.exe ..\..\..\inputs\2023\23-input.txt
+@Release\day24.exe ..\..\..\inputs\2023\24-input.txt
