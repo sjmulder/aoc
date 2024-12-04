@@ -1,51 +1,19 @@
 #include "common.h"
 
 static int
-parse_exact(const char **stringp, const char *expect)
-{
-	const char *s = *stringp;
-	int i;
-
-	for (i=0; s[i] && expect[i] && s[i] == expect[i]; i++)
-		;
-	if (expect[i])
-		return 0;
-
-	*stringp  = &s[i];
-	return 1;
-}
-
-static int
-parse_int(const char **stringp, int *outp)
-{
-	char *end;
-	int val;
-
-	val = (int)strtol(*stringp, &end, 10);
-	if (end == *stringp)
-		return 0;
-
-	*stringp = end;
-	if (outp) *outp = val;
-	return 1;
-}
-
-static int
 parse_mul(const char **stringp, int *ap, int *bp)
 {
-	const char *cur = *stringp;
-	int a,b;
+	const char *cur = *stringp, *end;
 
-	if (!parse_exact(&cur, "mul(") ||
-	    !parse_int(&cur, &a) ||
-	    !parse_exact(&cur, ",") ||
-	    !parse_int(&cur, &b) ||
-	    !parse_exact(&cur, ")"))
-		return 0;
+	if (strncmp(cur, "mul(", 4)) { return 0; } cur += 4;
+	*ap = (int)strtol(cur, (char **)&end, 10);
+	if (end == cur)  { return 0; } cur = end;
+	if (*cur != ',') { return 0; } cur += 1;
+	*bp = (int)strtol(cur, (char **)&end, 10);
+	if (end == cur)  { return 0; } cur = end;
+	if (*cur != ')') { return 0; } cur += 1;
 
 	*stringp = cur;
-	if (ap) *ap = a;
-	if (bp) *bp = b;
 	return 1;
 }
 
@@ -53,7 +21,7 @@ int
 main(int argc, char **argv)
 {
 	static char buf[32*1024];
-	const char *cur;
+	const char *p;
 	size_t nr;
 	int p1=0,p2=0, a,b, dont=0;
 
@@ -65,16 +33,11 @@ main(int argc, char **argv)
 	assert(nr != sizeof(buf));
 	buf[nr] = '\0';
 
-	for (cur = buf; *cur; )
-		if (parse_exact(&cur, "do()"))
-			dont = 0;
-		else if (parse_exact(&cur, "don't()"))
-			dont = 1;
-		else if (parse_mul(&cur, &a, &b)) {
-			p1 += a * b;
-			if (!dont) p2 += a * b;
-		} else
-			cur++;
+	for (p = buf; *p; )
+		if (parse_mul(&p, &a, &b)) { p1 += a*b; p2 += a*b*!dont; }
+		else if (!strncmp(p, "do()", 4))    { dont = 0; p += 4; }
+		else if (!strncmp(p, "don't()", 7)) { dont = 1; p += 7; }
+		else p++;
 
 	printf("03: %d %d\n", p1, p2);
 }
