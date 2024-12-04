@@ -9,6 +9,8 @@ bin/
 obj/
 Debug/
 Release/
+*_Debug/
+*_Release/
 xcuserdata/
 build/
 debug/
