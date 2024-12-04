@@ -4,7 +4,7 @@ YEAR=		2024
 DAYS=		day01 day02 day03 day04
 
 PROGS=		${DAYS} \
-		day02-orig
+		day02-p1
 
 CFLAGS+=	-O3 -Wall -Wextra
 #CFLAGS+=	-g -ftrapv -Wconversion
