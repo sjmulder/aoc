@@ -119,13 +119,13 @@ handle_sig(int *nlo, int *nhi)
 	switch (mod->type) {
 	case '%':
 		if (!sig->val)
-			emit_sigs(mod, !mod->out_val);
+			emit_sigs(mod, (int8_t)!mod->out_val);
 		break;
 
 	case '&':
 		for (i=0, non=0; i < mod->nin; i++)
 			non += mod->in_vals[i] == 1;
-		emit_sigs(mod, non < mod->nin);
+		emit_sigs(mod, (int8_t)(non < mod->nin));
 		break;
 	}
 

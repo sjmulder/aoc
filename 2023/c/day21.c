@@ -27,7 +27,7 @@ find_reach(uint64_t t)
 	uint64_t ndia;
 	int odd;
 
-	odd = t&1;
+	odd = (int)(t&1);
 	ndia = t/sz*2 +1;
 
 	return (t+1)*(t+1) -
