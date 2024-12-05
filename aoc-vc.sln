@@ -268,6 +268,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2024", "2024", "{CF728FED-EEBE-422F-ADEB-A208D601D8D2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "c", "c", "{3AE08C71-33B9-4758-94B2-6FAB5AEFD280}"
+	ProjectSection(SolutionItems) = preProject
+		2024\c\vs\all.ps1 = 2024\c\vs\all.ps1
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "2024\c\vs\common.vcxproj", "{B13DB49D-00E7-4F0B-8255-7DF810407376}"
 EndProject
