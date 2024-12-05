@@ -16,7 +16,7 @@ int
 main(int argc, char **argv)
 {
 	char buf[128], *rest, *tok;
-	int p1=0,p2=0, arr[ASZ],srt[ASZ], n,i, a,b;
+	int p1=0,p2=0, arr[ASZ],srt[ASZ], n, a,b;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
