@@ -1,6 +1,7 @@
 #include "common.h"
 
 #define TSZ 100
+#define ASZ 32
 
 /* tab[a][b] is -1 if a<b and 1 if a>b */
 static int8_t tab[TSZ][TSZ];
@@ -15,7 +16,7 @@ int
 main(int argc, char **argv)
 {
 	char buf[128], *rest, *tok;
-	int p1=0,p2=0, arr[32], n,i, a,b;
+	int p1=0,p2=0, arr[ASZ],srt[ASZ], n,i, a,b;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -34,17 +35,9 @@ main(int argc, char **argv)
 			sscanf(tok, "%d", &arr[n]);
 		}
 
-		for (i=1; i<n; i++)
-			if (tab[arr[i-1]][arr[i]] > 0 ||
-			    tab[arr[i]][arr[i-1]] < 0)
-				break;
-
-		if (i==n)
-			p1 += arr[n/2];
-		else {
-			qsort(arr, n, sizeof(*arr), cmp);
-			p2 += arr[n/2];
-		}
+		memcpy(srt, arr, n*sizeof(*srt));
+		qsort(srt, n, sizeof(*srt), cmp);
+		*(memcmp(srt, arr, n*sizeof(*srt)) ? &p1 : &p2) += srt[n/2];
 	}
 
 	printf("05: %d %d\n", p1, p2);
