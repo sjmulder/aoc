@@ -7,6 +7,7 @@ PROGS=		${DAYS} \
 		day02-p1
 
 CFLAGS+=	-O3 -Wall -Wextra
+CFLAGS+=	-Wno-misleading-indentation
 #CFLAGS+=	-g -ftrapv -Wconversion
 
 all: ${PROGS}
