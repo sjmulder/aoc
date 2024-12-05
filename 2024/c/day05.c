@@ -1,4 +1,3 @@
-#include <assert.h>
 #include "common.h"
 
 #define TSZ 100
