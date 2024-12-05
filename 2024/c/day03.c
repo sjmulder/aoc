@@ -34,9 +34,9 @@ main(int argc, char **argv)
 	buf[nr] = '\0';
 
 	for (p = buf; *p; )
-		if (parse_mul(&p, &a, &b)) { p1 += a*b; p2 += a*b*!dont; }
-		else if (!strncmp(p, "do()", 4))    { dont = 0; p += 4; }
-		else if (!strncmp(p, "don't()", 7)) { dont = 1; p += 7; }
+		if (parse_mul(&p, &a, &b)) { p1+=a*b; p2+=a*b*!dont; }
+		else if (!strncmp(p, "do()", 4))    { dont=0; p+=4; }
+		else if (!strncmp(p, "don't()", 7)) { dont=1; p+=7; }
 		else p++;
 
 	printf("03: %d %d\n", p1, p2);
