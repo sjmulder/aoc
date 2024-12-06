@@ -1,0 +1,216 @@
+#include "common.h"
+
+#define MIN(a,b)	((a)<(b)?(a):(b))
+#define MAX(a,b)	((a)>(b)?(a):(b))
+
+#define GZ 134
+
+struct world { char g[GZ][GZ]; int x,y, dir; };
+
+static const char carets[] = "^>v<";
+static const int dx[4] = {0,1,0,-1}, dy[4] = {-1,0,1,0};
+
+static void vis06_begin(void);
+static void vis06_emit(struct world *w);
+static void vis06_end(void);
+
+static inline char *ahead(struct world *w)
+	{ return &w->g[w->y+dy[w->dir]][w->x+dx[w->dir]]; }
+static inline int traversible(char t)
+	{ return t && (t == '.' || strchr(carets, t)); }
+
+static void
+dump(struct world *w)
+{
+	int x,y;
+
+	printf("at %d,%d heading %c\n", w->x, w->y, carets[w->dir]);
+
+	for (y = MAX(0, w->y-10); y < MIN(w->y+10, GZ); y++) {
+		for (x = MAX(0, w->x-10); x < MIN(w->x+10, GZ); x++) {
+			if (x==w->x && y==w->y)
+				printf("\33[37m\33[40m");
+			putchar(isprint(w->g[y][x]) ? w->g[y][x] : '~');
+			if (x==w->x && y==w->y)
+				printf("\33[39m\33[49m");
+		}
+
+		putchar('\n');
+	}
+}
+
+static void
+load(struct world *w)
+{
+	int x,y,i;
+
+	for (y=1; y<GZ && fgets(w->g[y]+1, GZ-1, stdin); y++)
+		;
+
+	for (y=0; y<GZ; y++)
+	for (x=0; x<GZ; x++)
+	for (i=0; i<4; i++)
+		if (w->g[y][x] == carets[i])
+			{ w->x=x; w->y=y; w->dir=i; goto found_start; }
+	
+found_start:
+	w->g[y][x] = '.';
+}
+
+enum {
+	ST_NEW,		/* visited a new tile */
+	ST_SEEN,	/* visited a previously seen tile */
+	ST_LOOP,	/* previously seen tile in same direction (loop) */
+	ST_END		/* out of bounds or stuck */
+};
+
+static int
+step(struct world *w)
+{
+	char *cell, ah;
+	int is_new, i;
+
+	assert(w->x >= 0); assert(w->x < GZ);
+	assert(w->y >= 0); assert(w->y < GZ);
+
+	cell = &w->g[w->y][w->x];
+
+	if (!traversible(*cell)) {
+		*cell = 'X';
+		return ST_END;
+	}
+	if ((ah = *ahead(w))=='#' || ah=='O') {
+		for (i=0; i<4 && ((ah = *ahead(w))=='#' || ah=='O'); i++)
+			w->dir = (w->dir +1) %4;
+		if (i==4)
+			return ST_END;
+		return ST_SEEN;
+	}
+	if (*cell == carets[w->dir])
+		return ST_LOOP;
+
+	is_new = *cell == '.';
+	*cell = carets[w->dir];
+	w->x += dx[w->dir];
+	w->y += dy[w->dir];
+
+	return is_new ? ST_NEW : ST_SEEN;
+}
+
+int
+main(int argc, char **argv)
+{
+	static struct world w0,w,w1;
+	int p1=0,p2=0, x,y, r,i;
+
+	if (argc > 1)
+		DISCARD(freopen(argv[1], "r", stdin));
+
+	load(&w0);
+	memcpy(&w, &w0, sizeof(w));
+
+	vis06_begin();
+
+	while ((r = step(&w)) <= ST_SEEN) {
+		p1 += r == ST_NEW;
+
+#if 0
+		//dump(&w);
+		//vis06_emit(&w);
+
+		if (*ahead(&w) == '.') {
+			memcpy(&w1, &w, sizeof(w));
+			*ahead(&w1) = 'O';
+
+			for (i=0; i<1*1000*1000; i++){
+				//dump(&w1);
+				vis06_emit(&w1);
+
+				if ((r = step(&w1)) > ST_SEEN)
+					break;
+			}
+
+			printf("wall option ends with r %d i %d\n", r, i);
+			vis06_emit(&w1);
+			dump(&w1);
+
+			p2 += r == ST_LOOP;
+		}
+#endif
+	}
+
+	for (y=0; y<GZ; y++) {
+		printf("y %d\n", y);
+
+		for (x=0; x<GZ; x++)
+			if (w0.g[y][x] == '.') {
+				memcpy(&w, &w0, sizeof(w));
+				w.g[y][x] = 'O';
+
+				while ((r = step(&w)) <= ST_SEEN)
+					;
+
+				vis06_emit(&w);
+				dump(&w);
+				p2 += r == ST_LOOP;
+			}
+	}
+
+	vis06_emit(&w);
+	vis06_end();
+	//dump(&w);
+
+	printf("05: %d %d\n", p1, p2);
+	return 0;
+}
+
+#ifdef WITH_VIS
+# include <unistd.h>
+# include "vis.h"
+
+static struct vis vis;
+
+static struct vis_grid vis_grid = {
+	.colors = {
+		['#'] = { 64,192, 64},
+		['O'] = { 64, 64,192},
+		['X'] = {192, 64, 64},
+		['.'] = { 32, 32, 32},
+		['^'] = {228,255,255},
+		['>'] = {255,228,255},
+		['v'] = {255,255,228},
+		['<'] = {228,228,255}
+	},
+	.w = GZ,
+	.h = GZ,
+	.cell_sz = 4
+};
+
+static void
+vis06_begin(void)
+{
+	vis_begin(&vis, "day06.mp4", 60,
+	    vis_grid.cell_sz * vis_grid.w,
+	    vis_grid.cell_sz * vis_grid.h);
+}
+
+static void
+vis06_emit(struct world *w)
+{
+	vis_grid.data = (uint8_t *)w->g;
+	vis_draw_grid(&vis, &vis_grid);
+	vis_emit(&vis, 1);
+}
+
+static void
+vis06_end(void)
+{
+	vis_emit(&vis, 30);
+	vis_end(&vis);
+}
+
+#else
+static void vis06_begin(void) {}
+static void vis06_emit(UNUSED struct world *w) {}
+static void vis06_end(void) {}
+#endif
