@@ -7,10 +7,10 @@ struct world { char g[GZ][GZ]; int x,y, dir; };
 static const char carets[] = "^>v<";
 static const int dx[4] = {0,1,0,-1}, dy[4] = {-1,0,1,0};
 
-static inline char *ahead(struct world *w) {
+static char *ahead(struct world *w) {
     return &w->g[w->y+dy[w->dir]][w->x+dx[w->dir]]; }
-static inline int visited(char t) { return t && strchr(carets, t); }
-static inline int traversible(char t) { return t=='.' || visited(t); }
+static int visited(char t) { return t && strchr(carets, t); }
+static int traversible(char t) { return t=='.' || visited(t); }
 
 /* new tile, previously visited tile, in a loop, out of bounds */
 enum { ST_NEW, ST_SEEN, ST_LOOP, ST_END };
