@@ -15,21 +15,27 @@
 #if defined(__TURBOC__)
 # define UNUSED
 # define NO_STDINT
+# define NO_STDCKDINT
 # define NO_INTTYPES
 # define NO_MEMORY
 # define NO_SNPRINTF
 # define NO_STRSEP
+# define NO_BUILTIN_OVERFLOW
 #elif defined(_MSC_VER) && _MSC_VER <= 1200
 # define UNUSED
 # define NO_STDINT
+# define NO_STDCKDINT
 # define NO_INTTYPES
 # define NO_STRSEP
 # define NO_STRTOLL
+# define NO_BUILTIN_OVERFLOW
 # define snprintf _snprintf	/* note: returns 1 on overflow */
+# define atoll(s) strtoll((s), NULL, 10);
 # undef max
 # undef min
 #elif defined(_MSC_VER) && _MSC_VER <= 1942
 # define NO_STRSEP
+# define NO_CKDINT
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 #else
 # define UNUSED __attribute__((unused))
@@ -52,11 +58,23 @@
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
 #else
-# define INT64_MAX 0x7FFFFFFFFFFFFFFF
+# define INT64_MAX  0x7FFFFFFFFFFFFFFF
+# define UINT64_MAX 0xFFFFFFFFFFFFFFFF
 typedef __int8 int8_t;
 typedef __int64 int64_t;
 typedef unsigned __int8 uint8_t;
 typedef unsigned __int64 uint64_t;
+#endif
+
+#if !defined(NO_STDCKDINT)
+# include <stdckdint.h>
+#elif !defined(NO_BUILTIN_OVERFLOW)
+# define ckd_add(r,a,b) __builtin_add_overflow((a), (b), (r))
+# define ckd_mul(r,a,b) __builtin_mul_overflow((a), (b), (r))
+#else
+/* macros are generic, but uin64_t will do for here */
+uint64_t ckd_add(uint64_t a, uint64_t b, uint64_t *r);
+uint64_t ckd_mul(uint64_t a, uint64_t b, uint64_t *r);
 #endif
 
 #ifndef NO_MEMORY

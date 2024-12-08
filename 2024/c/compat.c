@@ -1,5 +1,27 @@
 #include "common.h"
 
+#if defined(NO_STDCKDINT) && defined(NO_BUILTIN_OVERFLOW)
+uint64_t
+ckd_add(uint64_t a, uint64_t b, uint64_t *r)
+{
+	if (a > UINT64_MAX - b)
+		return 1;
+	
+	*r = a + b;
+	return 0;
+}
+
+uint64_t
+ckd_mul(uint64_t a, uint64_t b, uint64_t *r)
+{
+	if (b && a > UINT64_MAX / b)
+		return 1;
+
+	*r = a * b;
+	return 0;
+}
+#endif
+
 #ifdef NO_SNPRINTF
 int
 snprintf(char *s, size_t sz, const char *fmt, ...)

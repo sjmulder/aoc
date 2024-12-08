@@ -118,6 +118,23 @@ Package=<4>
     End Project Dependency
 }}}
 
+###############################################################################
+
+Project: "day07"=.\day07.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name common
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "day08"=.\day08.dsp - Package Owner=<4>
 
 Package=<5>
