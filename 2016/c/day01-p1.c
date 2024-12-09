@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* TODO: outputs 'invalid input' */
+
 enum dir     { LEFT, RIGHT };
 enum heading { NORTH, EAST, SOUTH, WEST, NHEADING };
 struct step  { int dir; int count; };

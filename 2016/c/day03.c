@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* TODO: outputs 'invalid input' */
+
 int
 main(void)
 {
