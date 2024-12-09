@@ -47,7 +47,6 @@ defrag(int p2)
 int
 main(int argc, char **argv)
 {
-
 	int part, i,j;
 	uint64_t ans[2]={};
 
