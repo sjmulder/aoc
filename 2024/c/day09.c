@@ -26,7 +26,7 @@ defrag(int p2)
 		for (run=1; p2 && b>0 && disk[b-1]==disk[b]; b--, run++) ;
 
 		/* find the first gap */
-		for (; disk[a0]; a0++) ;
+		for (; a0 < b && disk[a0]; a0++) ;
 
 		/* find a gap large enough */
 		for (a=a0, gap=0; a<b; a++)
