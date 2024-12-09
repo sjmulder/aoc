@@ -5,32 +5,21 @@ static int disk[200*1000];
 int input_sz, disk_sz;
 
 static void
-defrag_p1(void)
-{
-	int i;
-
-	for (i=0; i < disk_sz; i++)
-		if (!disk[i] && disk[disk_sz-1]) {
-			disk[i] = disk[--disk_sz];
-			while (!disk[disk_sz-1]) disk_sz--;
-		}
-}
-
-static void
-defrag_p2(void)
+defrag(int p2)
 {
 	int a,b, a0=0, run, gap;
 
 	/*
-	 * b runs back to front, finding files
-	 * a runs front to back (from first gap, a0), finding gaps
+	 * b runs back to front, finding files.
+	 * a runs front to back (from first gap, a0), finding gaps.
 	 *
-	 * TODO: repurpose for part 1, given optimisation above
+	 * For part 1 we short circuit the file length check so it deals
+	 * with single tiles.
 	 */
 	for (b=disk_sz-1; b > 0; b--) {
 		/* find and measure next file from back */
 		for (; b>0 && !disk[b]; b--) ;
-		for (run=1; b>0 && disk[b-1]==disk[b]; b--, run++) ;
+		for (run=1; p2 && b>0 && disk[b-1]==disk[b]; b--, run++) ;
 
 		/* find the first gap */
 		for (; disk[a0]; a0++) ;
@@ -74,10 +63,7 @@ main(int argc, char **argv)
 			disk[disk_sz++] = i%2 ? 0 : i/2+1;
 		}
 
-		if (part==0)
-			defrag_p1();
-		else
-			defrag_p2();
+		defrag(part);
 
 		for (i=0; i < disk_sz; i++)
 			if (disk[i])
