@@ -1,5 +1,5 @@
 # day01-p2 is broken
-PROGS=	day01-p1 day02 day03
+PROGS=	day01-p1 day02 day03 day06
 
 CFLAGS+=	-Wall -Wextra
 CFLAGS+=	-O3
