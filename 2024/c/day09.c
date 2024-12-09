@@ -2,7 +2,7 @@
 
 /*
  * First went with a doubly linked list approach, but it was quite verbose
- * and we're dealing with short runs (max 9) anway.
+ * and we're dealing with short runs (max 9) anyway.
  */
 static char input[20*1000+1];
 static int disk[200*1000];
