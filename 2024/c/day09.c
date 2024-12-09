@@ -1,5 +1,9 @@
 #include "common.h"
 
+/*
+ * First went with a doubly linked list approach, but it was quite verbose
+ * and we're dealing with short runs (max 9) anway.
+ */
 static char input[20*1000+1];
 static int disk[200*1000];
 int input_sz, disk_sz;
