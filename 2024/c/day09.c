@@ -19,13 +19,12 @@ defrag_p1(void)
 static void
 defrag_p2(void)
 {
-	int a,b, run, gap;
+	int a,b, a0=0, run, gap;
 
 	/*
 	 * b runs back to front, finding files
-	 * a runs front to back, finding gaps
+	 * a runs front to back (from first gap, a0), finding gaps
 	 *
-	 * TODO: keep track of first gap and only search from there
 	 * TODO: repurpose for part 1, given optimisation above
 	 */
 	for (b=disk_sz-1; b > 0; b--) {
@@ -33,8 +32,11 @@ defrag_p2(void)
 		for (; b>0 && !disk[b]; b--) ;
 		for (run=1; b>0 && disk[b-1]==disk[b]; b--, run++) ;
 
-		/* find a gap for it */
-		for (a=gap=0; a<b; a++)
+		/* find the first gap */
+		for (; disk[a0]; a0++) ;
+
+		/* find a gap large enough */
+		for (a=a0, gap=0; a<b; a++)
 			if (!disk[a]) {
 				for (gap=1; disk[a+gap] == disk[a]; gap++) ;
 				if (gap >= run) break;
