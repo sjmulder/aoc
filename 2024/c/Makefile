@@ -1,7 +1,7 @@
 # Use BSD make (bmake)
 
 YEAR=		2024
-DAYS=		day01 day02 day03 day04 day05 day06 day07 day08
+DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09
 
 PROGS=		${DAYS} \
 		day02-p1
@@ -23,6 +23,7 @@ day05: day05.c common.h
 day06: day06.c common.h
 day07: day07.c common.h
 day08: day08.c common.h
+day09: day09.c common.h
 
 day02-orig: day02-orig.c common.h
 
