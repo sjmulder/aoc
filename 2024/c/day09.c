@@ -73,6 +73,6 @@ main(int argc, char **argv)
 				ans[part] += i * (disk[i]-1);
 	}
 
-	printf("08: %"PRIu64" %"PRIu64"\n", ans[0], ans[1]);
+	printf("09: %"PRIu64" %"PRIu64"\n", ans[0], ans[1]);
 	return 0;
 }
