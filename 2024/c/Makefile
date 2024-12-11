@@ -1,16 +1,22 @@
 # Use BSD make (bmake)
 
-YEAR=	2024
-DAYS=	day01 day02 day03 day04 day05 day06 day07 day08 day09 day10
+YEAR=		2024
+DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
+		day10
+VIS_PROGS=	day10-vis
 
-PROGS=	${DAYS} \
-	day02-p1
+PROGS=		${DAYS} ${VIS_PROGS} \
+		day02-p1 day10-vis
+
+VIS=		day10.mp4
 
 CFLAGS+=	-O3 -Wall -Wextra
 CFLAGS+=	-Wno-misleading-indentation
 #CFLAGS+=	-g -ftrapv -Wconversion
 
 all: ${PROGS}
+
+vis: ${VIS}
 
 clean:
 	rm -f ${PROGS} *.o
@@ -28,6 +34,15 @@ day10: day10.c common.h
 
 day02-orig: day02-orig.c common.h
 
-.PHONY: all clean
+day10-vis: day10-vis.o vis.o
+	${CC} ${LDFLAGS} -o day10-vis day10-vis.o vis.o ${LDLIBS}
+
+day10-vis.o: day10-vis.c common.h vis.h
+
+vis.o: vis.c vis.h
+
+day10.mp4: day10-vis ; ./day10-vis <${INPUT.day10}
+
+.PHONY: all clean vis
 
 .include "../../mk/common.mk"
