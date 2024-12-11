@@ -10,8 +10,8 @@ PROGS=		${DAYS} ${VIS_PROGS} \
 
 VIS=		day10.mp4
 
-CFLAGS+=	-O3 -Wall -Wextra
-CFLAGS+=	-Wno-misleading-indentation
+CFLAGS+=	-O3
+CFLAGS+=	-Wall -Wextra -Wno-misleading-indentation
 #CFLAGS+=	-g -ftrapv -Wconversion
 
 all: ${PROGS}
