@@ -5,7 +5,7 @@
  * and we're dealing with short runs (max 9) anyway.
  */
 static char input[20*1000+1];
-static short disk[200*1000];
+static short disk[100*1000];
 int input_sz, disk_sz;
 
 static void
