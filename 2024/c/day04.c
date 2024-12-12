@@ -14,14 +14,14 @@ main(int argc, char **argv)
 
 	for (y=3; y<GZ-3; y++)
 	for (x=3; x<GZ-3; x++) {
-		for (i=0; i<4 && g[y+i][x]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y-i][x]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y][x+i]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y][x-i]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y+i][x+i]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y-i][x-i]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y+i][x-i]==w[i]; i++) ; p1 += i==4;
-		for (i=0; i<4 && g[y-i][x+i]==w[i]; i++) ; p1 += i==4;
+		for (i=0; i<4 && g[y+i][x]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y-i][x]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y][x+i]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y][x-i]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y+i][x+i]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y-i][x-i]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y+i][x-i]==w[i]; i++) {} p1 += i==4;
+		for (i=0; i<4 && g[y-i][x+i]==w[i]; i++) {} p1 += i==4;
 
 		p2 += g[y+1][x+1]=='A' &&
 		      ((g[y][x]  =='M' && g[y+2][x+2]=='S')  ||

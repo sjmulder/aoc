@@ -8,8 +8,8 @@ split(uint64_t x, uint64_t *a, uint64_t *b)
 	int n, i;
 
 	if (!x) return 0;
-	for (n=0, p=1; p<=x;  n++, p*=10) ; if (n%2) return 0;
-	for (i=0, p=1; i<n/2; i++, p*=10) ;
+	for (n=0, p=1; p<=x;  n++, p*=10) {} if (n%2) return 0;
+	for (i=0, p=1; i<n/2; i++, p*=10) {}
 	*a = x/p;
 	*b = x%p; return 1;
 }
