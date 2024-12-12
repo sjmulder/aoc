@@ -52,6 +52,6 @@ main(int argc, char **argv)
 		p2 += recur(val, 75);
 	}
 
-	printf("10: %"PRId64" %"PRId64"\n", p1, p2);
+	printf("11: %"PRId64" %"PRId64"\n", p1, p2);
 	return 0;
 }
