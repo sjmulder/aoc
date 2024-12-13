@@ -7,7 +7,7 @@
  * and check it with a per-search marker value ('id').
  */
 static char g[GZ][GZ];
-static int seen[GZ][GZ];
+static short seen[GZ][GZ];
 
 static int
 score(int id, int x, int y, int p2)
