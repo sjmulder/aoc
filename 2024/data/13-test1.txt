@@ -1,0 +1,7 @@
+Button A: X+1, Y+2
+Button B: X+6, Y+3
+Prize: X=12, Y=12
+
+Button A: X+2, Y+2
+Button B: X+12, Y+3
+Prize: X=24, Y=12
