@@ -46,4 +46,5 @@ main(int argc, char **argv)
 		}
 
 	printf("12: %d %d\n", p1, p2);
+	return 0;
 }
