@@ -12,12 +12,12 @@ score(int ax, int ay, int bx, int by, int64_t px, int64_t py)
 	/* intersection between a (from start) and b (from end) */
 	x = (int64_t)round((px*bs - py) / (bs-as));
 
-	a = (x+i) / ax;
-	b = (px-x-i) / bx;
+	a = x / ax;
+	b = (px-x) / bx;
 
 	return
 	    a*ax + b*bx == px &&
-	    a*ay + b*by == py ? a*3 + b;
+	    a*ay + b*by == py ? a*3 + b : 0;
 }
 
 int
