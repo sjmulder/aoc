@@ -36,7 +36,7 @@ day11: day11.c common.h
 day12: day12.c common.h
 day13: day13.c common.h
 
-day02-orig: day02-orig.c common.h
+day02-p1: day02-p1.c common.h
 day14-p1: day14-p1.c common.h
 
 day10-vis: day10-vis.o vis.o
