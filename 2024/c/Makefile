@@ -2,7 +2,7 @@
 
 YEAR=		2024
 DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
-		day10 day11 day12 day13 day14 day14-p1
+		day10 day11 day12 day13 day14
 VIS_PROGS=	day10-vis day14-vis
 
 PROGS=		${DAYS} ${VIS_PROGS} \
@@ -38,7 +38,6 @@ day13: day13.c common.h
 day14: day14.c common.h
 
 day02-p1: day02-p1.c common.h
-day14-p1: day14-p1.c common.h
 
 day10-vis: day10-vis.o vis.o
 	${CC} ${LDFLAGS} -o day10-vis day10-vis.o vis.o ${LDLIBS}
@@ -52,7 +51,7 @@ day14-vis.o: day14-vis.c common.h vis.h
 vis.o: vis.c vis.h
 
 day10.mp4: day10-vis ; ./day10-vis <${INPUT.day10}
-day14.mp4: day14-vis ; ./day14-vis <${INPUT.day14-p1}
+day14.mp4: day14-vis ; ./day14-vis <${INPUT.day14}
 
 .PHONY: all clean vis
 

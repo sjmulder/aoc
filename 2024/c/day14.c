@@ -11,7 +11,7 @@ main(int argc, char **argv)
 	static char g[GH][GW];
 	static int px[NR],py[NR], vx[NR],vy[NR];
 
-	int nr, ntok, sec,i, x,y, run;
+	int p1=0, nr, ntok, sec, i, x,y, q[4]={}, run;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
@@ -32,7 +32,20 @@ main(int argc, char **argv)
 			py[i] = (py[i] + vy[i] + GH) % GH;
 
 			g[py[i]][px[i]] = 1;
+
+			if (sec == 100) {
+				if (px[i] < GW/2) {
+					if (py[i] < GH/2) q[0]++; else
+					if (py[i] > GH/2) q[1]++;
+				} else if (px[i] > GW/2) {
+					if (py[i] < GH/2) q[2]++; else
+					if (py[i] > GH/2) q[3]++;
+				}
+			}
 		}
+
+		if (sec == 100)
+			p1 = q[0]*q[1]*q[2]*q[3];
 
 		for (y=0; y<GH; y++)
 		for (x=0, run=0; x<GW; x++)
@@ -43,6 +56,6 @@ main(int argc, char **argv)
 	}
 
 found_p2:
-	printf("14: __ %d\n", sec);
+	printf("14: %d %d\n", p1, sec);
 	return 0;
 }
