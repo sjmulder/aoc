@@ -3,29 +3,24 @@
 #define SAMPLE 0
 #define GW (SAMPLE ? 11 : 101)
 #define GH (SAMPLE ?  7 : 103)
-#define NR 500
+#define NR 501
 
 int
 main(int argc, char **argv)
 {
 	static int px[NR],py[NR], vx[NR],vy[NR];
-	int p1=0, nr, ntok, sec, i, q[4]={};
+	int p1=0, n=0, sec, i, q[4]={};
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 
-	for (nr=0; nr<NR; nr++) {
-		ntok = scanf(" p=%d,%d v=%d,%d",
-		    &px[nr], &py[nr],
-		    &vx[nr], &vy[nr]);
-		if (ntok != 4)
-			break;
-	}
+	for (; scanf(" p=%d,%d v=%d,%d", px+n,py+n, vx+n,vy+n)==4; n++)
+		assert(n+1 < NR);
 
-	for (sec=1; ; sec++) {
+	for (sec=1; !SAMPLE || sec <= 100; sec++) {
 		memset(q, 0, sizeof(q));
 
-		for (i=0; i<nr; i++) {
+		for (i=0; i<n; i++) {
 			px[i] = (px[i] + vx[i] + GW) % GW;
 			py[i] = (py[i] + vy[i] + GH) % GH;
 
@@ -43,7 +38,7 @@ main(int argc, char **argv)
 
 		/* robots cosplaying a tree in the corner? */
 		for (i=0; i<4; i++)
-			if (q[i] > nr/2)
+			if (q[i] > n/2)
 				goto found_p2;
 	}
 
