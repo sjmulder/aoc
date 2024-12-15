@@ -1,9 +1,10 @@
 #include "common.h"
 
-#define GZ 52
+#define GW 102
+#define GH 52
 
 struct world {
-	char g[GZ][GZ];
+	char g[GH][GW];
 	int px,py;
 };
 
@@ -12,8 +13,8 @@ dump(struct world *w)
 {
 	int x,y;
 
-	for (y=0; y<GZ && isprint(w->g[y][0]); y++) {
-		for (x=0; x<GZ && isprint(w->g[y][x]); x++)
+	for (y=0; y<GH && isprint(w->g[y][0]); y++) {
+		for (x=0; x<GW && isprint(w->g[y][x]); x++)
 			putchar(x==w->px && y==w->py
 			    ? '@' : w->g[y][x]);
 		putchar('\n');
@@ -29,7 +30,7 @@ push(struct world *w, int x0, int y0, int dx, int dy)
 
 	//printf("pushing from %d,%d to %d,%d\n", x0,y0, dx,dy);
 
-	for (x=x0, y=y0; x>=0 && x<GZ && y>=0 && y<GZ; x+=dx, y+=dy)
+	for (x=x0, y=y0; x>=0 && x<GW && y>=0 && y<GH; x+=dx, y+=dy)
 		switch (w->g[y][x]) {
 		case '.': w->g[y0][x0]='.'; w->g[y][x]='O'; return 1;
 		case 'O': break;
@@ -47,10 +48,10 @@ move(struct world *w, int dx, int dy)
 	px1 = w->px+dx;
 	py1 = w->py+dy;
 
-	assert(w->px>=0); assert(w->px<GZ);
-	assert(w->py>=0); assert(w->py<GZ);
-	assert(px1>=0); assert(px1<GZ);
-	assert(py1>=0); assert(py1<GZ);
+	assert(w->px>=0); assert(w->px<GW);
+	assert(w->py>=0); assert(w->py<GH);
+	assert(px1>=0); assert(px1<GW);
+	assert(py1>=0); assert(py1<GH);
 
 	if (w->g[py1][px1] == '.' || push(w, px1,py1, dx,dy))
 		{ w->px=px1; w->py=py1; }
@@ -61,8 +62,8 @@ score(struct world *w)
 {
 	int acc=0, x,y;
 
-	for (y=0; y<GZ && w->g[y][0]; y++)
-	for (x=0; x<GZ && w->g[y][x]; x++)
+	for (y=0; y<GH && w->g[y][0]; y++)
+	for (x=0; x<GW && w->g[y][x]; x++)
 		if (w->g[y][x] == 'O')
 			acc += 100*y + x;
 
@@ -80,8 +81,8 @@ main(int argc, char **argv)
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 
-	for (y=0; fgets(w1.g[y], GZ, stdin); y++) {
-		assert(y+1 < GZ);
+	for (y=0; fgets(w1.g[y], GW, stdin); y++) {
+		assert(y+1 < GH);
 		if (!w1.g[y][0] || w1.g[y][0]=='\n')
 			break;
 		if ((p = strchr(w1.g[y], '@')))
