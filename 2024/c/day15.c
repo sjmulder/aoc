@@ -2,17 +2,20 @@
 
 #define GZ 52
 
-static char g[GZ][GZ];
-static int px,py;
+struct world {
+	char g[GZ][GZ];
+	int px,py;
+};
 
 static void
-dump(void)
+dump(struct world *w)
 {
 	int x,y;
 
-	for (y=0; y<GZ && isprint(g[y][0]); y++) {
-		for (x=0; x<GZ && isprint(g[y][x]); x++)
-			putchar(x==px && y==py ? '@' : g[y][x]);
+	for (y=0; y<GZ && isprint(w->g[y][0]); y++) {
+		for (x=0; x<GZ && isprint(w->g[y][x]); x++)
+			putchar(x==w->px && y==w->py
+			    ? '@' : w->g[y][x]);
 		putchar('\n');
 	}
 
@@ -20,15 +23,15 @@ dump(void)
 }
 
 static int
-push(int x0, int y0, int dx, int dy)
+push(struct world *w, int x0, int y0, int dx, int dy)
 {
 	int x,y;
 
 	//printf("pushing from %d,%d to %d,%d\n", x0,y0, dx,dy);
 
 	for (x=x0, y=y0; x>=0 && x<GZ && y>=0 && y<GZ; x+=dx, y+=dy)
-		switch (g[y][x]) {
-		case '.': g[y0][x0]='.'; g[y][x]='O'; return 1;
+		switch (w->g[y][x]) {
+		case '.': w->g[y0][x0]='.'; w->g[y][x]='O'; return 1;
 		case 'O': break;
 		default: return 0;
 		}
@@ -37,30 +40,30 @@ push(int x0, int y0, int dx, int dy)
 }
 
 static void
-move(int dx, int dy)
+move(struct world *w, int dx, int dy)
 {
 	int px1,py1;
 
-	px1 = px+dx;
-	py1 = py+dy;
+	px1 = w->px+dx;
+	py1 = w->py+dy;
 
-	assert(px>=0); assert(px<GZ);
-	assert(py>=0); assert(py<GZ);
+	assert(w->px>=0); assert(w->px<GZ);
+	assert(w->py>=0); assert(w->py<GZ);
 	assert(px1>=0); assert(px1<GZ);
 	assert(py1>=0); assert(py1<GZ);
 
-	if (g[py1][px1] == '.' || push(px1,py1, dx,dy))
-		{ px=px1; py=py1; }
+	if (w->g[py1][px1] == '.' || push(w, px1,py1, dx,dy))
+		{ w->px=px1; w->py=py1; }
 }
 
 static int
-score(void)
+score(struct world *w)
 {
 	int acc=0, x,y;
 
-	for (y=0; y<GZ && g[y][0]; y++)
-	for (x=0; x<GZ && g[y][x]; x++)
-		if (g[y][x] == 'O')
+	for (y=0; y<GZ && w->g[y][0]; y++)
+	for (x=0; x<GZ && w->g[y][x]; x++)
+		if (w->g[y][x] == 'O')
 			acc += 100*y + x;
 
 	return acc;
@@ -69,37 +72,38 @@ score(void)
 int
 main(int argc, char **argv)
 {
+	static struct world w1;
+
 	int p1=0,p2=0, y, c;
 	char *p;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 
-	for (y=0; fgets(g[y], GZ, stdin); y++) {
+	for (y=0; fgets(w1.g[y], GZ, stdin); y++) {
 		assert(y+1 < GZ);
-		if (!g[y][0] || g[y][0]=='\n')
+		if (!w1.g[y][0] || w1.g[y][0]=='\n')
 			break;
-		if ((p = strchr(g[y], '@')))
-			{ py=y; px=p-g[y]; *p='.'; }
+		if ((p = strchr(w1.g[y], '@')))
+			{ w1.py=y; w1.px=p-w1.g[y]; *p='.'; }
 	}
 
-	//dump();
-	printf("at %d,%d\n", px,py);
+	//dump(&w1);
 
 	while ((c = getchar()) != EOF) {
 		//printf("move: %c\n", c);
 
 		switch (c) {
-		case '^': move(0,-1); break;
-		case 'v': move(0, 1); break;
-		case '<': move(-1,0); break;
-		case '>': move( 1,0); break;
+		case '^': move(&w1, 0,-1); break;
+		case 'v': move(&w1, 0, 1); break;
+		case '<': move(&w1, -1,0); break;
+		case '>': move(&w1,  1,0); break;
 		}
 
-		//dump();
+		//dump(&w1);
 	}
 
-	p1 = score();
+	p1 = score(&w1);
 
 	printf("15: %d %d\n", p1, p2);
 	return 0;
