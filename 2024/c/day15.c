@@ -24,20 +24,34 @@ dump(struct world *w)
 }
 
 static int
-push(struct world *w, int x0, int y0, int dx, int dy)
+can_push(struct world *w, int x, int y, int dx, int dy)
 {
-	int x,y;
+	assert(x>=0); assert(x<GW);
+	assert(y>=0); assert(y<GH);
 
-	//printf("pushing from %d,%d to %d,%d\n", x0,y0, dx,dy);
+	return
+	    x+dx >= 0 && x+dx < GW &&
+	    y+dy >= 0 && y+dy < GW &&
+	    w->g[y][x] == 'O' &&
+	    (w->g[y+dy][x+dx] == '.' || can_push(w, x+dx,y+dy, dx,dy));
+}
 
-	for (x=x0, y=y0; x>=0 && x<GW && y>=0 && y<GH; x+=dx, y+=dy)
-		switch (w->g[y][x]) {
-		case '.': w->g[y0][x0]='.'; w->g[y][x]='O'; return 1;
-		case 'O': break;
-		default: return 0;
-		}
-	
-	return 0;
+/* check can_push() first! */
+static void
+push(struct world *w, int x, int y, int dx, int dy)
+{
+	assert(x>=0); assert(x<GW);
+	assert(y>=0); assert(y<GH);
+	assert(x+dx>=0); assert(x+dx<GW);
+	assert(y+dy>=0); assert(y+dy<GH);
+
+	assert(w->g[y][x] == 'O');
+
+	if (w->g[y+dy][x+dx] != '.')
+		push(w, x+dx,y+dy, dx,dy);
+
+	w->g[y][x] = '.';
+	w->g[y+dy][x+dx] = 'O';
 }
 
 static void
@@ -53,8 +67,12 @@ move(struct world *w, int dx, int dy)
 	assert(px1>=0); assert(px1<GW);
 	assert(py1>=0); assert(py1<GH);
 
-	if (w->g[py1][px1] == '.' || push(w, px1,py1, dx,dy))
-		{ w->px=px1; w->py=py1; }
+	if (w->g[py1][px1] == '.') {
+		w->px=px1; w->py=py1;
+	} else if (can_push(w, px1,py1, dx,dy)) {
+		push(w, px1,py1, dx, dy);
+		w->px=px1; w->py=py1;
+	}
 }
 
 static int
