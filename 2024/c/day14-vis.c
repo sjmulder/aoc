@@ -12,7 +12,7 @@ main(int argc, char **argv)
 {
 	static int px[NR],py[NR], vx[NR],vy[NR];
 	struct vis vis;
-	int nr, nt, i,j, x,y;
+	int nr, nt, i,j;
 	uint8_t r,g,b;
 
 	if (argc > 1)
