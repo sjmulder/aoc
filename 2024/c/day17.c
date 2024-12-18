@@ -46,7 +46,7 @@ step(void)
 static int64_t
 recur_p2(int64_t a0, int pos)
 {
-	int64_t a, i;
+	int64_t a,a1, i;
 
 	/*
 	 * The code in the input uses up to 7 low bits of the A register
@@ -75,8 +75,8 @@ recur_p2(int64_t a0, int pos)
 			;
 
 		if (vm.no && vm.out[0] == vm.mem[vm.nm-pos-1])
-			if ((a = recur_p2(a << 3, pos+1)))
-				return a;
+			if ((a1 = recur_p2(a << 3, pos+1)))
+				return a1;
 	}
 
 	return 0;
