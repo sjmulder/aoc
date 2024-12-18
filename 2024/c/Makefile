@@ -6,7 +6,7 @@ DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
 VIS_PROGS=	day10-vis day14-vis
 
 PROGS=		${DAYS} ${VIS_PROGS} \
-		day02-p1 day10-vis day17-p1
+		day02-p1 day17-p1
 
 VIS=		day10.mp4 day14.mp4
 
