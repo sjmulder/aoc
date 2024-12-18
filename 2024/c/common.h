@@ -56,7 +56,8 @@
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
 #else
-# define INT64_MAX 0x7FFFFFFFFFFFFFFF
+# define INT64_MAX  0x7FFFFFFFFFFFFFFF
+# define UINT64_MAX 0xFFFFFFFFFFFFFFFF
 typedef __int8 int8_t;
 typedef __int64 int64_t;
 typedef unsigned __int8 uint8_t;

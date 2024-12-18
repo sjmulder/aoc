@@ -66,7 +66,7 @@ strtoll(const char *s, const char **endp, int base)
 }
 #endif
 
-#ifndef NO_BUILTIN_OVERFLOW
+#ifdef NO_BUILTIN_OVERFLOW
 int
 add_overflow(uint64_t a, uint64_t b, uint64_t *out)
 {
