@@ -125,8 +125,8 @@ main(int argc, char **argv)
 		DISCARD(freopen(argv[1], "r", stdin));
 
 	for (y=1; fgets(g[y]+1, GZ-1, stdin); y++) {
-		if ((p = strchr(g[y]+1, 'S'))) { sy=y; sx=p-g[y]; }
-		if ((p = strchr(g[y]+1, 'E'))) { ey=y; ex=p-g[y]; }
+		if ((p = strchr(g[y]+1, 'S'))) {sy=y; sx=(int)(p-g[y]);}
+		if ((p = strchr(g[y]+1, 'E'))) {ey=y; ex=(int)(p-g[y]);}
 		assert(y+1 < GZ-1);
 	}
 

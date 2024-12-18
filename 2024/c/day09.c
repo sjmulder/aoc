@@ -48,7 +48,7 @@ int
 main(int argc, char **argv)
 {
 	int part, i,j;
-	uint64_t ans[2]={};
+	uint64_t ans[2]={0,0};
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));

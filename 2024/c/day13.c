@@ -36,8 +36,8 @@ main(int argc, char **argv)
 	    &ax, &ay, &bx, &by, &px, &py) == 6) {
 		p1 += score(ax,ay, bx,by, px,py);
 		p2 += score(ax,ay, bx,by,
-		    px + 10000000000000LL,
-		    py + 10000000000000LL);
+		    px + 10000000000000,
+		    py + 10000000000000);
 	}
 
 	printf("13: %"PRId64" %"PRId64"\n", p1, p2);

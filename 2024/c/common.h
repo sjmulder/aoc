@@ -28,6 +28,7 @@
 # define NO_STRTOLL
 # define NO_BUILTIN_OVERFLOW
 # define snprintf _snprintf	/* note: returns 1 on overflow */
+# define round(x) (floor((x)+0.5))
 # undef max
 # undef min
 #elif defined(_MSC_VER) && _MSC_VER <= 1942

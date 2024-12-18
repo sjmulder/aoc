@@ -35,7 +35,7 @@ step(void)
 	case BXL: vm.b = vm.b ^ ar; break;
 	case BXC: vm.b = vm.b ^ vm.c; break;
 	case BST: vm.b = ac % 8; break;
-	case JNZ: if (vm.a) vm.pc = ar; break;
+	case JNZ: if (vm.a) vm.pc = (int)ar; break;
 	case OUT: assert(vm.no < OUTZ); vm.out[vm.no++] = ac%8; break;
 	default: assert(!"invalid opcode"); return 0;
 	}
@@ -104,7 +104,8 @@ main(int argc, char **argv)
 
 	while ((tok = strsep(&rest, ","))) {
 		assert(vm.nm < MEMZ);
-		vm.mem[vm.nm++] = atoll(tok);
+		/* VC++6 has no atoll, but this is enough for input */
+		vm.mem[vm.nm++] = atoi(tok);
 	}
 
 	while (step())

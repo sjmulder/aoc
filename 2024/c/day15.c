@@ -95,7 +95,7 @@ main(int argc, char **argv)
 			}
 
 		if ((p = strchr(w1.g[y], '@'))) {
-			w1.py = y; w1.px = p-w1.g[y];
+			w1.py = y; w1.px = (int)(p-w1.g[y]);
 			w2.py = y; w2.px = w1.px*2;
 
 			w1.g[w1.py][w1.px]   = '.';

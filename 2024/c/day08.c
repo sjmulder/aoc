@@ -22,7 +22,7 @@ main(int argc, char **argv)
 	assert(feof(stdin));
 	lf = strchr(g[0], '\n');
 	assert(lf);
-	w = lf - g[0];
+	w = (int)(lf - g[0]);
 
 	/*
 	 * Find antenna pairs, then project backwards from the first,

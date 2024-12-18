@@ -11,7 +11,7 @@ main(int argc, char **argv)
 	static char g[GH][GW];
 	static int px[NR],py[NR], vx[NR],vy[NR];
 
-	int p1=0, n=0, sec, i, x,y, q[4]={}, run;
+	int p1=0, n=0, sec, i, x,y, q[4]={0,0,0,0}, run;
 
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));

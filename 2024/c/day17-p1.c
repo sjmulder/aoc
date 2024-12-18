@@ -107,7 +107,7 @@ step(void)
 	case OP_JNZ: if (vm.a) vm.pc = ar; break;
 	case OP_OUT:
 		if (vm.out[0]) {
-			outlen = strlen(vm.out);
+			outlen = (int)strlen(vm.out);
 			assert(outlen < OUTZ-1);
 			snprintf(vm.out+outlen, OUTZ-outlen,
 			    ",%d", ac%8);
