@@ -7,7 +7,7 @@ enum {NN, EE, SS, WW};
 static const int dx[]={0,1,0,-1}, dy[]={-1,0,1,0};
 
 static char g[GZ][GZ];		/* with 1 tile border */
-static int cost[GZ][GZ][4];	/* per direction, starts at 1, 0=no info */
+static int cost[GZ][GZ][4];	/* per dir, starts at 1, 0=no info */
 
 static int traversible(char c) { return c=='.' || c=='S' || c=='E'; }
 
