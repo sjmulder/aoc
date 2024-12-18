@@ -19,17 +19,20 @@
 # define NO_MEMORY
 # define NO_SNPRINTF
 # define NO_STRSEP
+# define NO_BUILTIN_OVERFLOW
 #elif defined(_MSC_VER) && _MSC_VER <= 1200
 # define UNUSED
 # define NO_STDINT
 # define NO_INTTYPES
 # define NO_STRSEP
 # define NO_STRTOLL
+# define NO_BUILTIN_OVERFLOW
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 # undef max
 # undef min
 #elif defined(_MSC_VER) && _MSC_VER <= 1942
 # define NO_STRSEP
+# define NO_BUILTIN_OVERFLOW
 # define snprintf _snprintf	/* note: returns 1 on overflow */
 #else
 # define UNUSED __attribute__((unused))
@@ -73,4 +76,12 @@ char *strsep(char **stringp, const char *delim);
 
 #ifdef NO_STRTOLL
 int64_t strtoll(const char *s, const char **endp, int base);
+#endif
+
+#if !defined(NO_BUILTIN_OVERFLOW)
+# define add_overflow __builtin_add_overflow
+# define mul_overflow __builtin_mul_overflow
+#else
+int add_overflow(uint64_t a, uint64_t b, uint64_t *out);
+int mul_overflow(uint64_t a, uint64_t b, uint64_t *out);
 #endif

@@ -65,3 +65,27 @@ strtoll(const char *s, const char **endp, int base)
 	return n;
 }
 #endif
+
+#ifndef NO_BUILTIN_OVERFLOW
+int
+add_overflow(uint64_t a, uint64_t b, uint64_t *out)
+{
+	if (UINT64_MAX-a < b || UINT64_MAX-b < a)
+		return 1;
+
+	*out = a+b;
+	return 0;
+}
+
+int
+mul_overflow(uint64_t a, uint64_t b, uint64_t *out)
+{
+	if (!a || !b)
+		{ *out = 0; return 0; }
+	if (UINT64_MAX/a < b || UINT64_MAX/b < a)
+		return 1;
+
+	*out = a*b;
+	return 0;
+}
+#endif

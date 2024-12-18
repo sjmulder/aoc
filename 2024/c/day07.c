@@ -9,8 +9,8 @@ concat(uint64_t a, uint64_t b, uint64_t *out)
 	for (mul=1; mul<=b; mul*=10) ;
 
 	return 
-	    !__builtin_mul_overflow( mul, a, out) &&
-	    !__builtin_add_overflow(*out, b, out);
+	    !mul_overflow( mul, a, out) &&
+	    !add_overflow(*out, b, out);
 }
 
 static int
