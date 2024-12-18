@@ -39,11 +39,11 @@ main(int argc, char **argv)
 	
 	while ((rest = fgets(buf, sizeof(buf), stdin))) {
 		assert(strchr(buf, '\n'));
-		expect = atoll(strsep(&rest, ":"));
+		expect = strtoll(strsep(&rest, ":"), NULL, 10);
 
 		for (n=0; (tok = strsep(&rest, " ")); n++) {
 			assert(n < (int)LEN(arr));
-			arr[n] = atoll(tok);
+			arr[n] = strtoll(tok, NULL, 10);
 		}
 
 		p1 += recur(expect, 0, arr, n, 0) * expect;
