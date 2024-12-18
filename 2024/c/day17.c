@@ -91,9 +91,9 @@ main(int argc, char **argv)
 	if (argc > 1)
 		DISCARD(freopen(argv[1], "r", stdin));
 
-	fgets(b, BUFZ, stdin); sscanf(b, "Register A: %lld", &vm.a);
-	fgets(b, BUFZ, stdin); sscanf(b, "Register B: %lld", &vm.b);
-	fgets(b, BUFZ, stdin); sscanf(b, "Register C: %lld", &vm.c);
+	fgets(b, BUFZ, stdin); sscanf(b, "Register A: %"PRId64, &vm.a);
+	fgets(b, BUFZ, stdin); sscanf(b, "Register B: %"PRId64, &vm.b);
+	fgets(b, BUFZ, stdin); sscanf(b, "Register C: %"PRId64, &vm.c);
 	fgets(b, BUFZ, stdin);
 
 	assert(vm.b == 0);	/* assumption for part 2 */
@@ -110,8 +110,8 @@ main(int argc, char **argv)
 	while (step())
 		;
 	for (i=0; i<vm.no; i++)
-		printf(i ? ",%lld" : "17: %lld", vm.out[i]);
+		printf(i ? ",%"PRId64 : "17: %"PRId64, vm.out[i]);
 
-	printf(" %lld\n", recur_p2(0, 0));
+	printf(" %"PRId64"\n", recur_p2(0, 0));
 	return 0;
 }
