@@ -7,10 +7,28 @@
 
 static int g[GZ][GZ];
 
+static int
+flood_step(int x, int y)
+{
+	int lo=INT_MAX;
+
+	if (g[y][x] == CORR) return 0;
+
+	if (g[y-1][x] > 0) lo = MIN(lo, g[y-1][x] +1);
+	if (g[y+1][x] > 0) lo = MIN(lo, g[y+1][x] +1);
+	if (g[y][x-1] > 0) lo = MIN(lo, g[y][x-1] +1);
+	if (g[y][x+1] > 0) lo = MIN(lo, g[y][x+1] +1);
+
+	if (lo != INT_MAX && (!g[y][x] || g[y][x] > lo))
+		{ g[y][x] = lo; return 1; }
+
+	return 0;
+}
+
 static void
 flood(void)
 {
-	int x,y, dirty=1, lo;
+	int x,y, dirty=1;
 
 	for (y=1; y<GZ-1; y++)
 	for (x=1; x<GZ-1; x++)
@@ -21,16 +39,12 @@ flood(void)
 		dirty = 0;
 
 		for (y=1; y<GZ-1; y++)
-		for (x=1; x<GZ-1; x++) {
-			if (g[y][x] == CORR) continue;
-			lo = INT_MAX;
-			if (g[y-1][x] > 0) lo = MIN(lo, g[y-1][x]);
-			if (g[y+1][x] > 0) lo = MIN(lo, g[y+1][x]);
-			if (g[y][x-1] > 0) lo = MIN(lo, g[y][x-1]);
-			if (g[y][x+1] > 0) lo = MIN(lo, g[y][x+1]);
-			if (lo != INT_MAX && (!g[y][x] || g[y][x]>lo+1))
-				{ dirty=1; g[y][x] = lo+1; }
-		}
+		for (x=1; x<GZ-1; x++)
+			dirty = flood_step(x, y) || dirty;
+
+		for (y=GZ-2; y>=1; y--)
+		for (x=GZ-2; x>=1; x--)
+			dirty = flood_step(x, y) || dirty;
 	}
 }
 
