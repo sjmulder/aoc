@@ -8,44 +8,25 @@
 
 static int g[GZ][GZ];
 
-static int
-flood_step(int x, int y)
+static void
+flood(int x, int y)
 {
 	int lo=INT_MAX;
 
-	if (g[y][x] == CORR) return 0;
+	if (g[y][x] == CORR) return;
 
 	if (g[y-1][x] > 0) lo = MIN(lo, g[y-1][x] +1);
 	if (g[y+1][x] > 0) lo = MIN(lo, g[y+1][x] +1);
 	if (g[y][x-1] > 0) lo = MIN(lo, g[y][x-1] +1);
 	if (g[y][x+1] > 0) lo = MIN(lo, g[y][x+1] +1);
 
-	if (lo != INT_MAX && (!g[y][x] || g[y][x] > lo))
-		{ g[y][x] = lo; return 1; }
+	if (lo != INT_MAX && (!g[y][x] || g[y][x] > lo)) {
+		g[y][x] = lo;
 
-	return 0;
-}
-
-static void
-flood(void)
-{
-	int x,y, dirty=1;
-
-	for (y=1; y<GZ-1; y++)
-	for (x=1; x<GZ-1; x++)
-		if (g[y][x] > 1)
-			g[y][x] = 0;
-
-	while (dirty) {
-		dirty = 0;
-
-		for (y=1; y<GZ-1; y++)
-		for (x=1; x<GZ-1; x++)
-			dirty = flood_step(x, y) || dirty;
-
-		for (y=GZ-2; y>=1; y--)
-		for (x=GZ-2; x>=1; x--)
-			dirty = flood_step(x, y) || dirty;
+		flood(x, y-1);
+		flood(x, y+1);
+		flood(x-1, y);
+		flood(x+1, y);
 	}
 }
 
@@ -74,15 +55,12 @@ main(int argc, char **argv)
 		g[ys[i]+1][xs[i]+1] = CORR;
 
 	g[1][1] = 1;
-	flood();
+	flood(2, 1);
+	flood(1, 2);
 
 	for (i=npt-1; i >= P1STEP; i--) {
 		g[ys[i]+1][xs[i]+1] = 0;
-
-		if (!flood_step(xs[i]+1, ys[i]+1))
-			continue;
-
-		flood();
+		flood(xs[i]+1, ys[i]+1);
 
 		if (!p2[0] && g[GZ-2][GZ-2] > 0)
 			snprintf(p2, sizeof(p2), "%d,%d", xs[i],ys[i]);
