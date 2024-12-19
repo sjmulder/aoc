@@ -2,7 +2,7 @@
 
 YEAR=		2024
 DAYS=		day01 day02 day03 day04 day05 day06 day07 day08 day09 \
-		day10 day11 day12 day13 day14 day15 day16 day17
+		day10 day11 day12 day13 day14 day15 day16 day17 day18
 VIS_PROGS=	day10-vis day14-vis
 
 PROGS=		${DAYS} ${VIS_PROGS} \
@@ -39,6 +39,7 @@ day14: day14.c common.h
 day15: day15.c common.h
 day16: day16.c common.h
 day17: day17.c common.h
+day18: day18.c common.h
 
 day02-p1: day02-p1.c common.h
 day17-p1: day17-p1.c common.h
