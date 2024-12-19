@@ -8,22 +8,6 @@
 int g[GZ][GZ];
 
 static void
-dump(void)
-{
-	int x,y;
-
-	for (y=0; y<GZ; y++) {
-		for (x=0; x<GZ; x++)
-			putchar(
-			    g[y][x]==CORR ? '#' :
-			    g[y][x] ? 'o': '.');
-		putchar('\n');
-	}
-
-	putchar('\n');
-}
-
-static void
 flood(void)
 {
 	int x,y, dirty=1, lo;
