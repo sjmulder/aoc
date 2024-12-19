@@ -13,7 +13,9 @@ flood(int x, int y)
 {
 	int lo=INT_MAX;
 
-	if (g[y][x] == CORR) return;
+	if (x <= 0 || x >= GZ-1 ||
+	    y <= 0 || y >= GZ-1 || g[y][x] == CORR)
+		return;
 
 	if (g[y-1][x] > 0) lo = MIN(lo, g[y-1][x] +1);
 	if (g[y+1][x] > 0) lo = MIN(lo, g[y+1][x] +1);
