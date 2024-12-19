@@ -5,7 +5,7 @@
 #define NCORR	(SAMPLE ? 12 : 1024)
 #define CORR	-1
 
-int g[GZ][GZ];
+static int g[GZ][GZ];
 
 static void
 flood(void)
