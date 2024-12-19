@@ -53,6 +53,9 @@ main(int argc, char **argv)
 		assert(y >= 0); assert(y < GZ-2);
 		g[y+1][x+1] = CORR;
 
+		if (i < NCORR-1)
+			continue;
+
 		flood();
 
 		if (i==NCORR-1)
