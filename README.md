@@ -1,3 +1,9 @@
+This repostiory has **moved** to:
+
+https://codeberg.org/sjmulder/aoc
+
+The GitHub repository will be deleted in time.
+
 Advent of Code
 ==============
 
